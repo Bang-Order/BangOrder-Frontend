@@ -1,0 +1,17 @@
+.MuiButton-root.dropdown {
+    width: 200px;
+    background-color: #FFC300;
+    margin-right: 10px;
+    z-index: 2;
+    color: black;
+}
+
+.MuiButton-root.done{
+    width: 146px;
+    background-color: #FFC300;
+    position: absolute;
+    bottom: 21px;
+    right: 15px;
+    z-index: 2;
+    color: black;
+}
