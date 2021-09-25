@@ -1,52 +1,100 @@
-import { TextField, Button } from "@mui/material";
-// import { render } from "@testing-library/react";
+import { Button, Input, ListItem, ListItemText, ListItemIcon } from "@mui/material";
 import React from "react";
-import { makeStyles } from '@mui/styles';
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { styled } from '@mui/material/styles';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { GrCheckbox } from 'react-icons/gr';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
 
 
-const useStyles = makeStyles((theme) => ({
-  button: {
-    background: "#FFC300",
-    borderRadius: 7,
-    border: 0,
-    height: 60,
-    width: 586,
-    padding: '0 30px',
-    fontSize: '24px',
-    marginTop: '193px'
-    // fontFamily: 'Manrope',
-  },
-  textField: {
-    background: "#F1F1F1",
-    borderRadius: 10,
-    height: 55,
-    width: 586,
-    marginTop: '10px',
-    position: 'below',
-  },
-}));
+
+const BootstrapButton = styled(Button)({
+  backgroundColor: "#FFC300",
+  borderRadius: 7,
+  border: 0,
+  height: 50,
+  width: 500,
+  padding: '0 30px',
+  fontSize: '24px',
+  margin: '105px',
+  marginBottom: '90px',
+  textTransform: "unset",
+  fontWeight: "bolder",
+  color: "#000",
+})
+
+const BootstrapInput = styled(Input)({
+  // background: "#F1F1F1",
+  borderRadius: 10,
+  height: 40,
+  width: 500,
+  padding: '10px',
+  marginTop: '25px',
+  fontSize: '16px',
+})
+
+const StyledLink = styled(Link)({
+  textDecoration: 'none',
+  color: '#989999',
+  fontWeight: 'bold',
+})
 
 const Login = () => {
-  const classes = useStyles();
+  const [values, setValues] = React.useState({
+    password: '',
+    showPassword: false,
+  });
+
+  const handleClickShowPassword = () => {
+    setValues({
+      ...values,
+      showPassword: !values.showPassword,
+    });
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
   return (
     <div>
       <div class="container">
         <img src="/logo-horizontal.png" alt="" />
-        <h3>Contactless Food Ordering with Scan QR Code</h3>
-        <TextField className={classes.textField} label="Email" required />
-        <TextField className={classes.textField} label="Password" required />
-        <p class="left">Remember me</p>
+        <h3>Contactless Food Ordering with QR Code</h3>
+        <BootstrapInput placeholder="Email" type="" required />
+
+        <BootstrapInput placeholder="Password" type="password" required
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                onClick={handleClickShowPassword}
+                onMouseDown={handleMouseDownPassword}
+                edge="end" >
+                {values.showPassword ? <FaEye /> : <FaEyeSlash />}
+              </IconButton>
+            </InputAdornment>
+          }
+        />
+
+        <p class="left">
+          <ListItem>
+            <ListItemIcon>
+              <GrCheckbox />
+            </ListItemIcon>
+            <ListItemText>Remember me</ListItemText>
+          </ListItem>
+        </p>
       </div>
-      <div >
+      <div>
+        <BootstrapButton>Sign In</BootstrapButton>
+        {/* <p class="style-text">Don't have an account? <Link to="/register">Sign Up</Link></p> */}
       </div>
-      <div class="container">
-        <Button className={classes.button}>Sign In</Button>
-        <p>Don't have an account? <a href="/register">Sign Up</a></p>
+      <div class="style-text">
+        <p >Don't have an account?&emsp;&emsp;&emsp;&emsp;&emsp;<StyledLink to="/register" >Sign Up</StyledLink></p>
       </div>
     </div>
 
   )
 }
-
 export default Login;
