@@ -39,3 +39,20 @@
     transform: rotate(360deg);
   }
 }
+
+.container {
+  display:flex;
+  flex-direction: column;
+  padding: 4em 1em;
+  align-items: center;
+}
+
+img {
+  width: 600px;
+  height: 200px;
+}
+
+.left {
+  text-align: left;
+  width: 586px;
+}
