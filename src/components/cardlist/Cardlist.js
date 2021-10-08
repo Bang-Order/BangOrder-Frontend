@@ -1,14 +1,15 @@
 import React from 'react';
 import { makeStyles } from '@mui/styles';
-import { Button, Card, CardContent, Menu, MenuItem, Typography } from '@mui/material';
+import { Button, Card, CardContent, Menu, MenuItem } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import Divider from '@mui/material/Divider';
 import './cardlist.css';
 
 const useStyles = makeStyles(() => ({
     root: {
         display: 'flex',
-        backgroundColor: '#F1F1F1',
-        marginBottom: 20,
+        marginTop: 20,
+        // marginBottom: 20,
     },
     details: {
         width: '100%',
@@ -32,14 +33,17 @@ const useStyles = makeStyles(() => ({
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: '25%',
-        minWidth: 280,
-        maxWidth: 300,
+        width: '40%',
+        minWidth: 370,
+        maxWidth: 390,
         marginRight: 20,
     },
     content: {
         textAlign: 'left',
-        marginLeft: 20
+        marginLeft: 20,
+        marginRight: 40,
+        marginTop: 10,
+        marginBottom: 10,
     },
     meja: {
         margin: 0,
@@ -50,7 +54,6 @@ const useStyles = makeStyles(() => ({
         width: 90,
     },
     button: {
-        background: "#FFC300",
         borderRadius: 7,
         border: 0,
         height: 60,
@@ -66,6 +69,20 @@ const useStyles = makeStyles(() => ({
         bottom: 21,
         right: 15,
         zIndex: 2,
+    },
+    item: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    total: {
+        alignSelf: 'flex-end',
+        display: 'flex',
+        justifyContent: 'space-between',
+        marginRight: 40,
+        marginBottom: 20,
+        marginTop: 20,
+        width: 170,
     }
 }));
 
@@ -110,8 +127,7 @@ const Cardlist = (order) => {
                             onClose={handleClose}
                             PaperProps={{
                                 style: {
-                                    width: '200px',
-                                    backgroundColor: '#FFC300',
+                                    width: '150px',
                                 },
                             }}
                         >
@@ -119,42 +135,43 @@ const Cardlist = (order) => {
                             <MenuItem onClick={handleClose}>Dibuat</MenuItem>
                             <MenuItem onClick={handleClose}>Diantar</MenuItem>
                         </Menu>
+                        <Button className='done'>
+                            Done
+                        </Button>
                     </div>
                 </CardContent>
                 <div className={classes.content}>
-                    <Typography>
-                        List Pesanan :
-                    </Typography>
-                    <ol>
-                        <li>
-                            <Typography>
-                                Batagor 2x
-                            </Typography>
-                            <Typography>
-                                Catatan :
-                            </Typography>
-                            <Typography>
-                                lorem lorem lorem
-                            </Typography>
-                        </li>
-                    </ol>
-                    <ol>
-                        <li>
-                            <Typography>
-                                Batagor 2x
-                            </Typography>
-                            <Typography>
-                                Catatan :
-                            </Typography>
-                            <Typography>
-                                lorem lorem lorem
-                            </Typography>
-                        </li>
-                    </ol>
+                    <div className={classes.item}>
+                        <h4 >
+                            Batagor 2x
+                        </h4>
+                        <h4 >
+                            10000
+                        </h4>
+                    </div>
+                    <h5 style={{ margin: 0 }}>
+                        Catatan : lorem lorem
+                    </h5>
                 </div>
-                <Button className='done'>
-                    Done
-                </Button>
+                <Divider variant="middle" />
+                <div className={classes.content}>
+                    <div className={classes.item}>
+                        <h4 >
+                            Batagor 2x
+                        </h4>
+                        <h4 >
+                            10000
+                        </h4>
+                    </div>
+                    <h5 style={{ margin: 0 }}>
+                        Catatan : lorem lorem
+                    </h5>
+                </div>
+                <Divider variant="middle" />
+                <div className={classes.total}>
+                    <h4>Total harga : </h4>
+                    <h4>20000</h4>
+                </div>
             </div>
         </Card>
     );
