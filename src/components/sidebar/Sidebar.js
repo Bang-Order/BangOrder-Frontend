@@ -1,5 +1,5 @@
 import React from 'react';
-import {Drawer, ListItem, ListItemIcon, ListItemText, List } from '@mui/material';
+import { Drawer, ListItem, ListItemIcon, ListItemText, List } from '@mui/material';
 import { ViewList, Fastfood, History } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
 import HomeIcon from '@mui/icons-material/Home';
