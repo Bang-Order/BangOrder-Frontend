@@ -1,9 +1,9 @@
 import './App.css';
-import Antrian from './pages/Antrian';
+import Menu from './pages/Menu';
 function App() {
   return (
     <div className="App">
-      <Antrian />
+      <Menu />
     </div>
   );
 }
