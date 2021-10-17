@@ -4,19 +4,19 @@
 
 1. pull BangOrder-Backend
 2. install project
-  > composer install
+    > composer install
 3. create user in phpmyadmin
   - username : bangorder
   - password : bangorder123
 5. migrate database
-  > php artisan migrate:fresh --seed
+    > php artisan migrate:fresh --seed
 6. start project
-  > php artisan serve
+    > php artisan serve
 8. pull BangOrder-Frontend
 9. install project
-  > npm install
+    > npm install
 10. start server
-  > npm start
+    > npm start
 
 # available route
 /order-list
