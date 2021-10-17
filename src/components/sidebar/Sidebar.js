@@ -9,7 +9,8 @@ import {
     Avatar,
     Toolbar,
     Menu,
-    MenuItem
+    MenuItem,
+    ListItemButton
 } from '@mui/material';
 import {
     ViewList,
@@ -22,17 +23,28 @@ import {
 } from '@mui/icons-material';
 import CssBaseline from '@mui/material/CssBaseline';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import { makeStyles } from '@mui/styles';
+import { makeStyles, withStyles } from '@mui/styles';
 import { logout } from '../../utils/Auth';
-import { useHistory } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
+import { styled } from '@mui/material/styles';
 
 const drawerWidth = 260;
+const customListItem = styled('ListItemButton')(() => ({
+    root: {
+        "&%selected": {
+            backgroundColor: "#FFC300"
+        }
+    }
+}))
+
 const Sidebar = (props) => {
     const { window } = props;
     const history = useHistory();
+    const navIndex = props.index;
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+    console.log(props);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -45,6 +57,9 @@ const Sidebar = (props) => {
             height: 'auto',
             paddingTop: 20,
         },
+        list: {
+            marginLeft: 20,
+        }
     }));
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -54,36 +69,77 @@ const Sidebar = (props) => {
         history.replace("/login");
     };
     const classes = useStyles();
+    console.log();
+
+    const CustomListItem = withStyles({
+        root: {
+            paddingLeft: 10,
+            "&$selected": {
+                backgroundColor: "#ffc300",
+                color: "white",
+                // "& .MuiListItemIcon-root": {
+                //     color: "white"
+                // }
+            },
+            "&$selected:hover": {
+                backgroundColor: "#FFD755",
+            //     color: "white",
+            //     "& .MuiListItemIcon-root": {
+            //         color: "white"
+            //     }
+            },
+            // "&:hover": {
+            //     backgroundColor: "blue",
+            //     color: "white",
+            //     "& .MuiListItemIcon-root": {
+            //         color: "white"
+            //     }
+            // }
+        },
+        selected: {}
+    })(ListItemButton);
 
     const drawer = (
         <div>
             <img src="/logo-horizontal.png" alt="" className={classes.image} />
             <Toolbar />
-            <List>
-                <ListItem button>
+            <List className={classes.list}>
+                <NavLink to="/">
+                <CustomListItem selected={navIndex == 0}>
                     <ListItemIcon><Home /></ListItemIcon>
                     <h4>Restoran</h4>
-                </ListItem>
-                <ListItem button>
+                </CustomListItem>
+                </NavLink>
+                <NavLink to="/order-list">
+                <CustomListItem selected={navIndex == 1}>
                     <ListItemIcon><RoomService /></ListItemIcon>
                     <h4>Antrian</h4>
-                </ListItem>
-                <ListItem button>
+                </CustomListItem>
+                </NavLink>
+                <NavLink to="/data-meja">
+                <CustomListItem selected={navIndex == 2}>
                     <ListItemIcon><EventSeat /></ListItemIcon>
                     <h4>Data Meja</h4>
-                </ListItem>
-                <ListItem button>
+                </CustomListItem>
+                </NavLink>
+                <NavLink to="/kategori-menu">
+                <CustomListItem selected={navIndex == 3}>
                     <ListItemIcon><ViewList /></ListItemIcon>
                     <h4>Kategori Menu</h4>
-                </ListItem>
-                <ListItem button>
+                </CustomListItem>
+                </NavLink>
+                <NavLink to="/list-menu">
+                <CustomListItem selected={navIndex == 4}>
                     <ListItemIcon><Fastfood /></ListItemIcon>
                     <h4>Menu Restoran</h4>
-                </ListItem>
-                <ListItem button>
+                </CustomListItem>
+                </NavLink>
+                <NavLink to="/riwayat">
+                <CustomListItem selected={navIndex == 5}>
                     <ListItemIcon><History /></ListItemIcon>
                     <h4>Riwayat</h4>
-                </ListItem>
+                </CustomListItem>
+                </NavLink>
             </List>
         </div >
     );
@@ -110,7 +166,7 @@ const Sidebar = (props) => {
                     >
                         <MenuOutlined sx={{ color: 'black' }} />
                     </IconButton >
-                    <h3>Antrian</h3>
+                    <h3>{props.name}</h3>
                     <IconButton sx={{ position: "absolute", right: '20px', ml: 2 }} onClick={handleClick} size="medium">
                         <Avatar sx={{ width: 40, height: 40 }}>R</Avatar>
                     </IconButton>

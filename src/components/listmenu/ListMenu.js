@@ -1,19 +1,18 @@
-import React from "react";
-import { Card, Grid, Button, InputAdornment, IconButton, TextField, Menu, MenuItem } from "@mui/material";
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import { CardActionArea } from '@mui/material';
+import React, { useState, useEffect } from "react";
+import { Button, InputAdornment, IconButton, TextField, Menu, MenuItem } from "@mui/material";
 import { makeStyles } from '@mui/styles';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import SearchIcon from '@mui/icons-material/Search';
 import './listmenu.css';
-
+import MenuCard from '../MenuCard/MenuCard';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   content: {
     marginTop: 20,
     textAlign: "left",
+    display: "flex",
+    flexWrap: "wrap",
   },
   header: {
     paddingTop: 20,
@@ -25,22 +24,42 @@ const useStyles = makeStyles((theme) => ({
   left: {
     display: 'flex',
     justifyContent: 'space-between',
-    width: '47%',
+    width: '50%',
     float: 'left',
   },
   right: {
-    display: 'flex',
     justifyContent: 'space-between',
     height: 39,
-    width: '45%',
-    float: 'right',
+    width: 200,
   },
 }));
 
 const ListMenu = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [menus, setMenus] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [statusFilter, setStatusFilter] = useState("");
 
+  //unavailable, available, recomendation
+  useEffect(() => {
+    axios.get('http://localhost:8000/api/restaurants/2/menus?filter='+statusFilter)
+      .then((res) => {
+        setMenus(res.data.data);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError(err.message);
+        setLoading(false);
+      })
+  }, [statusFilter])
+
+  const handleStatusClick = (status) => {
+    setStatusFilter(status)
+    setAnchorEl(null);
+    console.log(statusFilter);
+  }
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -76,40 +95,26 @@ const ListMenu = () => {
             onClose={handleClose}
             PaperProps={{
               style: {
-                width: '200px',
-                backgroundColor: '#FFC300',
+                width: '150px',
+                backgroundColor: "white",
               },
             }}
           >
-            <MenuItem onClick={handleClose}>All Menu</MenuItem>
-            <MenuItem onClick={handleClose}>Rekomendasi</MenuItem>
-            <MenuItem onClick={handleClose}>Tersedia</MenuItem>
-            <MenuItem onClick={handleClose}>Habis</MenuItem>
+            <MenuItem onClick={() => handleStatusClick("")}>All Menu</MenuItem>
+            <MenuItem onClick={() => handleStatusClick("recommendation")}>Rekomendasi</MenuItem>
+            <MenuItem onClick={() => handleStatusClick("available")}>Tersedia</MenuItem>
+            <MenuItem onClick={() => handleStatusClick("unavailable")}>Habis</MenuItem>
           </Menu>
         </div>
       </div>
       <div className={classes.content}>
-        <Grid container spacing="12">
-          <Grid item xs="6" md="3">
-            <Card>
-              <CardActionArea>
-                <CardMedia
-                  component="img"
-                  image="/cemilan/cheese-burger.jpg"
-                  alt="Cheese Burger"
-                />
-                <CardContent>
-                  <Typography variant="h5" component="div">
-                    Cheese Burger
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Rp20.000
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
-        </Grid>
+            {loading ?
+              <p>loading..</p>
+              :
+              menus && menus.map(menu =>
+                <MenuCard key={menu.id} menu={menu} />
+              )
+            }
       </div>
     </div>
   )

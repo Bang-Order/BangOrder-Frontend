@@ -2,13 +2,15 @@
 
 h1,h2,h3,h4,h5 {
   color: #191E24;
-}
-h4{
   margin: 0;
+  font-family: 'Manrope', sans-serif;
 }
 img{
   -webkit-user-drag: none;
   user-select: none;
+}
+a{
+  text-decoration: none;
 }
 
 .App {
@@ -62,12 +64,6 @@ img{
 
 .container h3{
   margin-bottom: 1em;
-}
-
-img {
-  width: 500px;
-  height: 150px;
-  padding-top: 2em;
 }
 
 .left {

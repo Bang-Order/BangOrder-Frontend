@@ -23,14 +23,13 @@ const Root = styled('div')(() => ({
     minHeight: '100vh',
 }))
 
-const Antrian = () => {
+const Antrian = (props) => {
     const [orders, setOrders] = useState(null);
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = React.useState("");
     const [error, setError] = useState(null);
     const [loading, setLoading] = React.useState(true);
-
     useEffect(() => {
-        axios.get('http://localhost:8000/api/restaurants/1/orders')
+        axios.get('http://localhost:8000/api/restaurants/1/orders?status='+value)
             .then((res) => {
                 setOrders(res.data.data);
                 setLoading(false);
@@ -43,7 +42,7 @@ const Antrian = () => {
 
     return (
         <Root>
-            <Sidebar />
+            <Sidebar index="1" name="Antrian"/>
             <Content>
                 <BottomNavigation
                     showLabels
@@ -52,9 +51,9 @@ const Antrian = () => {
                         setValue(newValue);
                     }}
                 >
-                    <BottomNavigationAction value="all" label="Semua" />
-                    <BottomNavigationAction value="queue" label="Antri" />
-                    <BottomNavigationAction value="cooking" label="Dibuat" />
+                    <BottomNavigationAction value="" label="Semua" />
+                    <BottomNavigationAction value="antri" label="Antri" />
+                    <BottomNavigationAction value="dimasak" label="Dimasak" />
                 </BottomNavigation>
                 {loading ?
                     <p>loading...</p>

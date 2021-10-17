@@ -35,6 +35,7 @@ const useStyle = makeStyles({
     image: {
         width: '70%',
         height: 'auto',
+        padding: "2em"
     }
 })
 
