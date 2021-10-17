@@ -19,5 +19,7 @@
     > npm start
 
 # available route
-/order-list
-/list-menu
+    - /order-list
+    - /list-menu
+    - /login
+    - /register
