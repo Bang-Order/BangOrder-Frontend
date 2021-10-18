@@ -5,6 +5,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Divider from '@mui/material/Divider';
 import './cardlist.css';
 import axios from 'axios';
+import { GET_RESTAURANT } from '../../utils/Urls';
 
 const useStyles = makeStyles(() => ({
 	root: {
@@ -93,6 +94,7 @@ const Cardlist = (param) => {
 	const orderItem = param.order.order_items;
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [status, setStatus] = React.useState(order.order_status);
+	const restoId = localStorage.getItem("RestoId");
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
@@ -105,10 +107,10 @@ const Cardlist = (param) => {
 		handleClose();
 		setStatus(status);
 		axios
-			.patch('http://localhost:8000/api/restaurants/1/orders/'+order.id, {
+			.patch(GET_RESTAURANT+restoId+'/orders/'+order.id, {
 				"order_status": status,
 				"payment_status": "success"
-			});
+			},{headers: { Authorization: 'Bearer '+localStorage.getItem("TOKEN")}});
 	}
 
 	return (

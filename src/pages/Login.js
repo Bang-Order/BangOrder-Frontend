@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import { login } from "../utils/Auth";
 import { Link, useHistory } from "react-router-dom";
+import axios from 'axios';
 
 
 const useStyle = makeStyles({
@@ -35,6 +36,7 @@ const useStyle = makeStyles({
     image: {
         width: '70%',
         height: 'auto',
+        padding: "2em"
     }
 })
 
@@ -71,6 +73,13 @@ const Login2 = () => {
     };
 
     const _onSubmit = () => {
+        axios.post('http://localhost:8000/api/auth/login',{
+            email: email,
+            password: password
+        }).then((res)=>{
+            login(res.data.data);
+            history.push("/order-list");
+        })
         setError(false);
         if (email === "") {
             setIsEmailNull(true);
@@ -78,14 +87,14 @@ const Login2 = () => {
         if (password === "") {
             setIsPasswordNull(true);
         }
-        if (email === "sakura@gmail.com" && password === "sakura" ) {
-            login({ email: email });
-            history.push("/order-list");
-        } else {
-            if (isEmailNull && isPasswordNull){
-                setError(true);
-            }
-        }
+        // if (email === "sakura@gmail.com" && password === "sakura" ) {
+        //     login({ email: email });
+        //     history.push("/order-list");
+        // } else {
+        //     if (isEmailNull && isPasswordNull){
+        //         setError(true);
+        //     }
+        // }
     }
 
     return (

@@ -2,6 +2,10 @@ import Login from "./pages/Login";
 import Register from "./pages/Register"
 import Antrian from "./pages/Antrian";
 import Menu from "./pages/Menu";
+import Restoran from "./pages/Restoran";
+import DataMeja from "./pages/DataMeja";
+import KategoriMenu from "./pages/KategoriMenu";
+import Riwayat from "./pages/Riwayat";
 import EditMenu from "./pages/EditMenu";
 
 export const APP_ROUTE = [
@@ -34,8 +38,36 @@ export const APP_ROUTE = [
         private: true,
     },
     {
+        name: "Restoran",
+        path: "/",
+        exact: true,
+        component: Restoran,
+        private: true,
+    },
+    {
+        name: "Data Meja",
+        path: "/data-meja",
+        exact: true,
+        component: DataMeja,
+        private: true,
+    },
+    {
+        name: "Kategori Menu",
+        path: "/kategori-menu",
+        exact: true,
+        component: KategoriMenu,
+        private: true,
+    },
+    {
+        name: "Riwayat",
+        path: "/riwayat",
+        exact: true,
+        component: Riwayat,
+        private: true,
+    },
+    {
         name: "Edit Menu",
-        path: "/edit-menu",
+        path: "/edit-menu/:menuId",
         exact: true,
         component: EditMenu,
         private: true,
