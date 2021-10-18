@@ -23,3 +23,6 @@
     - /list-menu
     - /login
     - /register
+
+# User Flow
+User login first, after that is directed to the queue list. User can also access the menu page, when user clicks on one of the menus, it will move to the details of that menu.
