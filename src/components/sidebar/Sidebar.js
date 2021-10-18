@@ -5,7 +5,6 @@ import {
     Drawer,
     IconButton,
     List,
-    ListItem,
     Avatar,
     Toolbar,
     Menu,
@@ -26,16 +25,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import { makeStyles, withStyles } from '@mui/styles';
 import { logout } from '../../utils/Auth';
 import { NavLink, useHistory } from "react-router-dom";
-import { styled } from '@mui/material/styles';
 
 const drawerWidth = 260;
-const customListItem = styled('ListItemButton')(() => ({
-    root: {
-        "&%selected": {
-            backgroundColor: "#FFC300"
-        }
-    }
-}))
 
 const Sidebar = (props) => {
     const { window } = props;
@@ -44,7 +35,6 @@ const Sidebar = (props) => {
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
-    console.log(props);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -69,7 +59,6 @@ const Sidebar = (props) => {
         history.replace("/login");
     };
     const classes = useStyles();
-    console.log();
 
     const CustomListItem = withStyles({
         root: {
@@ -98,7 +87,6 @@ const Sidebar = (props) => {
         },
         selected: {}
     })(ListItemButton);
-
     const drawer = (
         <div>
             <img src="/logo-horizontal.png" alt="" className={classes.image} />
@@ -111,7 +99,7 @@ const Sidebar = (props) => {
                 </CustomListItem>
                 </NavLink>
                 <NavLink to="/order-list">
-                <CustomListItem selected={navIndex == 1}>
+                <CustomListItem selected={navIndex === 1}>
                     <ListItemIcon><RoomService /></ListItemIcon>
                     <h4>Antrian</h4>
                 </CustomListItem>

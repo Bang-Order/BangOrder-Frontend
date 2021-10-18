@@ -6,6 +6,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import './listmenu.css';
 import MenuCard from '../MenuCard/MenuCard';
 import axios from 'axios';
+import { Link } from "react-router-dom";
+import { GET_RESTAURANT } from "../../utils/Urls";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -32,6 +34,9 @@ const useStyles = makeStyles((theme) => ({
     height: 39,
     width: 200,
   },
+  container: {
+    width: "25%",
+  }
 }));
 
 const ListMenu = () => {
@@ -41,10 +46,9 @@ const ListMenu = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState("");
-
-  //unavailable, available, recomendation
+  const restoId = localStorage.getItem("RestoId");
   useEffect(() => {
-    axios.get('http://localhost:8000/api/restaurants/2/menus?filter='+statusFilter)
+    axios.get(GET_RESTAURANT+ restoId + '/menus?filter=' + statusFilter)
       .then((res) => {
         setMenus(res.data.data);
         setLoading(false);
@@ -58,7 +62,6 @@ const ListMenu = () => {
   const handleStatusClick = (status) => {
     setStatusFilter(status)
     setAnchorEl(null);
-    console.log(statusFilter);
   }
 
   const handleClick = (event) => {
@@ -68,6 +71,7 @@ const ListMenu = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
     <div>
       <div className={classes.header}>
@@ -83,8 +87,8 @@ const ListMenu = () => {
           />
         </div>
         <div className={classes.right}>
-          <Button className='dropdown' onClick={handleClick}>
-            All Menu
+          <Button onClick={handleClick}>
+            {statusFilter ? statusFilter : "All Menu"}
             <ArrowDropDownIcon />
           </Button>
           <Menu
@@ -101,20 +105,22 @@ const ListMenu = () => {
             }}
           >
             <MenuItem onClick={() => handleStatusClick("")}>All Menu</MenuItem>
-            <MenuItem onClick={() => handleStatusClick("recommendation")}>Rekomendasi</MenuItem>
-            <MenuItem onClick={() => handleStatusClick("available")}>Tersedia</MenuItem>
-            <MenuItem onClick={() => handleStatusClick("unavailable")}>Habis</MenuItem>
+            <MenuItem onClick={() => handleStatusClick("recommendation")}>Recommendation</MenuItem>
+            <MenuItem onClick={() => handleStatusClick("available")}>Available</MenuItem>
+            <MenuItem onClick={() => handleStatusClick("unavailable")}>Unavailable</MenuItem>
           </Menu>
         </div>
       </div>
       <div className={classes.content}>
-            {loading ?
-              <p>loading..</p>
-              :
-              menus && menus.map(menu =>
-                <MenuCard key={menu.id} menu={menu} />
-              )
-            }
+        {loading ?
+          <p>loading..</p>
+          :
+          menus && menus.map(menu =>
+            <Link to={"/edit-menu/"+menu.id} className={classes.container}>
+              <MenuCard key={menu.id} menu={menu} />
+            </Link>
+          )
+        }
       </div>
     </div>
   )

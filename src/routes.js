@@ -6,6 +6,7 @@ import Restoran from "./pages/Restoran";
 import DataMeja from "./pages/DataMeja";
 import KategoriMenu from "./pages/KategoriMenu";
 import Riwayat from "./pages/Riwayat";
+import EditMenu from "./pages/EditMenu";
 
 export const APP_ROUTE = [
     {
@@ -62,6 +63,13 @@ export const APP_ROUTE = [
         path: "/riwayat",
         exact: true,
         component: Riwayat,
+        private: true,
+    },
+    {
+        name: "Edit Menu",
+        path: "/edit-menu/:menuId",
+        exact: true,
+        component: EditMenu,
         private: true,
     },
 ];

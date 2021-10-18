@@ -5,7 +5,7 @@ import { Card, CardActionArea } from '@mui/material';
 import { styled } from "@mui/system";
 
 const Container = styled('div')(() => ({
-    width: '25%'
+    // width: '25%'
 }))
 
 const MenuCard = (param) => {

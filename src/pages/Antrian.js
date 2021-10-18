@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { styled } from '@mui/material/styles';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import { GET_RESTAURANT } from '../utils/Urls';
 
 
 const Content = styled('div')(({ theme }) => ({
@@ -23,13 +24,15 @@ const Root = styled('div')(() => ({
     minHeight: '100vh',
 }))
 
+const restoId = localStorage.getItem("RestoId");
+
 const Antrian = (props) => {
     const [orders, setOrders] = useState(null);
     const [value, setValue] = React.useState("");
     const [error, setError] = useState(null);
     const [loading, setLoading] = React.useState(true);
     useEffect(() => {
-        axios.get('http://localhost:8000/api/restaurants/1/orders?status='+value)
+        axios.get(GET_RESTAURANT+restoId+'/orders?status='+value)
             .then((res) => {
                 setOrders(res.data.data);
                 setLoading(false);
