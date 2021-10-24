@@ -48,7 +48,6 @@ const Sidebar = (props) => {
             paddingTop: 20,
         },
         list: {
-            marginLeft: 20,
         }
     }));
     const handleDrawerToggle = () => {
@@ -66,16 +65,9 @@ const Sidebar = (props) => {
             "&$selected": {
                 backgroundColor: "#ffc300",
                 color: "white",
-                // "& .MuiListItemIcon-root": {
-                //     color: "white"
-                // }
             },
             "&$selected:hover": {
                 backgroundColor: "#FFD755",
-            //     color: "white",
-            //     "& .MuiListItemIcon-root": {
-            //         color: "white"
-            //     }
             },
             // "&:hover": {
             //     backgroundColor: "blue",
@@ -99,7 +91,7 @@ const Sidebar = (props) => {
                 </CustomListItem>
                 </NavLink>
                 <NavLink to="/order-list">
-                <CustomListItem selected={navIndex === 1}>
+                <CustomListItem selected={navIndex == 1}>
                     <ListItemIcon><RoomService /></ListItemIcon>
                     <h4>Antrian</h4>
                 </CustomListItem>

@@ -6,12 +6,13 @@ import Divider from '@mui/material/Divider';
 import './cardlist.css';
 import axios from 'axios';
 import { GET_RESTAURANT } from '../../utils/Urls';
+import PrimaryButton from '../button/PrimaryButton';
+import DropdownButton from '../button/DropdownButton';
 
 const useStyles = makeStyles(() => ({
 	root: {
 		display: 'flex',
 		marginTop: 20,
-		// marginBottom: 20,
 	},
 	details: {
 		width: '100%',
@@ -55,15 +56,6 @@ const useStyles = makeStyles(() => ({
 		margin: 0,
 		width: 90,
 	},
-	button: {
-		borderRadius: 7,
-		border: 0,
-		height: 60,
-		width: 586,
-		padding: '0 30px',
-		fontSize: '24px',
-		marginTop: '193px',
-	},
 	done: {
 		width: 146,
 		backgroundColor: '#FFC300',
@@ -88,7 +80,7 @@ const useStyles = makeStyles(() => ({
 	}
 }));
 
-const Cardlist = (param) => {
+const OrderCard = (param) => {
 	const classes = useStyles();
 	const order = param.order;
 	const orderItem = param.order.order_items;
@@ -112,7 +104,7 @@ const Cardlist = (param) => {
 				"payment_status": "success"
 			},{headers: { Authorization: 'Bearer '+localStorage.getItem("TOKEN")}});
 	}
-
+	console.log(status);
 	return (
 		<Card className={classes.root}>
 			<div className={classes.details}>
@@ -129,9 +121,8 @@ const Cardlist = (param) => {
 						<h4>
 							Status :
 						</h4>
-						<Button className='dropdown' onClick={handleClick}>
+						<Button width="150px" onClick={handleClick}>
 							{status}
-							<ArrowDropDownIcon />
 						</Button>
 						<Menu
 							id="simple-menu"
@@ -148,25 +139,17 @@ const Cardlist = (param) => {
 							<MenuItem onClick={() => handleStatus('antri')}>Antri</MenuItem>
 							<MenuItem onClick={() => handleStatus('dimasak')}>Dimasak</MenuItem>
 						</Menu>
-						<Button className='done' onClick={() => handleStatus('selesai')}>
-							Selesai
-						</Button>
+						<PrimaryButton width='150px' onClick={() => handleStatus('selesai')}>Selesai</PrimaryButton>
 					</div>
 				</CardContent>
 				{orderItem &&
 					orderItem.map(item =>
 						<div key={item.name} className={classes.content}>
 							<div className={classes.item}>
-								<h4 >
-									{item.quantity}x {item.name}
-								</h4>
-								<h4 >
-									{item.price}
-								</h4>
+								<h4>{item.quantity}x {item.name}</h4>
+								<h4>{item.price}</h4>
 							</div>
-							<h5 style={{ margin: 0 }}>
-								Catatan : {item.notes}
-							</h5>
+							<h5>Catatan : {item.notes}</h5>
 							<Divider />
 						</div>
 					)}
@@ -180,4 +163,4 @@ const Cardlist = (param) => {
 	);
 }
 
-export default Cardlist;
+export default OrderCard;

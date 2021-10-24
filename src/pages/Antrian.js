@@ -1,13 +1,12 @@
 import * as React from 'react';
 import Sidebar from '../components/sidebar/Sidebar';
-import Cardlist from '../components/cardlist/Cardlist';
+import OrderCard from '../components/ordercard/OrderCard';
 import axios from 'axios';
 import { useEffect, useState } from "react";
 import { styled } from '@mui/material/styles';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import { GET_RESTAURANT } from '../utils/Urls';
-
 
 const Content = styled('div')(({ theme }) => ({
     marginLeft: 280,
@@ -62,7 +61,7 @@ const Antrian = (props) => {
                     <p>loading...</p>
                     :
                     orders && orders.map(order =>
-                        <Cardlist key={order.id} order={order} />
+                        <OrderCard key={order.id} order={order} />
                     )
                 }
                 {error && <p>{error}</p>}

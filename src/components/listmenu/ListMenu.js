@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, InputAdornment, IconButton, TextField, Menu, MenuItem } from "@mui/material";
 import { makeStyles } from '@mui/styles';
+import Skeleton from '@mui/material/Skeleton';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import SearchIcon from '@mui/icons-material/Search';
 import './listmenu.css';
@@ -8,6 +9,8 @@ import MenuCard from '../MenuCard/MenuCard';
 import axios from 'axios';
 import { Link } from "react-router-dom";
 import { GET_RESTAURANT } from "../../utils/Urls";
+import useDidMountEffect from "../componentDidMount/useDidMountEffect";
+import { width } from "@mui/system";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -46,9 +49,12 @@ const ListMenu = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState("");
+  const [searchKey, setSearchKey] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const restoId = localStorage.getItem("RestoId");
   useEffect(() => {
-    axios.get(GET_RESTAURANT+ restoId + '/menus?filter=' + statusFilter)
+    setLoading(true);
+    axios.get(GET_RESTAURANT + restoId + '/menus?filter=' + statusFilter)
       .then((res) => {
         setMenus(res.data.data);
         setLoading(false);
@@ -58,6 +64,24 @@ const ListMenu = () => {
         setLoading(false);
       })
   }, [statusFilter])
+
+  useDidMountEffect(() => {
+    const searchMenu = () => {
+      setLoading(true);
+      axios.get(GET_RESTAURANT + restoId + '/menus?search=' + searchKey)
+        .then((res) => {
+          setMenus(res.data.data);
+          setLoading(false);
+        })
+    };
+    const timerId = setTimeout(() => {
+      searchMenu();
+    }, 1000);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [searchKey]);
 
   const handleStatusClick = (status) => {
     setStatusFilter(status)
@@ -76,7 +100,7 @@ const ListMenu = () => {
     <div>
       <div className={classes.header}>
         <div className={classes.left}>
-          <TextField className="search" size="small" type="text" placeholder="Cari Menu"
+          <TextField onChange={(e) => setSearchKey(e.target.value)} className="search" size="small" type="text" placeholder="Cari Menu"
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -112,17 +136,19 @@ const ListMenu = () => {
         </div>
       </div>
       <div className={classes.content}>
-        {loading ?
-          <p>loading..</p>
+        {loading ?        
+          <div className={classes.container}>
+            <Skeleton sx={{ width: "90%", height: 300 }} animation="wave" variant="rectangular" />
+          </div>
           :
           menus && menus.map(menu =>
-            <Link to={"/edit-menu/"+menu.id} className={classes.container}>
+            <Link to={"/edit-menu/" + menu.id} className={classes.container}>
               <MenuCard key={menu.id} menu={menu} />
             </Link>
           )
         }
       </div>
-    </div>
+    </div >
   )
 
 

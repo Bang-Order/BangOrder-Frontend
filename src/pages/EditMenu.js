@@ -13,6 +13,8 @@ import axios from 'axios';
 import { useHistory } from "react-router-dom";
 import { GET_RESTAURANT } from "../utils/Urls";
 import { Menu, MenuItem } from "@mui/material";
+import PrimaryButton from "../components/button/PrimaryButton";
+import SecondaryButton from "../components/button/SecondaryButton";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -28,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%"
   },
   image: {
-    width: "80%",
+    width: "100%",
     height: 'auto',
   },
   left: {
@@ -39,10 +41,15 @@ const useStyles = makeStyles((theme) => ({
   right: {
     width: '40%',
     marginRight: 20,
+    textAlign: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   },
   navButton: {
     display: "flex",
     justifyContent: "space-between",
+    width: '80%'
   }
 }));
 
@@ -57,30 +64,6 @@ const Frame = styled('div')(({ theme }) => ({
     marginLeft: 20,
   },
 }));
-
-const BootstrapButton = styled(Button)({
-  backgroundColor: "#FFC300",
-  borderRadius: 7,
-  border: 0,
-  width: '80%',
-  marginTop: 50,
-  marginBottom: 40,
-  fontSize: '18px',
-  textTransform: "unset",
-  fontWeight: "bolder",
-  color: "#000",
-})
-const ControlButton = styled(Button)({
-  backgroundColor: "white",
-  borderRadius: 7,
-  border: 1,
-  borderStyle: "solid",
-  width: '30%',
-  marginTop: 30,
-  textTransform: "unset",
-  fontWeight: "bolder",
-  color: "#000",
-})
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   'label + &': {
@@ -115,46 +98,43 @@ const EditMenu = (props) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [menu, setMenu] = useState();
-  const [name, setName] = useState();
-  const [price, setPrice] = useState();
-  const [description, setDescription] = useState();
-  const [status, setStatus] = useState();
-  const [category, setCategory] = useState();
-  const [recommendation, setRecommendation] = useState();
   const [allCategory, setAllCategory] = useState();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [isRecommended, setIsRecommended] = useState();
+  const [isReset, setIsReset] = useState(false);
   const restoId = localStorage.getItem("RestoId");
   const history = useHistory();
   useEffect(() => {
     axios.get(GET_RESTAURANT + restoId + '/menus/' + menuId)
       .then((res) => {
         setMenu(res.data);
-        setName(res.data.name);
-        setCategory(res.data.menu_category);
-        setPrice(res.data.price);
+        setIsRecommended(res.data.is_recommended);
         setLoading(false);
+        console.log(menu);
       })
       .catch(err => {
         setError(err.message);
         setLoading(false);
       })
-  }, [menuId, restoId])
+  }, [menuId, restoId, isReset])
 
   useEffect(() => {
     axios.get(GET_RESTAURANT + restoId + '/menu-categories')
       .then((res) => {
         setAllCategory(res.data.data);
       })
-  },[])
+  }, [restoId])
 
   const handleSaveButton = () => {
-    axios.put(GET_RESTAURANT + restoId + '/menus/' + menuId, {
-      name: name,
-      price: price,
-      description: description,
-      status: status
-    }, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
+    axios.put(GET_RESTAURANT + restoId + '/menus/' + menuId, menu, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
       .then(history.push("/list-menu"));
+  }
+  const handleReset = () => {
+    setIsReset(!isReset);
+  }
+  const handleDelete = () => {
+    axios.delete(GET_RESTAURANT + restoId + '/menus/' + menuId, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
+    .then(history.push("/list-menu"));
   }
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -163,6 +143,51 @@ const EditMenu = (props) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleNameChange = (name) => {
+    setMenu(prevState => ({
+      ...prevState,
+      name: name
+    }));
+  }
+
+  const handlePriceChange = (price) => {
+    setMenu(prevState => ({
+      ...prevState,
+      price: price
+    }));
+  }
+
+  const handleDescChange = (desc) => {
+    setMenu(prevState => ({
+      ...prevState,
+      description: desc
+    }));
+  }
+
+  const handleStatusChange = (status) => {
+    setMenu(prevState => ({
+      ...prevState,
+      is_available: status
+    }));
+  }
+
+  const handleCategoryChange = (id, name) => {
+    setMenu(prevState => ({
+      ...prevState,
+      menu_category_id: id,
+      menu_category: name
+    }));
+    setAnchorEl(null);
+  }
+
+  const handleRecommendationChange = (value) => {
+    setIsRecommended(value);
+    setMenu(prevState => ({
+      ... prevState,
+      is_recommended: value,
+    }));
+  }
 
   return (
     <Root>
@@ -179,8 +204,8 @@ const EditMenu = (props) => {
                         Nama Menu
                       </InputLabel>
                       <BootstrapInput
-                        onChange={(e) => setName(e.target.value)}
-                        defaultValue={menu.name}
+                        onChange={(e) => handleNameChange(e.target.value)}
+                        value={menu.name}
                         placeholder="Nama menu"
                         id="bootstrap-input"
                       />
@@ -192,8 +217,8 @@ const EditMenu = (props) => {
                         Harga Menu
                       </InputLabel>
                       <BootstrapInput
-                        onChange={(e) => setPrice(e.target.value)}
-                        defaultValue={menu.price}
+                        onChange={(e) => handlePriceChange(e.target.value)}
+                        value={menu.price}
                         placeholder="Harga menu"
                         id="bootstrap-input"
                       />
@@ -204,8 +229,8 @@ const EditMenu = (props) => {
                       <InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
                         Kategori Menu
                       </InputLabel>
-                      <Button style={{width:250, marginTop:30}} className='dropdown' onClick={handleClick}>
-                        {category}
+                      <Button style={{ width: 250, marginTop: 30 }} className='dropdown' onClick={handleClick}>
+                        {menu.menu_category}
                         <ArrowDropDownIcon />
                       </Button>
                       <Menu
@@ -222,7 +247,7 @@ const EditMenu = (props) => {
                         }}
                       >
                         {allCategory && allCategory.map(category =>
-                          <MenuItem >{category.name}</MenuItem>
+                          <MenuItem key={category.id} onClick={() => handleCategoryChange(category.id, category.name)} >{category.name}</MenuItem>
                         )}
                       </Menu>
                     </FormControl>
@@ -233,7 +258,7 @@ const EditMenu = (props) => {
                         Deskripsi Menu
                       </InputLabel>
                       <BootstrapArea
-                        onChange={(e) => setDescription(e.target.value)}
+                        onChange={(e) => handleDescChange(e.target.value)}
                         defaultValue={menu.description}
                         placeholder="Deskripsi Menu"
                         id="bootstrap-input"
@@ -244,7 +269,7 @@ const EditMenu = (props) => {
                   </div>
                   <div className={classes.item}>
                     <h4>Status Makanan</h4>
-                    <RadioGroup onChange={(e) => setStatus(e.target.value)} defaultValue={menu.is_available}>
+                    <RadioGroup onChange={(e) => handleStatusChange(e.target.value)} value={menu.is_available}>
                       <FormControlLabel value="1" control={<Radio size="small" style={{ color: '#FFC300' }} />} label="Tersedia" />
                       <FormControlLabel value="0" control={<Radio size="small" style={{ color: '#FFC300' }} />} label="Habis" />
                     </RadioGroup>
@@ -253,7 +278,9 @@ const EditMenu = (props) => {
                     <FormControlLabel
                       value="start"
                       sx={{ ml: 0 }}
-                      control={<Checkbox defaultChecked={menu.is_recommended === 1} style={{ color: "#ffc300" }} />}
+                      onClick={handleRecommendationChange}
+                      onClick={() => handleRecommendationChange(isRecommended===1 ? 0 : 1)}
+                      control={<Checkbox checked={isRecommended===1} style={{ color: "#ffc300" }} />}
                       label={<h4>Rekomendasi</h4>}
                       labelPlacement="start"
                     />
@@ -262,12 +289,12 @@ const EditMenu = (props) => {
                 <div className={classes.right}>
                   <div>
                     <img className={classes.image} src={menu.image} alt="" variant="outlined" />
-                    <BootstrapButton>Upload</BootstrapButton>
+                    <PrimaryButton width="100%">Upload</PrimaryButton>
                   </div>
                   <div className={classes.navButton}>
-                    <ControlButton>Reset</ControlButton>
-                    <ControlButton>Hapus</ControlButton>
-                    <ControlButton onClick={handleSaveButton}>Simpan</ControlButton>
+                    <SecondaryButton width="100px" onClick={handleReset}>Reset</SecondaryButton>
+                    <SecondaryButton width="100px" onClick={handleDelete}>Hapus</SecondaryButton>
+                    <PrimaryButton width="100px" onClick={handleSaveButton}>Simpan</PrimaryButton>
                   </div>
                 </div>
               </div>

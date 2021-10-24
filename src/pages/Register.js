@@ -5,7 +5,6 @@ import TextField from '@mui/material/TextField';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { styled } from '@mui/material/styles';
 import {
-    Button,
     InputAdornment,
     IconButton,
     OutlinedInput,
@@ -13,6 +12,7 @@ import {
     FormControl
 } from '@mui/material';
 import { Link, useHistory } from "react-router-dom";
+import PrimaryButton from '../components/button/PrimaryButton'
 
 const useStyle = makeStyles({
     root: {
@@ -36,19 +36,6 @@ const StyledLink = styled(Link)({
     textDecoration: 'none',
     color: '#989999',
     fontWeight: 'bold',
-})
-
-const BootstrapButton = styled(Button)({
-    backgroundColor: "#FFC300",
-    borderRadius: 7,
-    border: 0,
-    width: '100%',
-    marginTop: 50,
-    marginBottom: 40,
-    fontSize: '18px',
-    textTransform: "unset",
-    fontWeight: "bolder",
-    color: "#000",
 })
 
 const Register2 = () => {
@@ -151,7 +138,7 @@ const Register2 = () => {
                     />
                 </FormControl>
                 <div>
-                    <BootstrapButton onClick={_onSubmit}>Daftar</BootstrapButton>
+                    <PrimaryButton onClick={_onSubmit} width="100%">Daftar</PrimaryButton>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                     <p >Sudah punya akun?</p>

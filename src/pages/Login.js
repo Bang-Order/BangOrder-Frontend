@@ -2,23 +2,22 @@ import * as React from 'react';
 import { makeStyles } from '@mui/styles';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { styled } from '@mui/material/styles';
-import { 
-    Button, 
-    Alert, 
-    FormControl, 
-    InputLabel, 
-    OutlinedInput, 
-    FormControlLabel, 
-    Checkbox, 
-    IconButton, 
-    InputAdornment, 
-    TextField, 
+import {
+    Alert,
+    FormControl,
+    InputLabel,
+    OutlinedInput,
+    FormControlLabel,
+    Checkbox,
+    IconButton,
+    InputAdornment,
+    TextField,
     Container,
 } from '@mui/material';
 import { login } from "../utils/Auth";
 import { Link, useHistory } from "react-router-dom";
 import axios from 'axios';
-
+import PrimaryButton from '../components/button/PrimaryButton';
 
 const useStyle = makeStyles({
     root: {
@@ -46,19 +45,6 @@ const StyledLink = styled(Link)({
     fontWeight: 'bold',
 })
 
-const BootstrapButton = styled(Button)({
-    backgroundColor: "#FFC300",
-    borderRadius: 7,
-    border: 0,
-    width: '100%',
-    marginTop: 50,
-    marginBottom: 40,
-    fontSize: '18px',
-    textTransform: "unset",
-    fontWeight: "bolder",
-    color: "#000",
-})
-
 const Login2 = () => {
     const [password, setPassword] = React.useState("");
     const [error, setError] = React.useState(false);
@@ -68,33 +54,29 @@ const Login2 = () => {
     const [isPasswordNull, setIsPasswordNull] = React.useState(false);
     const history = useHistory();
     const classes = useStyle();
+    const [Loading, setLoading] = React.useState(false);
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
     };
 
     const _onSubmit = () => {
-        axios.post('http://localhost:8000/api/auth/login',{
-            email: email,
-            password: password
-        }).then((res)=>{
-            login(res.data.data);
-            history.push("/order-list");
-        })
-        setError(false);
         if (email === "") {
             setIsEmailNull(true);
-        }
-        if (password === "") {
+        } else if (password === "") {
             setIsPasswordNull(true);
+        } else {
+            setLoading(true);
+            axios.post('http://localhost:8000/api/auth/login', {
+                email: email,
+                password: password
+            }).then((res) => {
+                login(res.data.data);
+                history.push("/order-list");
+            }).catch((err) => {
+                setError(err);
+                setLoading(false);
+            })
         }
-        // if (email === "sakura@gmail.com" && password === "sakura" ) {
-        //     login({ email: email });
-        //     history.push("/order-list");
-        // } else {
-        //     if (isEmailNull && isPasswordNull){
-        //         setError(true);
-        //     }
-        // }
     }
 
     return (
@@ -102,7 +84,7 @@ const Login2 = () => {
             <Container fixed >
                 <img className={classes.image} src="/logo-horizontal.png" alt="" />
                 <h5>Contactless Food Ordering with QR Code</h5>
-                {error && <Alert severity="error">Email atau password salah!</Alert>}
+                {error && <Alert sx={{ marginTop: "30px" }} severity="error">Email atau password salah!</Alert>}
                 <TextField
                     label="Email"
                     id="outlined-size-small"
@@ -117,7 +99,7 @@ const Login2 = () => {
                     variant="outlined" margin="normal"
                     error={isPasswordNull ? true : false}
                     required={isPasswordNull ? true : false}
-                    
+
                 >
                     <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                     <OutlinedInput
@@ -143,7 +125,7 @@ const Login2 = () => {
                     <FormControlLabel control={<Checkbox />} label="Ingat Saya" />
                 </div>
                 <div>
-                    <BootstrapButton onClick={_onSubmit}>Masuk</BootstrapButton>
+                    <PrimaryButton onClick={_onSubmit} loading={Loading} width='100%'>Masuk</PrimaryButton>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                     <p >Belum punya akun?</p>
