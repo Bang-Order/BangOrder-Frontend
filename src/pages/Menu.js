@@ -17,7 +17,8 @@ const Content = styled('div')(({ theme }) => ({
 
 const Root = styled('div')(() => ({
   backgroundColor: '#f1f1f1',
-  height: '100vh',
+  minHeight: '100vh',
+  paddingBottom: 20
 }))
 
 const Menu = () => {

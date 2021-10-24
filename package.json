@@ -8,6 +8,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/system": "^4.12.1",
     "@mui/icons-material": "^5.0.1",
+    "@mui/lab": "^5.0.0-alpha.51",
     "@mui/material": "^5.0.2",
     "@mui/styles": "^5.0.0",
     "@react-icons/all-files": "^4.1.0",
