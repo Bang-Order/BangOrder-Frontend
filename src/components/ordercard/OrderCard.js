@@ -7,7 +7,6 @@ import './cardlist.css';
 import axios from 'axios';
 import { GET_RESTAURANT } from '../../utils/Urls';
 import PrimaryButton from '../button/PrimaryButton';
-import DropdownButton from '../button/DropdownButton';
 
 const useStyles = makeStyles(() => ({
 	root: {

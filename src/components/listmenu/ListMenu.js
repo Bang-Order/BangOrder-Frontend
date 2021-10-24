@@ -10,7 +10,6 @@ import axios from 'axios';
 import { Link } from "react-router-dom";
 import { GET_RESTAURANT } from "../../utils/Urls";
 import useDidMountEffect from "../componentDidMount/useDidMountEffect";
-import { width } from "@mui/system";
 
 const useStyles = makeStyles((theme) => ({
   content: {

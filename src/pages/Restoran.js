@@ -4,11 +4,7 @@ import Sidebar from "../components/sidebar/Sidebar";
 
 const Restoran = () => {
     return (
-        <div>
-
-        {/* <Sidebar index="0" name="Restoran"/> */}
-        <MenuCardLoading />
-        </div>
+        <Sidebar index="0" name="Restoran"/>
     );
 }
 
