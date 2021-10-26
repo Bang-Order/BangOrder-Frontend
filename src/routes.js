@@ -7,6 +7,7 @@ import DataMeja from "./pages/DataMeja";
 import KategoriMenu from "./pages/KategoriMenu";
 import Riwayat from "./pages/Riwayat";
 import EditMenu from "./pages/EditMenu";
+import TambahMenu from "./pages/TambahMenu";
 
 export const APP_ROUTE = [
     {
@@ -70,6 +71,13 @@ export const APP_ROUTE = [
         path: "/edit-menu/:menuId",
         exact: true,
         component: EditMenu,
+        private: true,
+    },
+    {
+        name: "Tambah Menu",
+        path: "/tambah-menu",
+        exact: true,
+        component: TambahMenu,
         private: true,
     },
 ];

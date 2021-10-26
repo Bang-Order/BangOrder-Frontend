@@ -10,6 +10,7 @@ import axios from 'axios';
 import { Link } from "react-router-dom";
 import { GET_RESTAURANT } from "../../utils/Urls";
 import useDidMountEffect from "../componentDidMount/useDidMountEffect";
+import PrimaryButton from "../button/PrimaryButton";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -32,9 +33,10 @@ const useStyles = makeStyles((theme) => ({
     float: 'left',
   },
   right: {
+    display: 'flex',
     justifyContent: 'space-between',
     height: 39,
-    width: 200,
+    width: "30%",
   },
   container: {
     width: "25%",
@@ -110,7 +112,10 @@ const ListMenu = () => {
           />
         </div>
         <div className={classes.right}>
-          <Button onClick={handleClick}>
+          <Link to={"/tambah-menu"}>
+            <PrimaryButton>Tambah Menu</PrimaryButton>
+          </Link>
+          <Button onClick={handleClick} className="dropdown">
             {statusFilter ? statusFilter : "All Menu"}
             <ArrowDropDownIcon />
           </Button>
@@ -135,7 +140,7 @@ const ListMenu = () => {
         </div>
       </div>
       <div className={classes.content}>
-        {loading ?        
+        {loading ?
           <div className={classes.container}>
             <Skeleton sx={{ width: "90%", height: 300 }} animation="wave" variant="rectangular" />
           </div>

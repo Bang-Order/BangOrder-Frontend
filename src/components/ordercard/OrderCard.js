@@ -120,7 +120,7 @@ const OrderCard = (param) => {
 						<h4>
 							Status :
 						</h4>
-						<Button width="150px" onClick={handleClick}>
+						<Button width="150px" onClick={handleClick} className="dropdown">
 							{status}
 						</Button>
 						<Menu
