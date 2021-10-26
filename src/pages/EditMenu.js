@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Sidebar from '../components/sidebar/Sidebar';
 import { makeStyles } from '@mui/styles';
 import { styled } from "@mui/system";
-import { InputLabel, TextareaAutosize, Button, Radio } from "@mui/material";
+import { InputLabel, Button, Radio } from "@mui/material";
 import FormControl from '@mui/material/FormControl';
 import InputBase from '@mui/material/InputBase';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -16,7 +16,7 @@ import { Menu, MenuItem } from "@mui/material";
 import PrimaryButton from "../components/button/PrimaryButton";
 import SecondaryButton from "../components/button/SecondaryButton";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   content: {
     display: 'flex',
     flexDirection: 'row',
@@ -279,7 +279,6 @@ const EditMenu = (props) => {
                     <FormControlLabel
                       value="start"
                       sx={{ ml: 0 }}
-                      onClick={handleRecommendationChange}
                       onClick={() => handleRecommendationChange(isRecommended === 1 ? 0 : 1)}
                       control={<Checkbox checked={isRecommended === 1} style={{ color: "#ffc300" }} />}
                       label={<h4>Rekomendasi</h4>}

@@ -33,9 +33,10 @@ const useStyles = makeStyles((theme) => ({
     float: 'left',
   },
   right: {
+    display: 'flex',
     justifyContent: 'space-between',
     height: 39,
-    width: 200,
+    width: "30%",
   },
   container: {
     width: "25%",
@@ -110,11 +111,11 @@ const ListMenu = () => {
             }}
           />
         </div>
-        <Link to={"/tambah-menu"}>
-          <PrimaryButton>Tambah Menu</PrimaryButton>
-        </Link>
         <div className={classes.right}>
-          <Button onClick={handleClick}>
+          <Link to={"/tambah-menu"}>
+            <PrimaryButton>Tambah Menu</PrimaryButton>
+          </Link>
+          <Button onClick={handleClick} className="dropdown">
             {statusFilter ? statusFilter : "All Menu"}
             <ArrowDropDownIcon />
           </Button>

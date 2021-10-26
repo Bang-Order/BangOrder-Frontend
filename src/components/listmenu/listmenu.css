@@ -2,3 +2,13 @@
   width: 100%;
   border-radius: 7px;
 }
+.MuiButton-root.dropdown {
+  width: 170px;
+  height: 43px;
+  border-style: solid;
+  border-width: 1px;
+  margin-right: 10px;
+  z-index: 2;
+  color: black;
+  text-transform:capitalize;
+}

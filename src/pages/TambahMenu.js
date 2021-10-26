@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Sidebar from '../components/sidebar/Sidebar';
 import { makeStyles } from '@mui/styles';
 import { styled } from "@mui/system";
-import { InputLabel, TextareaAutosize, Button, Radio } from "@mui/material";
+import { InputLabel, Button, Radio } from "@mui/material";
 import FormControl from '@mui/material/FormControl';
 import InputBase from '@mui/material/InputBase';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -14,7 +14,6 @@ import { useHistory } from "react-router-dom";
 import { GET_RESTAURANT } from "../utils/Urls";
 import { Menu, MenuItem } from "@mui/material";
 import PrimaryButton from "../components/button/PrimaryButton";
-import SecondaryButton from "../components/button/SecondaryButton";
 
 const useStyles = makeStyles((theme) => ({
 	content: {
@@ -32,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 	image: {
 		width: "100%",
 		height: 'auto',
+		marginTop: 20
 	},
 	left: {
 		display: 'flex',
@@ -96,8 +96,6 @@ const Root = styled('div')(() => ({
 
 const TambahMenu = () => {
 	const classes = useStyles();
-	const [error, setError] = useState(null);
-	const [loading, setLoading] = useState(true);
 	const [menu, setMenu] = useState();
 	const [image, setImage] = useState();
 	const [allCategory, setAllCategory] = useState();
@@ -261,7 +259,6 @@ const TambahMenu = () => {
 									<FormControlLabel
 										value="start"
 										sx={{ ml: 0 }}
-										onClick={handleRecommendationChange}
 										onClick={() => handleRecommendationChange(isRecommended === 1 ? 0 : 1)}
 										control={<Checkbox checked={isRecommended === 1} style={{ color: "#ffc300" }} />}
 										label={<h4>Rekomendasi</h4>}
@@ -271,7 +268,7 @@ const TambahMenu = () => {
 							</div>
 							<div className={classes.right}>
 								<div>
-									<img className={classes.image} src={image} alt="" variant="outlined" />
+									<img className={classes.image} src={image ? image : 'thumbnail.svg'} alt="" variant="outlined" />
 									<label htmlFor="contained-button-file">
 										<Input onChange={handleImageChange} accept="image/*" id="contained-button-file" multiple type="file" />
 										<PrimaryButton width="100%" component="span">
