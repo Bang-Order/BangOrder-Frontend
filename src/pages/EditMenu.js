@@ -44,14 +44,20 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: "space-between"
   },
   navButton: {
     display: "flex",
     justifyContent: "space-between",
-    width: '80%'
+    width: '80%',
+    marginTop: 20
   }
 }));
+
+const Input = styled('input')({
+  display: 'none',
+});
 
 const Frame = styled('div')(({ theme }) => ({
   backgroundColor: "#ffffff",
@@ -78,12 +84,6 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
     fontSize: 14,
     width: '300px',
     padding: '10px 12px',
-  },
-}));
-
-const BootstrapArea = styled(TextareaAutosize)(({ theme }) => ({
-  'label + &': {
-    marginTop: theme.spacing(4),
   },
 }));
 
@@ -134,7 +134,7 @@ const EditMenu = (props) => {
   }
   const handleDelete = () => {
     axios.delete(GET_RESTAURANT + restoId + '/menus/' + menuId, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
-    .then(history.push("/list-menu"));
+      .then(history.push("/list-menu"));
   }
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -184,7 +184,7 @@ const EditMenu = (props) => {
   const handleRecommendationChange = (value) => {
     setIsRecommended(value);
     setMenu(prevState => ({
-      ... prevState,
+      ...prevState,
       is_recommended: value,
     }));
   }
@@ -257,11 +257,12 @@ const EditMenu = (props) => {
                       <InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
                         Deskripsi Menu
                       </InputLabel>
-                      <BootstrapArea
+                      <BootstrapInput
                         onChange={(e) => handleDescChange(e.target.value)}
                         defaultValue={menu.description}
                         placeholder="Deskripsi Menu"
                         id="bootstrap-input"
+                        multiline
                         minRows={3}
                         style={{ width: '330px' }}
                       />
@@ -279,8 +280,8 @@ const EditMenu = (props) => {
                       value="start"
                       sx={{ ml: 0 }}
                       onClick={handleRecommendationChange}
-                      onClick={() => handleRecommendationChange(isRecommended===1 ? 0 : 1)}
-                      control={<Checkbox checked={isRecommended===1} style={{ color: "#ffc300" }} />}
+                      onClick={() => handleRecommendationChange(isRecommended === 1 ? 0 : 1)}
+                      control={<Checkbox checked={isRecommended === 1} style={{ color: "#ffc300" }} />}
                       label={<h4>Rekomendasi</h4>}
                       labelPlacement="start"
                     />
@@ -289,7 +290,12 @@ const EditMenu = (props) => {
                 <div className={classes.right}>
                   <div>
                     <img className={classes.image} src={menu.image} alt="" variant="outlined" />
-                    <PrimaryButton width="100%">Upload</PrimaryButton>
+                    <label htmlFor="contained-button-file">
+                      <Input accept="image/*" id="contained-button-file" multiple type="file" />
+                      <PrimaryButton width="100%" component="span">
+                        Upload
+                      </PrimaryButton>
+                    </label>
                   </div>
                   <div className={classes.navButton}>
                     <SecondaryButton width="100px" onClick={handleReset}>Reset</SecondaryButton>
