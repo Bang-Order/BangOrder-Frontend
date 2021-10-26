@@ -176,7 +176,7 @@ const TambahMenu = () => {
 	return (
 		<Root>
 			<div>
-				<Sidebar index="4" name="Edit Menu" />
+				<Sidebar index="4" name="Tambah Menu" />
 				<div>
 					<Frame>
 						<div className={classes.content}>
@@ -212,6 +212,7 @@ const TambahMenu = () => {
 											Kategori Menu
 										</InputLabel>
 										<Button style={{ width: 250, marginTop: 30 }} className='dropdown' onClick={handleClick}>
+										{menu && menu.menu_category ? menu.menu_category : "--pilih kategori menu--"}
 											<ArrowDropDownIcon />
 										</Button>
 										<Menu
