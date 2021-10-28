@@ -51,7 +51,6 @@ const ListMenu = () => {
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState("");
   const [searchKey, setSearchKey] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
   const restoId = localStorage.getItem("RestoId");
   useEffect(() => {
     setLoading(true);
