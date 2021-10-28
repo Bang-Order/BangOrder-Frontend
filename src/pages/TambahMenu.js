@@ -124,31 +124,11 @@ const TambahMenu = () => {
 		setAnchorEl(null);
 	};
 
-	const handleNameChange = (name) => {
+	const handleChange = (evt) => {
+		const value = evt.target.value;
 		setMenu(prevState => ({
 			...prevState,
-			name: name
-		}));
-	}
-
-	const handlePriceChange = (price) => {
-		setMenu(prevState => ({
-			...prevState,
-			price: price
-		}));
-	}
-
-	const handleDescChange = (desc) => {
-		setMenu(prevState => ({
-			...prevState,
-			description: desc
-		}));
-	}
-
-	const handleStatusChange = (status) => {
-		setMenu(prevState => ({
-			...prevState,
-			is_available: status
+			[evt.target.name]: value
 		}));
 	}
 
@@ -187,10 +167,10 @@ const TambahMenu = () => {
 											Nama Menu
 										</InputLabel>
 										<BootstrapInput
-											onChange={(e) => handleNameChange(e.target.value)}
+											onChange={handleChange}
 											placeholder="Nama menu"
 											id="bootstrap-input"
-											
+											name="name"
 										/>
 									</FormControl>
 								</div>
@@ -200,9 +180,10 @@ const TambahMenu = () => {
 											Harga Menu
 										</InputLabel>
 										<BootstrapInput
-											onChange={(e) => handlePriceChange(e.target.value)}
+											onChange={handleChange}
 											placeholder="Harga menu"
 											id="bootstrap-input"
+											name="price"
 										/>
 									</FormControl>
 								</div>
@@ -212,7 +193,7 @@ const TambahMenu = () => {
 											Kategori Menu
 										</InputLabel>
 										<Button style={{ width: 250, marginTop: 30 }} className='dropdown' onClick={handleClick}>
-										{menu && menu.menu_category ? menu.menu_category : "--pilih kategori menu--"}
+											{menu && menu.menu_category ? menu.menu_category : "--pilih kategori menu--"}
 											<ArrowDropDownIcon />
 										</Button>
 										<Menu
@@ -240,18 +221,19 @@ const TambahMenu = () => {
 											Deskripsi Menu
 										</InputLabel>
 										<BootstrapInput
-											onChange={(e) => handleDescChange(e.target.value)}
+											onChange={handleChange}
 											placeholder="Deskripsi Menu"
 											id="bootstrap-input"
 											multiline
 											minRows={3}
 											style={{ width: '330px' }}
+											name="description"
 										/>
 									</FormControl>
 								</div>
 								<div className={classes.item}>
 									<h4>Status Makanan</h4>
-									<RadioGroup onChange={(e) => handleStatusChange(e.target.value)}>
+									<RadioGroup onChange={handleChange} name="is_available">
 										<FormControlLabel value="1" control={<Radio size="small" style={{ color: '#FFC300' }} />} label="Tersedia" />
 										<FormControlLabel value="0" control={<Radio size="small" style={{ color: '#FFC300' }} />} label="Habis" />
 									</RadioGroup>

@@ -110,7 +110,6 @@ const EditMenu = (props) => {
         setMenu(res.data);
         setIsRecommended(res.data.is_recommended);
         setLoading(false);
-        console.log(menu);
       })
       .catch(err => {
         setError(err.message);
@@ -144,31 +143,11 @@ const EditMenu = (props) => {
     setAnchorEl(null);
   };
 
-  const handleNameChange = (name) => {
+  const handleChange = (evt) => {
+    const value = evt.target.value;
     setMenu(prevState => ({
       ...prevState,
-      name: name
-    }));
-  }
-
-  const handlePriceChange = (price) => {
-    setMenu(prevState => ({
-      ...prevState,
-      price: price
-    }));
-  }
-
-  const handleDescChange = (desc) => {
-    setMenu(prevState => ({
-      ...prevState,
-      description: desc
-    }));
-  }
-
-  const handleStatusChange = (status) => {
-    setMenu(prevState => ({
-      ...prevState,
-      is_available: status
+      [evt.target.name]: value
     }));
   }
 
@@ -204,10 +183,11 @@ const EditMenu = (props) => {
                         Nama Menu
                       </InputLabel>
                       <BootstrapInput
-                        onChange={(e) => handleNameChange(e.target.value)}
+                        onChange={handleChange}
                         value={menu.name}
                         placeholder="Nama menu"
                         id="bootstrap-input"
+                        name="name"
                       />
                     </FormControl>
                   </div>
@@ -217,10 +197,11 @@ const EditMenu = (props) => {
                         Harga Menu
                       </InputLabel>
                       <BootstrapInput
-                        onChange={(e) => handlePriceChange(e.target.value)}
+                        onChange={handleChange}
                         value={menu.price}
                         placeholder="Harga menu"
                         id="bootstrap-input"
+                        name="price"
                       />
                     </FormControl>
                   </div>
@@ -258,19 +239,20 @@ const EditMenu = (props) => {
                         Deskripsi Menu
                       </InputLabel>
                       <BootstrapInput
-                        onChange={(e) => handleDescChange(e.target.value)}
+                        onChange={handleChange}
                         defaultValue={menu.description}
                         placeholder="Deskripsi Menu"
                         id="bootstrap-input"
                         multiline
                         minRows={3}
                         style={{ width: '330px' }}
+                        name="description"
                       />
                     </FormControl>
                   </div>
                   <div className={classes.item}>
                     <h4>Status Makanan</h4>
-                    <RadioGroup onChange={(e) => handleStatusChange(e.target.value)} value={menu.is_available}>
+                    <RadioGroup onChange={handleChange} value={menu.is_available} name="is_available">
                       <FormControlLabel value="1" control={<Radio size="small" style={{ color: '#FFC300' }} />} label="Tersedia" />
                       <FormControlLabel value="0" control={<Radio size="small" style={{ color: '#FFC300' }} />} label="Habis" />
                     </RadioGroup>
@@ -283,6 +265,7 @@ const EditMenu = (props) => {
                       control={<Checkbox checked={isRecommended === 1} style={{ color: "#ffc300" }} />}
                       label={<h4>Rekomendasi</h4>}
                       labelPlacement="start"
+                      name="is_recommended"
                     />
                   </div>
                 </div>
