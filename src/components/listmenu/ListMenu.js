@@ -46,23 +46,27 @@ const useStyles = makeStyles((theme) => ({
 const ListMenu = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [menus, setMenus] = useState(null);
+  const [filteredMenus, setFilteredMenus] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState("");
   const [searchKey, setSearchKey] = useState("");
+  const [menus, setMenus] = useState();
   const restoId = localStorage.getItem("RestoId");
+
   useEffect(() => {
-    setLoading(true);
-    axios.get(GET_RESTAURANT + restoId + '/menus?filter=' + statusFilter)
-      .then((res) => {
-        setMenus(res.data.data);
-        setLoading(false);
-      })
-      .catch(err => {
-        setError(err.message);
-        setLoading(false);
-      })
+    setTimeout(() => {
+      axios.get(GET_RESTAURANT + restoId + '/menus?filter=' + statusFilter)
+        .then((res) => {
+          setMenus(res.data.data);
+          setLoading(false)
+          console.log(menus);
+        })
+        .catch(err => {
+          setError(err.message);
+          setLoading(false)
+        })
+    }, 1000);
   }, [statusFilter])
 
   useDidMountEffect(() => {
@@ -86,6 +90,14 @@ const ListMenu = () => {
   const handleStatusClick = (status) => {
     setStatusFilter(status)
     setAnchorEl(null);
+    axios.get(GET_RESTAURANT + restoId + '/menus?filter=' + statusFilter)
+      .then((res) => {
+        setMenus(res.data.data);
+        console.log(menus);
+      })
+      .catch(err => {
+        setError(err.message);
+      })
   }
 
   const handleClick = (event) => {
@@ -139,6 +151,7 @@ const ListMenu = () => {
         </div>
       </div>
       <div className={classes.content}>
+
         {loading ?
           <div className={classes.container}>
             <Skeleton sx={{ width: "90%", height: 300 }} animation="wave" variant="rectangular" />

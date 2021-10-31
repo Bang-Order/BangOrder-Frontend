@@ -126,7 +126,7 @@ const EditMenu = (props) => {
 
   const handleSaveButton = () => {
     axios.put(GET_RESTAURANT + restoId + '/menus/' + menuId, menu, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
-      .then(history.push("/list-menu"));
+      .then(history.push("/list-menu"))
   }
   const handleReset = () => {
     setIsReset(!isReset);

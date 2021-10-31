@@ -27,9 +27,10 @@ const restoId = localStorage.getItem("RestoId");
 
 const Antrian = (props) => {
     const [orders, setOrders] = useState(null);
-    const [value, setValue] = React.useState("");
+    const [value, setValue] = useState("");
     const [error, setError] = useState(null);
-    const [loading, setLoading] = React.useState(true);
+    const [loading, setLoading] = useState(true);
+    const [update, setUpdate] = useState(false);
     useEffect(() => {
         axios.get(GET_RESTAURANT+restoId+'/orders?status='+value)
             .then((res) => {
@@ -40,7 +41,11 @@ const Antrian = (props) => {
                 setError(err.message);
                 setLoading(false);
             })
-    }, [value])
+    }, [value, update])
+
+    const handleUpdate = () => {
+        setUpdate(!update);
+    }
 
     return (
         <Root>
@@ -61,7 +66,7 @@ const Antrian = (props) => {
                     <p>loading...</p>
                     :
                     orders && orders.map(order =>
-                        <OrderCard key={order.id} order={order} />
+                        <OrderCard key={order.id} order={order} handleUpdate={handleUpdate}/>
                     )
                 }
                 {error && <p>{error}</p>}

@@ -15,7 +15,7 @@ import TertiaryButton from '../components/button/TertiaryButton';
 import DeleteButton from '../components/button/DeleteButton';
 import { makeStyles } from '@mui/styles';
 import SearchIcon from '@mui/icons-material/Search';
-import { Button, InputAdornment, IconButton, TextField, Menu, MenuItem } from "@mui/material";
+import { Button, InputAdornment, IconButton, TextField, Menu, MenuItem, Skeleton } from "@mui/material";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -64,25 +64,6 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const StyledTableCell = styled(TableCell)(({ }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: '#E0E0E0',
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 16,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ }) => ({
-  '&:nth-of-type(odd)': {
-    backgroundColor: '#f1f1f1',
-  },
-  // hide last border
-  '&:last-child td, &:last-child th': {
-    border: 0,
-  },
-}));
-
 const KategoriMenu = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -92,13 +73,19 @@ const KategoriMenu = () => {
   const [newCategory, setNewCategory] = useState();
   const [addDialog, setAddDialog] = useState();
   const [category, setCategory] = useState();
+  const [update, setUpdate] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(GET_RESTAURANT + restoId + '/menu-categories')
-      .then((res) => {
-        setAllCategory(res.data.data);
-      })
-  }, [])
+    setLoading(true);
+    setTimeout(() => {
+      axios.get(GET_RESTAURANT + restoId + '/menu-categories')
+        .then((res) => {
+          setAllCategory(res.data.data);
+          setLoading(false);
+        })
+    }, 400);
+  }, [update])
 
   const addClickHandler = () => {
     setAddDialog(true);
@@ -124,14 +111,17 @@ const KategoriMenu = () => {
     addDialog ?
       axios.post(GET_RESTAURANT + restoId + '/menu-categories', newCategory, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
         .then(setOpen(false))
+        .then(setUpdate(!update))
       :
       axios.patch(GET_RESTAURANT + restoId + '/menu-categories/' + category.id, newCategory, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
         .then(setOpen(false))
+        .then(setUpdate(!update))
   }
 
   const deleteHandler = (id) => {
     axios.delete(GET_RESTAURANT + restoId + '/menu-categories/' + id, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
       .then(setOpen(false))
+      .then(setUpdate(!update))
   }
   const dialog = (
     <Dialog open={open} onClose={handleClose}>
@@ -182,22 +172,42 @@ const KategoriMenu = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {allCategory && allCategory.map((category) => (
-                <StyledTableRow
-                  key={category.name}
-                // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <StyledTableCell component="th" scope="row">
-                    {category.name}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    <div className={classes.actionButton}>
-                      <TertiaryButton onClick={() => { editClickHandler(category) }}>Edit</TertiaryButton>
-                      <DeleteButton onClick={() => { deleteHandler(category.id) }}>Hapus</DeleteButton>
-                    </div>
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))}
+              {loading ?
+                <>
+                  <TableRow>
+                    <TableCell colSpan={2}>
+                      <Skeleton animation="wave" variant="h4" width="100%">
+                        <SecondaryButton>Edit</SecondaryButton>
+                        <PrimaryButton>Hapus</PrimaryButton>
+                      </Skeleton>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell colSpan={2}>
+                      <Skeleton animation="wave" variant="h4" width="100%">
+                        <SecondaryButton>Edit</SecondaryButton>
+                        <PrimaryButton>Hapus</PrimaryButton>
+                      </Skeleton>
+                    </TableCell>
+                  </TableRow>
+                </>
+                :
+                allCategory && allCategory.map((category) => (
+                  <TableRow
+                    key={category.name}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      <h4>{category.name}</h4>
+                    </TableCell>
+                    <TableCell align="center">
+                      <div className={classes.actionButton}>
+                        <SecondaryButton onClick={() => { editClickHandler(category) }}>Edit</SecondaryButton>
+                        <PrimaryButton onClick={() => { deleteHandler(category.id) }}>Hapus</PrimaryButton>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
