@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
@@ -11,7 +11,8 @@ import Sidebar from "../components/sidebar/Sidebar";
 import axios from 'axios';
 import { GET_RESTAURANT } from "../utils/Urls";
 import PrimaryButton from '../components/button/PrimaryButton';
-import SecondaryButton from '../components/button/SecondaryButton';
+import TertiaryButton from '../components/button/TertiaryButton';
+import DeleteButton from '../components/button/DeleteButton';
 import { makeStyles } from '@mui/styles';
 import SearchIcon from '@mui/icons-material/Search';
 import { Button, InputAdornment, IconButton, TextField, Menu, MenuItem, Skeleton } from "@mui/material";
@@ -166,8 +167,8 @@ const KategoriMenu = () => {
           <Table sx={{ minWidth: 500 }} aria-label="a dense table">
             <TableHead>
               <TableRow>
-                <TableCell sx={{ width: '75%' }}><h3>Kategori Menu</h3></TableCell>
-                <TableCell align="center"><h3>Aksi</h3></TableCell>
+                <StyledTableCell sx={{ width: '75%' }}><h3>Kategori Menu</h3></StyledTableCell>
+                <StyledTableCell align="center"><h3>Aksi</h3></StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
