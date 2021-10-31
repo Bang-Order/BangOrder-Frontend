@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
@@ -11,15 +10,17 @@ import Sidebar from "../components/sidebar/Sidebar";
 import axios from 'axios';
 import { GET_RESTAURANT } from "../utils/Urls";
 import PrimaryButton from '../components/button/PrimaryButton';
+import SecondaryButton from '../components/button/SecondaryButton';
 import TertiaryButton from '../components/button/TertiaryButton';
 import DeleteButton from '../components/button/DeleteButton';
 import { makeStyles } from '@mui/styles';
 import SearchIcon from '@mui/icons-material/Search';
-import { Button, InputAdornment, IconButton, TextField, Menu, MenuItem, Skeleton } from "@mui/material";
+import { Button, InputAdornment, IconButton, TextField, Skeleton } from "@mui/material";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 
 const Content = styled('div')(({ theme }) => ({
   backgroundColor: '#fff',
@@ -62,6 +63,26 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     justifyContent: 'space-around'
   }
+}));
+
+
+const StyledTableCell = styled(TableCell)(({ }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: '#E0E0E0',
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 16,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: '#f1f1f1',
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
 }));
 
 const KategoriMenu = () => {
@@ -193,20 +214,20 @@ const KategoriMenu = () => {
                 </>
                 :
                 allCategory && allCategory.map((category) => (
-                  <TableRow
+                  <StyledTableRow
                     key={category.name}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
-                    <TableCell component="th" scope="row">
+                    <StyledTableCell  component="th" scope="row">
                       <h4>{category.name}</h4>
-                    </TableCell>
-                    <TableCell align="center">
+                    </StyledTableCell >
+                    <StyledTableCell  align="center">
                       <div className={classes.actionButton}>
-                        <SecondaryButton onClick={() => { editClickHandler(category) }}>Edit</SecondaryButton>
-                        <PrimaryButton onClick={() => { deleteHandler(category.id) }}>Hapus</PrimaryButton>
+                        <TertiaryButton  onClick={() => { editClickHandler(category) }}>Edit</TertiaryButton >
+                        <DeleteButton  onClick={() => { deleteHandler(category.id) }}>Hapus</DeleteButton >
                       </div>
-                    </TableCell>
-                  </TableRow>
+                    </StyledTableCell >
+                  </StyledTableRow>
                 ))}
             </TableBody>
           </Table>
