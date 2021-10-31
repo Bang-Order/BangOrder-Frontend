@@ -1,9 +1,11 @@
 import Sidebar from "../components/sidebar/Sidebar";
 
 const Riwayat = () => {
-    return ( 
+    return (
+        <>
         <Sidebar index="5" name="Riwayat" />
-     );
+        </>
+    );
 }
- 
+
 export default Riwayat;
