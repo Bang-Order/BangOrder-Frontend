@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../components/sidebar/Sidebar";
 import { styled } from '@mui/material/styles';
 import PrimaryButton from "../components/button/PrimaryButton";
@@ -12,15 +12,16 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Link } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Link, Skeleton } from "@mui/material";
+import axios from "axios";
+import { GET_RESTAURANT } from "../utils/Urls";
+import { saveAs } from 'file-saver'
 
 const useStyle = makeStyles({
-    content: {
+    header: {
         display: 'flex',
         left: 'true',
-        paddingTop: 20,
-        marginLeft: 20,
-        marginRight: 20,
+        marginBottom: 20
     },
     actionButton: {
         display: 'flex',
@@ -64,33 +65,66 @@ const StyledTableRow = styled(TableRow)(({ }) => ({
     },
 }));
 
-function createData(name, code, action) {
-    return { name, code, action };
-}
-
-const rows = [
-    createData('1', 'Unduh disini'),
-    createData('2', 'Unduh disini'),
-    createData('3', 'Unduh disini'),
-    createData('4', 'Unduh disini'),
-    createData('5', 'Unduh disini'),
-];
-
 const DataMeja = () => {
     const classes = useStyle();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [tables, setTables] = useState();
+    const restoId = localStorage.getItem("RestoId");
+    const [table, setTable] = useState();
+    const [newTable, SetNewTable] = useState();
+    const [addDialog, setAddDialog] = useState();
+    const [update, setUpdate] = useState();
+    const [loading, setLoading] = useState(true);
 
-    const editClickHandler = () => {
+    useEffect(() => {
+        setLoading(true)
+        setTimeout(() => {
+            axios.get(GET_RESTAURANT + restoId + "/tables/", { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
+                .then((res) => {
+                    setTables(res.data.data);
+                    setLoading(false)
+                })
+        }, 300);
+    }, [update])
+
+    const editClickHandler = (table) => {
+        setTable(table);
         setOpen(true);
     }
+
+    const addClickHandler = () => {
+        setAddDialog(true);
+        setOpen(true);
+    };
 
     const handleClose = () => {
         setOpen(false);
     };
 
+    const newTableHandler = (table) => {
+        SetNewTable({ table_number: table })
+    }
+
+    const saveHandler = () => {
+        addDialog ?
+            axios.post(GET_RESTAURANT + restoId + '/tables', newTable, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
+                .then(setOpen(false))
+                .then(setUpdate(!update))
+            :
+            axios.patch(GET_RESTAURANT + restoId + '/tables/' + table.id, newTable, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
+                .then(setOpen(false))
+                .then(setUpdate(!update))
+    }
+
+    const deleteClickHandler = (id) => {
+        axios.delete(GET_RESTAURANT + restoId + '/tables/' + id, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
+            .then(setOpen(false))
+            .then(setUpdate(!update))
+    }
+
     const dialog = (
         <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>Edit Meja</DialogTitle>
+            <DialogTitle>{addDialog ? "Tambah Meja" : "Ubah Nomor Meja"}</DialogTitle>
             <DialogContent>
                 <TextField
                     autoFocus
@@ -99,60 +133,82 @@ const DataMeja = () => {
                     size="small"
                     fullWidth
                     type="text"
+                    defaultValue={table ? table.table_number : ""}
+                    onChange={(e) => { newTableHandler(e.target.value) }}
                 />
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
-                <Button>Save</Button>
+                <Button onClick={saveHandler}>Save</Button>
             </DialogActions>
         </Dialog>
     )
 
-    const download = () => {
-        var element = document.createElement("a");
-        var file = new Blob(
-            [
-                "https://metroandalas.co.id/wp-content/uploads/2021/10/04-scan-qr-740x414.jpeg"
-            ],
-            { type: "image/*" }
-        );
-        element.href = URL.createObjectURL(file);
-        element.download = "image.jpg";
-        element.click();
+    const download = (table) => {
+        saveAs(GET_RESTAURANT + restoId + "/tables/" + table.id + "/downloadQRCode", 'Meja ' + table.table_number +'.jpg')
     };
 
     return (
         <Root>
             <Sidebar index="2" name="Data Meja" />
             <Content>
-                <div className={classes.content}>
-                    <PrimaryButton>Tambah Meja</PrimaryButton>
+                <div className={classes.header}>
+                    <PrimaryButton onClick={addClickHandler}>Tambah Meja</PrimaryButton>
                 </div>
                 <div className={classes.content}>
                     <TableContainer component={Paper}>
                         <Table sx={{ minWidth: 500 }} aria-label="a dense table">
                             <TableHead>
                                 <TableRow>
-                                    <StyledTableCell sx={{ width: '40%' }}><h3>Meja</h3></StyledTableCell>
-                                    <StyledTableCell sx={{ width: '40%' }}><h3>QR Code</h3></StyledTableCell>
+                                    <StyledTableCell sx={{ width: '30%' }}><h3>Meja</h3></StyledTableCell>
+                                    <StyledTableCell sx={{ width: '50%' }} ><h3>QR Code</h3></StyledTableCell>
                                     <StyledTableCell align="center"><h3>Aksi</h3></StyledTableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {rows.map((row) => (
-                                    <StyledTableRow key={row.name}>
-                                        <StyledTableCell component="th" scope="row">{row.name}</StyledTableCell>
-                                        <StyledTableCell><Link href="https://metroandalas.co.id/wp-content/uploads/2021/10/04-scan-qr-740x414.jpeg"
-                                            download
-                                            onClick={() => download()}>{row.code}</Link></StyledTableCell>
-                                        <StyledTableCell>
-                                            <div className={classes.actionButton}>
-                                                <TertiaryButton onClick={editClickHandler}>Edit</TertiaryButton>
-                                                <DeleteButton>Hapus</DeleteButton>
-                                            </div>
-                                        </StyledTableCell>
-                                    </StyledTableRow>
-                                ))}
+                                {loading ?
+                                    <>
+                                        <StyledTableRow>
+                                            <TableCell colSpan={3}>
+                                                <Skeleton animation="wave" variant="h4" width="100%">
+                                                    <TertiaryButton>Edit</TertiaryButton>
+                                                    <DeleteButton>Hapus</DeleteButton>
+                                                </Skeleton>
+                                            </TableCell>
+                                        </StyledTableRow>
+                                        <StyledTableRow>
+                                            <TableCell colSpan={3}>
+                                                <Skeleton animation="wave" variant="h4" width="100%">
+                                                    <TertiaryButton>Edit</TertiaryButton>
+                                                    <DeleteButton>Hapus</DeleteButton>
+                                                </Skeleton>
+                                            </TableCell>
+                                        </StyledTableRow>
+                                        <StyledTableRow>
+                                            <TableCell colSpan={3}>
+                                                <Skeleton animation="wave" variant="h4" width="100%">
+                                                    <TertiaryButton>Edit</TertiaryButton>
+                                                    <DeleteButton>Hapus</DeleteButton>
+                                                </Skeleton>
+                                            </TableCell>
+                                        </StyledTableRow>
+                                    </>
+                                    :
+                                    tables && tables.map((table) => (
+                                        <StyledTableRow key={table.id}>
+                                            <StyledTableCell component="th" scope="row"><h4>{table.table_number}</h4></StyledTableCell>
+                                            <StyledTableCell >
+                                                <Link component="h4" onClick={() => download(table)}>Unduh disini</Link>
+                                            </StyledTableCell> 
+                                            <StyledTableCell>
+                                                <div className={classes.actionButton}>
+                                                    <TertiaryButton onClick={() => editClickHandler(table)}>Edit</TertiaryButton>
+                                                    <DeleteButton onClick={() => deleteClickHandler(table.id)}>Hapus</DeleteButton>
+                                                </div>
+                                            </StyledTableCell>
+                                        </StyledTableRow>
+                                    ))
+                                }
                             </TableBody>
                         </Table>
                     </TableContainer>

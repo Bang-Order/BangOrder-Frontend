@@ -32,7 +32,7 @@ const Antrian = (props) => {
     const [loading, setLoading] = useState(true);
     const [update, setUpdate] = useState(false);
     useEffect(() => {
-        axios.get(GET_RESTAURANT+restoId+'/orders?status='+value)
+        axios.get(GET_RESTAURANT+restoId+'/orders?status='+value, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
             .then((res) => {
                 setOrders(res.data.data);
                 setLoading(false);
