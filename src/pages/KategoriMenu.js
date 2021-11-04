@@ -41,13 +41,10 @@ const Root = styled('div')(() => ({
 
 const useStyles = makeStyles(() => ({
   header: {
-    paddingTop: 10,
-    width: '100%',
     display: 'flex',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    marginBottom: 20,
-  },
+    left: 'true',
+    marginBottom: 20
+},
   left: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -169,20 +166,7 @@ const KategoriMenu = () => {
       <Sidebar index="3" name="Kategori Menu" />
       <Content>
         <div className={classes.header}>
-          <div className={classes.left}>
-            <TextField onChange={(e) => setSearchKey(e.target.value)} className="search" size="small" type="text" placeholder="Cari kategori"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton edge="end"><SearchIcon /></IconButton>
-                  </InputAdornment>
-                )
-              }}
-            />
-          </div>
-          <div className={classes.right}>
             <PrimaryButton onClick={addClickHandler}>Tambah Kategori</PrimaryButton>
-          </div>
         </div>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 500 }} aria-label="a dense table">
@@ -221,7 +205,7 @@ const KategoriMenu = () => {
                     <StyledTableCell  component="th" scope="row">
                       <h4>{category.name}</h4>
                     </StyledTableCell >
-                    <StyledTableCell  align="center">
+                    <StyledTableCell sx={{ width: '20%' }} align="center">
                       <div className={classes.actionButton}>
                         <TertiaryButton  onClick={() => { editClickHandler(category) }}>Edit</TertiaryButton >
                         <DeleteButton  onClick={() => { deleteHandler(category.id) }}>Hapus</DeleteButton >
