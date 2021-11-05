@@ -145,7 +145,7 @@ const DataMeja = () => {
     )
 
     const download = (table) => {
-        saveAs(GET_RESTAURANT + restoId + "/tables/" + table.id + "/downloadQRCode", 'Meja ' + table.table_number +'.jpg')
+        saveAs(GET_RESTAURANT + restoId + "/tables/" + table.id + "/downloadQRCode", 'Meja ' + table.table_number +'.jpg', { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") }})
     };
 
     return (
