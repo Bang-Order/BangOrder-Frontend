@@ -7,20 +7,18 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { styled } from "@mui/system";
 import Sidebar from "../components/sidebar/Sidebar";
-import axios from 'axios';
-import { GET_RESTAURANT } from "../utils/Urls";
 import PrimaryButton from '../components/button/PrimaryButton';
 import SecondaryButton from '../components/button/SecondaryButton';
 import TertiaryButton from '../components/button/TertiaryButton';
 import DeleteButton from '../components/button/DeleteButton';
 import { makeStyles } from '@mui/styles';
-import SearchIcon from '@mui/icons-material/Search';
-import { Button, InputAdornment, IconButton, TextField, Skeleton } from "@mui/material";
+import { Button, TextField, Skeleton } from "@mui/material";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import { api } from '../utils/api';
 
 const Content = styled('div')(({ theme }) => ({
   backgroundColor: '#fff',
@@ -63,16 +61,16 @@ const useStyles = makeStyles(() => ({
 }));
 
 
-const StyledTableCell = styled(TableCell)(({ }) => ({
+const StyledTableCell = styled(TableCell)({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: '#E0E0E0',
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 16,
   },
-}));
+});
 
-const StyledTableRow = styled(TableRow)(({ }) => ({
+const StyledTableRow = styled(TableRow)({
   '&:nth-of-type(odd)': {
     backgroundColor: '#f1f1f1',
   },
@@ -80,14 +78,12 @@ const StyledTableRow = styled(TableRow)(({ }) => ({
   '&:last-child td, &:last-child th': {
     border: 0,
   },
-}));
+});
 
 const KategoriMenu = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [allCategory, setAllCategory] = useState();
-  const restoId = localStorage.getItem("RestoId");
-  const [searchKey, setSearchKey] = useState();
   const [newCategory, setNewCategory] = useState();
   const [addDialog, setAddDialog] = useState();
   const [category, setCategory] = useState();
@@ -97,7 +93,7 @@ const KategoriMenu = () => {
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
-      axios.get(GET_RESTAURANT + restoId + '/menu-categories')
+      api.get('/menu-categories')
         .then((res) => {
           setAllCategory(res.data.data);
           setLoading(false);
@@ -127,17 +123,17 @@ const KategoriMenu = () => {
 
   const saveHandler = () => {
     addDialog ?
-      axios.post(GET_RESTAURANT + restoId + '/menu-categories', newCategory, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
+      api.post('/menu-categories', newCategory)
         .then(setOpen(false))
         .then(setUpdate(!update))
       :
-      axios.patch(GET_RESTAURANT + restoId + '/menu-categories/' + category.id, newCategory, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
+      api.patch('/menu-categories/' + category.id, newCategory)
         .then(setOpen(false))
         .then(setUpdate(!update))
   }
 
   const deleteHandler = (id) => {
-    axios.delete(GET_RESTAURANT + restoId + '/menu-categories/' + id, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
+    api.delete('/menu-categories/' + id)
       .then(setOpen(false))
       .then(setUpdate(!update))
   }

@@ -13,9 +13,11 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Link, Skeleton } from "@mui/material";
-import axios from "axios";
-import { GET_RESTAURANT } from "../utils/Urls";
 import { saveAs } from 'file-saver'
+import { api } from "../utils/api";
+import Cookies from "js-cookie";
+import axios from "axios";
+require('dotenv').config();
 
 const useStyle = makeStyles({
     header: {
@@ -55,7 +57,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     },
 }));
 
-const StyledTableRow = styled(TableRow)(({ }) => ({
+const StyledTableRow = styled(TableRow)({
     '&:nth-of-type(odd)': {
         backgroundColor: '#f1f1f1',
     },
@@ -63,13 +65,13 @@ const StyledTableRow = styled(TableRow)(({ }) => ({
     '&:last-child td, &:last-child th': {
         border: 0,
     },
-}));
+});
 
 const DataMeja = () => {
     const classes = useStyle();
     const [open, setOpen] = useState(false);
     const [tables, setTables] = useState();
-    const restoId = localStorage.getItem("RestoId");
+    const restoId = Cookies.get("RestoId");
     const [table, setTable] = useState();
     const [newTable, SetNewTable] = useState();
     const [addDialog, setAddDialog] = useState();
@@ -79,11 +81,10 @@ const DataMeja = () => {
     useEffect(() => {
         setLoading(true)
         setTimeout(() => {
-            axios.get(GET_RESTAURANT + restoId + "/tables/", { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
-                .then((res) => {
-                    setTables(res.data.data);
-                    setLoading(false)
-                })
+            api.get("/tables").then((res) => {
+                setTables(res.data.data);
+                setLoading(false)
+            })
         }, 300);
     }, [update])
 
@@ -107,17 +108,17 @@ const DataMeja = () => {
 
     const saveHandler = () => {
         addDialog ?
-            axios.post(GET_RESTAURANT + restoId + '/tables', newTable, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
+            api.post('/tables', newTable)
                 .then(setOpen(false))
                 .then(setUpdate(!update))
             :
-            axios.patch(GET_RESTAURANT + restoId + '/tables/' + table.id, newTable, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
+            api.patch('/tables/' + table.id, newTable)
                 .then(setOpen(false))
                 .then(setUpdate(!update))
     }
 
     const deleteClickHandler = (id) => {
-        axios.delete(GET_RESTAURANT + restoId + '/tables/' + id, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
+        api.delete('/tables/' + id)
             .then(setOpen(false))
             .then(setUpdate(!update))
     }
@@ -145,8 +146,11 @@ const DataMeja = () => {
     )
 
     const download = (table) => {
-        saveAs(GET_RESTAURANT + restoId + "/tables/" + table.id + "/downloadQRCode", 'Meja ' + table.table_number +'.jpg', { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") }})
-    };
+        api.get("/tables/" + table.id + "/downloadQRCode")
+        .then(
+            saveAs(process.env.REACT_APP_API_URL + "restaurants/" + restoId + "/tables/" + table.id + "/downloadQRCode", 'Meja ' + table.table_number +'.jpg', {headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") }})
+        )
+    }; 
 
     return (
         <Root>

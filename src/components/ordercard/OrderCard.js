@@ -1,12 +1,10 @@
 import React from 'react';
 import { makeStyles } from '@mui/styles';
 import { Button, Card, CardContent, Menu, MenuItem } from '@mui/material';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Divider from '@mui/material/Divider';
 import './cardlist.css';
-import axios from 'axios';
-import { GET_RESTAURANT } from '../../utils/Urls';
 import PrimaryButton from '../button/PrimaryButton';
+import { api } from '../../utils/api';
 
 const useStyles = makeStyles(() => ({
 	root: {
@@ -98,8 +96,8 @@ const OrderCard = (props) => {
 	const handleStatus = (status) => {
 		handleClose();
 		setStatus(status);
-		axios
-			.patch(GET_RESTAURANT + restoId + '/orders/' + order.id, {
+		api
+			.patch(+'/orders/' + order.id, {
 				"order_status": status,
 				"payment_status": "success"
 			}, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } });

@@ -1,14 +1,16 @@
+import Cookies from "js-cookie";
+
 export const login = (user) => {
-    localStorage.setItem("TOKEN", user.access_token);
-    localStorage.setItem("RestoId", user.id);
+    Cookies.set("BangOrderToken", user.access_token);
+    Cookies.set("RestoId", user.id);
 };
 
 export const logout = () => {
-    localStorage.removeItem("TOKEN");
+    Cookies.remove("BangOrderToken");
 };
 
 export const isLogin = () => {
-    if (localStorage.getItem("TOKEN")) {
+    if (Cookies.get("BangOrderToken")) {
         return true;
     }
     return false;

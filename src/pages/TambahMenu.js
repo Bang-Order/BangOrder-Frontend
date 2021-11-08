@@ -9,11 +9,10 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import axios from 'axios';
 import { useHistory } from "react-router-dom";
-import { GET_RESTAURANT } from "../utils/Urls";
 import { Menu, MenuItem } from "@mui/material";
 import PrimaryButton from "../components/button/PrimaryButton";
+import { api } from "../utils/api";
 
 const useStyles = makeStyles((theme) => ({
 	content: {
@@ -101,18 +100,17 @@ const TambahMenu = () => {
 	const [allCategory, setAllCategory] = useState();
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [isRecommended, setIsRecommended] = useState();
-	const restoId = localStorage.getItem("RestoId");
 	const history = useHistory();
 
 	useEffect(() => {
-		axios.get(GET_RESTAURANT + restoId + '/menu-categories')
+		api.get('/menu-categories')
 			.then((res) => {
 				setAllCategory(res.data.data);
 			})
-	}, [restoId])
+	}, [])
 
 	const handleSaveButton = () => {
-		axios.post(GET_RESTAURANT + restoId + '/menus/', menu, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
+		api.post('/menus/', menu)
 			.then(history.push("/list-menu"));
 	}
 
