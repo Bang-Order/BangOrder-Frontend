@@ -49,7 +49,8 @@ const ListMenu = () => {
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState("");
   const [searchKey, setSearchKey] = useState("");
-  const [menus, setMenus] = useState();
+  const [menus, setMenus] = useState(null);
+  console.log(menus);
   useEffect(() => {
     setTimeout(() => {
       api.get("/menus?filter="+statusFilter)
@@ -61,7 +62,7 @@ const ListMenu = () => {
         setError(err.message);
         setLoading(false)
       })
-    }, 100);
+    }, 300);
   }, [statusFilter])
 
   useDidMountEffect(() => {

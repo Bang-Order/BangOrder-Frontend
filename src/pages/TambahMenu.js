@@ -110,8 +110,18 @@ const TambahMenu = () => {
 	}, [])
 
 	const handleSaveButton = () => {
-		api.post('/menus/', menu)
-			.then(history.push("/list-menu"));
+		let formData = new FormData();
+		console.log(formData);
+		formData.append('image', image);
+		for ( var key in menu ) {
+			formData.append(key, menu[key]);
+		}
+		api.post('/menus/', formData, {
+			headers: {
+				'Content-Type': 'application/form-data; ',
+			}
+		})
+		.then(history.push("/list-menu"));
 	}
 
 	const handleClick = (event) => {
@@ -147,8 +157,12 @@ const TambahMenu = () => {
 		}));
 	}
 
-	const handleImageChange = (event) => {
-		setImage(URL.createObjectURL(event.target.files[0]));
+	const handleImageChange = (evt) => {
+		setImage(evt.target.files[0]);
+		setMenu(prevState => ({
+			...prevState,
+			image: image
+		}));
 	}
 
 	return (
@@ -249,9 +263,9 @@ const TambahMenu = () => {
 							</div>
 							<div className={classes.right}>
 								<div>
-									<img className={classes.image} src={image ? image : 'thumbnail.svg'} alt="" variant="outlined" />
+									<img className={classes.image} src={image ? URL.createObjectURL(image) : 'thumbnail.svg'} alt="" variant="outlined" />
 									<label htmlFor="contained-button-file">
-										<Input onChange={handleImageChange} accept="image/*" id="contained-button-file" multiple type="file" />
+										<Input onChange={handleImageChange} accept="image/*" id="contained-button-file" multiple type="file" name="image" />
 										<PrimaryButton width="100%" component="span">
 											Upload
 										</PrimaryButton>

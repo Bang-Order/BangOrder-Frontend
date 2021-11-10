@@ -96,12 +96,15 @@ const EditMenu = (props) => {
   const menuId = props.match.params.menuId;
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [menu, setMenu] = useState();
   const [allCategory, setAllCategory] = useState();
   const [anchorEl, setAnchorEl] = useState(null);
   const [isRecommended, setIsRecommended] = useState();
   const [isReset, setIsReset] = useState(false);
   const history = useHistory();
+	const [image, setImage] = useState();
+  
   useEffect(() => {
     api.get('/menus/' + menuId)
       .then((res) => {
@@ -123,8 +126,24 @@ const EditMenu = (props) => {
   }, [])
 
   const handleSaveButton = () => {
-    api.put('/menus/' + menuId, menu)
-      .then(history.push("/list-menu"))
+    setSaving(true);
+    let formData = new FormData();
+		for ( var key in menu ) {
+      formData.append(key, menu[key]);
+		}
+    formData.delete('image');
+    if (image){
+      formData.append('image', image);
+    }
+		api.post('/menus/'+menuId+'?_method=PUT', formData, {
+			headers: {
+				'Content-Type': 'application/form-data; ',
+			}
+		})
+    .then(setTimeout(()=>{
+      setSaving(false);
+      history.push("/list-menu");
+    }, 1000))
   }
   const handleReset = () => {
     setIsReset(!isReset);
@@ -165,6 +184,14 @@ const EditMenu = (props) => {
       is_recommended: value,
     }));
   }
+
+	const handleImageChange = (evt) => {
+		setImage(evt.target.files[0]);
+		setMenu(prevState => ({
+			...prevState,
+			image: image
+		}));
+	}
 
   return (
     <Root>
@@ -269,9 +296,9 @@ const EditMenu = (props) => {
                 </div>
                 <div className={classes.right}>
                   <div>
-                    <img className={classes.image} src={menu.image} alt="" variant="outlined" />
+                    <img className={classes.image} src={image ? URL.createObjectURL(image) : menu.image} alt="" variant="outlined" />
                     <label htmlFor="contained-button-file">
-                      <Input accept="image/*" id="contained-button-file" multiple type="file" />
+                      <Input onChange={handleImageChange} accept="image/*" id="contained-button-file" multiple type="file" />
                       <PrimaryButton width="100%" component="span">
                         Upload
                       </PrimaryButton>
@@ -280,7 +307,7 @@ const EditMenu = (props) => {
                   <div className={classes.navButton}>
                     <SecondaryButton width="100px" onClick={handleReset}>Reset</SecondaryButton>
                     <SecondaryButton width="100px" onClick={handleDelete}>Hapus</SecondaryButton>
-                    <PrimaryButton width="100px" onClick={handleSaveButton}>Simpan</PrimaryButton>
+                    <PrimaryButton loading={saving} width="100px" onClick={handleSaveButton}>Simpan</PrimaryButton>
                   </div>
                 </div>
               </div>
