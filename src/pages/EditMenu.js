@@ -9,12 +9,11 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import axios from 'axios';
 import { useHistory } from "react-router-dom";
-import { GET_RESTAURANT } from "../utils/Urls";
 import { Menu, MenuItem } from "@mui/material";
 import PrimaryButton from "../components/button/PrimaryButton";
 import SecondaryButton from "../components/button/SecondaryButton";
+import { api } from "../utils/api";
 
 const useStyles = makeStyles(() => ({
   content: {
@@ -102,10 +101,9 @@ const EditMenu = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isRecommended, setIsRecommended] = useState();
   const [isReset, setIsReset] = useState(false);
-  const restoId = localStorage.getItem("RestoId");
   const history = useHistory();
   useEffect(() => {
-    axios.get(GET_RESTAURANT + restoId + '/menus/' + menuId)
+    api.get('/menus/' + menuId)
       .then((res) => {
         setMenu(res.data);
         setIsRecommended(res.data.is_recommended);
@@ -115,24 +113,24 @@ const EditMenu = (props) => {
         setError(err.message);
         setLoading(false);
       })
-  }, [menuId, restoId, isReset])
+  }, [menuId, isReset])
 
   useEffect(() => {
-    axios.get(GET_RESTAURANT + restoId + '/menu-categories')
+    api.get('/menu-categories')
       .then((res) => {
         setAllCategory(res.data.data);
       })
-  }, [restoId])
+  }, [])
 
   const handleSaveButton = () => {
-    axios.put(GET_RESTAURANT + restoId + '/menus/' + menuId, menu, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
+    api.put('/menus/' + menuId, menu)
       .then(history.push("/list-menu"))
   }
   const handleReset = () => {
     setIsReset(!isReset);
   }
   const handleDelete = () => {
-    axios.delete(GET_RESTAURANT + restoId + '/menus/' + menuId, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
+    api.delete('/menus/' + menuId)
       .then(history.push("/list-menu"));
   }
   const handleClick = (event) => {

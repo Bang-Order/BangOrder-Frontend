@@ -6,13 +6,12 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import SearchIcon from '@mui/icons-material/Search';
 import './listmenu.css';
 import MenuCard from '../MenuCard/MenuCard';
-import axios from 'axios';
 import { Link } from "react-router-dom";
-import { GET_RESTAURANT } from "../../utils/Urls";
 import useDidMountEffect from "../componentDidMount/useDidMountEffect";
 import PrimaryButton from "../button/PrimaryButton";
+import { api } from "../../utils/api";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   content: {
     marginTop: 20,
     textAlign: "left",
@@ -46,33 +45,29 @@ const useStyles = makeStyles((theme) => ({
 const ListMenu = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [filteredMenus, setFilteredMenus] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState("");
   const [searchKey, setSearchKey] = useState("");
   const [menus, setMenus] = useState();
-  const restoId = localStorage.getItem("RestoId");
-
   useEffect(() => {
     setTimeout(() => {
-      axios.get(GET_RESTAURANT + restoId + '/menus?filter=' + statusFilter)
-        .then((res) => {
-          setMenus(res.data.data);
-          setLoading(false)
-          console.log(menus);
-        })
-        .catch(err => {
-          setError(err.message);
-          setLoading(false)
-        })
-    }, 1000);
+      api.get("/menus?filter="+statusFilter)
+      .then((res) => {
+        setMenus(res.data.data);
+        setLoading(false)
+      })
+      .catch(err => {
+        setError(err.message);
+        setLoading(false)
+      })
+    }, 100);
   }, [statusFilter])
 
   useDidMountEffect(() => {
     const searchMenu = () => {
       setLoading(true);
-      axios.get(GET_RESTAURANT + restoId + '/menus?search=' + searchKey)
+      api.get('/menus?search=' + searchKey)
         .then((res) => {
           setMenus(res.data.data);
           setLoading(false);
@@ -90,10 +85,9 @@ const ListMenu = () => {
   const handleStatusClick = (status) => {
     setStatusFilter(status)
     setAnchorEl(null);
-    axios.get(GET_RESTAURANT + restoId + '/menus?filter=' + statusFilter)
+    api.get('/menus?filter=' + statusFilter)
       .then((res) => {
         setMenus(res.data.data);
-        console.log(menus);
       })
       .catch(err => {
         setError(err.message);

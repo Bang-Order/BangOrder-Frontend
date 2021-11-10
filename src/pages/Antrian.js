@@ -1,12 +1,11 @@
 import * as React from 'react';
 import Sidebar from '../components/sidebar/Sidebar';
 import OrderCard from '../components/ordercard/OrderCard';
-import axios from 'axios';
 import { useEffect, useState } from "react";
 import { styled } from '@mui/material/styles';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import { GET_RESTAURANT } from '../utils/Urls';
+import { api } from '../utils/api';
 
 const Content = styled('div')(({ theme }) => ({
     marginLeft: 280,
@@ -23,8 +22,6 @@ const Root = styled('div')(() => ({
     minHeight: '100vh',
 }))
 
-const restoId = localStorage.getItem("RestoId");
-
 const Antrian = (props) => {
     const [orders, setOrders] = useState(null);
     const [value, setValue] = useState("");
@@ -32,7 +29,7 @@ const Antrian = (props) => {
     const [loading, setLoading] = useState(true);
     const [update, setUpdate] = useState(false);
     useEffect(() => {
-        axios.get(GET_RESTAURANT+restoId+'/orders?status='+value)
+        api.get('/orders?status='+value)
             .then((res) => {
                 setOrders(res.data.data);
                 setLoading(false);
