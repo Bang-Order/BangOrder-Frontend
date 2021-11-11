@@ -1,10 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@mui/styles';
-import { Button, Card, CardContent, Menu, MenuItem } from '@mui/material';
+import { Card, CardContent } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import '../ordercard/cardlist.css';
-// import axios from 'axios';
-import PrimaryButton from '../button/PrimaryButton';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -79,6 +77,8 @@ const useStyles = makeStyles(() => ({
 
 const HistoryCard = (props) => {
   const classes = useStyles();
+  const order = props.order;
+  const orderItem = props.order.order_items;
 
   return (
     <Card className={classes.root}>
@@ -86,32 +86,34 @@ const HistoryCard = (props) => {
         <CardContent className={classes.header}>
           <div className={classes.left}>
             <h4 className={classes.meja}>
-              Meja
+              Meja {order.table_id}
             </h4>
             <h4 className={classes.id}>
-              Id Pesanan
+              Id Pesanan {order.id}
             </h4>
           </div>
           <div className={classes.right}>
             <h4>
-              20/06/2021
-            </h4>
-            <h4>
-              12:20:19
+              {order.created_at}
             </h4>
           </div>
         </CardContent>
-        <div className={classes.content}>
-          <div className={classes.item}>
-            <h4>2x Jus tomat</h4>
-            <h4>20000</h4>
-          </div>
-          <h5 sx={{ fontWeight: 'reguler' }}>Catatan :</h5>
-          <Divider />
-        </div>
+        {orderItem ?
+          orderItem.map(item =>
+            <div key={item.name} className={classes.content}>
+              <div className={classes.item}>
+                <h4>{item.quantity}x {item.name}</h4>
+                <h4>{item.price}</h4>
+              </div>
+              <Divider />
+            </div>
+          )
+          :
+          <p>no data</p>
+        }
         <div className={classes.total}>
           <h4>Total harga : </h4>
-          <h4>20000</h4>
+          <h4>{order.total_price}</h4>
         </div>
       </div>
     </Card>

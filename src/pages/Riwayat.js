@@ -1,7 +1,6 @@
 import { styled } from '@mui/system';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from "../components/sidebar/Sidebar";
-import addWeeks from 'date-fns/addWeeks';
 import { InputBase } from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -9,6 +8,7 @@ import DateRangePicker from '@mui/lab/DateRangePicker';
 import Box from '@mui/material/Box';
 import HistoryCard from '../components/historycard/HistoryCard';
 import { makeStyles } from '@mui/styles';
+import { api } from '../utils/api';
 
 const useStyles = makeStyles(() => ({
     inputBase: {
@@ -36,12 +36,30 @@ const Root = styled('div')(() => ({
 }))
 
 const Riwayat = () => {
-    function getWeeksAfter(date, amount) {
-        return date ? addWeeks(date, amount) : undefined;
-    }
-
-    const [value, setValue] = React.useState([null, null]);
+    const [value, setValue] = useState([null, null]);
     const classes = useStyles();
+    const [orders, setOrders] = useState();
+    const [update, setUpdate] = useState(false);
+    const [date, setDate] = useState(["",""]);
+    useEffect(() => {
+        api.get("orders/history?start_date="+date[0]+"&end_date="+date[1])
+            .then((res) => {
+                setOrders(res.data.data);
+                console.log(orders);
+            })
+    }, [date])
+    const handleUpdate = () => {
+        setUpdate(!update);
+    }
+    const handleDate = (value) => {
+        setValue(value)
+        if(value[0]&&value[1]){
+            setDate([
+                value[0].getFullYear()+"-"+(value[0].getMonth()+1)+"-"+value[0].getDate(),
+                value[1].getFullYear()+"-"+(value[1].getMonth()+1)+"-"+value[1].getDate(),
+            ])
+        }
+    }
 
     return (
         <Root>
@@ -50,24 +68,27 @@ const Riwayat = () => {
                 <div style={{ backgroundColor: '#fff', paddingTop: 10, paddingBottom: 10 }}>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DateRangePicker
-                            disablePast
+                            disableFuture
+                            allowSameDateSelection="true"
+                            disableCloseOnSelect="false"
                             value={value}
-                            maxDate={getWeeksAfter(value[0], 4)}
                             onChange={(newValue) => {
-                                setValue(newValue);
+                                handleDate(newValue);
                             }}
                             renderInput={(startProps, endProps) => (
-                                <React.Fragment>
+                                <>
                                     <Box sx={{ mx: 2 }}> Dari </Box>
                                     <InputBase className={classes.inputBase} {...startProps} />
                                     <Box sx={{ mx: 2 }}> Sampai </Box>
                                     <InputBase className={classes.inputBase} {...endProps} />
-                                </React.Fragment>
+                                </>
                             )}
                         />
                     </LocalizationProvider>
                 </div>
-                <HistoryCard />
+                {orders && orders.map(order =>
+                    <HistoryCard key={order.id} order={order} handleUpdate={handleUpdate} />
+                )}
             </Content>
         </Root>
     );
