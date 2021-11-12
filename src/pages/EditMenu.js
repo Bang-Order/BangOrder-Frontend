@@ -9,12 +9,11 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import axios from 'axios';
 import { useHistory } from "react-router-dom";
-import { GET_RESTAURANT } from "../utils/Urls";
 import { Menu, MenuItem } from "@mui/material";
 import PrimaryButton from "../components/button/PrimaryButton";
 import SecondaryButton from "../components/button/SecondaryButton";
+import { api } from "../utils/api";
 
 const useStyles = makeStyles(() => ({
   content: {
@@ -97,15 +96,17 @@ const EditMenu = (props) => {
   const menuId = props.match.params.menuId;
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [menu, setMenu] = useState();
   const [allCategory, setAllCategory] = useState();
   const [anchorEl, setAnchorEl] = useState(null);
   const [isRecommended, setIsRecommended] = useState();
   const [isReset, setIsReset] = useState(false);
-  const restoId = localStorage.getItem("RestoId");
   const history = useHistory();
+	const [image, setImage] = useState();
+  
   useEffect(() => {
-    axios.get(GET_RESTAURANT + restoId + '/menus/' + menuId)
+    api.get('/menus/' + menuId)
       .then((res) => {
         setMenu(res.data);
         setIsRecommended(res.data.is_recommended);
@@ -115,24 +116,40 @@ const EditMenu = (props) => {
         setError(err.message);
         setLoading(false);
       })
-  }, [menuId, restoId, isReset])
+  }, [menuId, isReset])
 
   useEffect(() => {
-    axios.get(GET_RESTAURANT + restoId + '/menu-categories')
+    api.get('/menu-categories')
       .then((res) => {
         setAllCategory(res.data.data);
       })
-  }, [restoId])
+  }, [])
 
   const handleSaveButton = () => {
-    axios.put(GET_RESTAURANT + restoId + '/menus/' + menuId, menu, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
-      .then(history.push("/list-menu"));
+    setSaving(true);
+    let formData = new FormData();
+		for ( var key in menu ) {
+      formData.append(key, menu[key]);
+		}
+    formData.delete('image');
+    if (image){
+      formData.append('image', image);
+    }
+		api.post('/menus/'+menuId+'?_method=PUT', formData, {
+			headers: {
+				'Content-Type': 'application/form-data; ',
+			}
+		})
+    .then(setTimeout(()=>{
+      setSaving(false);
+      history.push("/list-menu");
+    }, 1000))
   }
   const handleReset = () => {
     setIsReset(!isReset);
   }
   const handleDelete = () => {
-    axios.delete(GET_RESTAURANT + restoId + '/menus/' + menuId, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
+    api.delete('/menus/' + menuId)
       .then(history.push("/list-menu"));
   }
   const handleClick = (event) => {
@@ -167,6 +184,14 @@ const EditMenu = (props) => {
       is_recommended: value,
     }));
   }
+
+	const handleImageChange = (evt) => {
+		setImage(evt.target.files[0]);
+		setMenu(prevState => ({
+			...prevState,
+			image: image
+		}));
+	}
 
   return (
     <Root>
@@ -271,9 +296,9 @@ const EditMenu = (props) => {
                 </div>
                 <div className={classes.right}>
                   <div>
-                    <img className={classes.image} src={menu.image} alt="" variant="outlined" />
+                    <img className={classes.image} src={image ? URL.createObjectURL(image) : menu.image} alt="" variant="outlined" />
                     <label htmlFor="contained-button-file">
-                      <Input accept="image/*" id="contained-button-file" multiple type="file" />
+                      <Input onChange={handleImageChange} accept="image/*" id="contained-button-file" multiple type="file" />
                       <PrimaryButton width="100%" component="span">
                         Upload
                       </PrimaryButton>
@@ -282,7 +307,7 @@ const EditMenu = (props) => {
                   <div className={classes.navButton}>
                     <SecondaryButton width="100px" onClick={handleReset}>Reset</SecondaryButton>
                     <SecondaryButton width="100px" onClick={handleDelete}>Hapus</SecondaryButton>
-                    <PrimaryButton width="100px" onClick={handleSaveButton}>Simpan</PrimaryButton>
+                    <PrimaryButton loading={saving} width="100px" onClick={handleSaveButton}>Simpan</PrimaryButton>
                   </div>
                 </div>
               </div>

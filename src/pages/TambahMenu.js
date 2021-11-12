@@ -9,11 +9,10 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import axios from 'axios';
 import { useHistory } from "react-router-dom";
-import { GET_RESTAURANT } from "../utils/Urls";
 import { Menu, MenuItem } from "@mui/material";
 import PrimaryButton from "../components/button/PrimaryButton";
+import { api } from "../utils/api";
 
 const useStyles = makeStyles((theme) => ({
 	content: {
@@ -101,19 +100,28 @@ const TambahMenu = () => {
 	const [allCategory, setAllCategory] = useState();
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [isRecommended, setIsRecommended] = useState();
-	const restoId = localStorage.getItem("RestoId");
 	const history = useHistory();
 
 	useEffect(() => {
-		axios.get(GET_RESTAURANT + restoId + '/menu-categories')
+		api.get('/menu-categories')
 			.then((res) => {
 				setAllCategory(res.data.data);
 			})
-	}, [restoId])
+	}, [])
 
 	const handleSaveButton = () => {
-		axios.post(GET_RESTAURANT + restoId + '/menus/', menu, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
-			.then(history.push("/list-menu"));
+		let formData = new FormData();
+		console.log(formData);
+		formData.append('image', image);
+		for ( var key in menu ) {
+			formData.append(key, menu[key]);
+		}
+		api.post('/menus/', formData, {
+			headers: {
+				'Content-Type': 'application/form-data; ',
+			}
+		})
+		.then(history.push("/list-menu"));
 	}
 
 	const handleClick = (event) => {
@@ -149,8 +157,12 @@ const TambahMenu = () => {
 		}));
 	}
 
-	const handleImageChange = (event) => {
-		setImage(URL.createObjectURL(event.target.files[0]));
+	const handleImageChange = (evt) => {
+		setImage(evt.target.files[0]);
+		setMenu(prevState => ({
+			...prevState,
+			image: image
+		}));
 	}
 
 	return (
@@ -251,9 +263,9 @@ const TambahMenu = () => {
 							</div>
 							<div className={classes.right}>
 								<div>
-									<img className={classes.image} src={image ? image : 'thumbnail.svg'} alt="" variant="outlined" />
+									<img className={classes.image} src={image ? URL.createObjectURL(image) : 'thumbnail.svg'} alt="" variant="outlined" />
 									<label htmlFor="contained-button-file">
-										<Input onChange={handleImageChange} accept="image/*" id="contained-button-file" multiple type="file" />
+										<Input onChange={handleImageChange} accept="image/*" id="contained-button-file" multiple type="file" name="image" />
 										<PrimaryButton width="100%" component="span">
 											Upload
 										</PrimaryButton>

@@ -1,12 +1,10 @@
 import React from 'react';
 import { makeStyles } from '@mui/styles';
 import { Button, Card, CardContent, Menu, MenuItem } from '@mui/material';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Divider from '@mui/material/Divider';
 import './cardlist.css';
-import axios from 'axios';
-import { GET_RESTAURANT } from '../../utils/Urls';
 import PrimaryButton from '../button/PrimaryButton';
+import { api } from '../../utils/api';
 
 const useStyles = makeStyles(() => ({
 	root: {
@@ -79,12 +77,13 @@ const useStyles = makeStyles(() => ({
 	}
 }));
 
-const OrderCard = (param) => {
+const OrderCard = (props) => {
 	const classes = useStyles();
-	const order = param.order;
-	const orderItem = param.order.order_items;
+	const order = props.order;
+	const orderItem = props.order.order_items;
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [status, setStatus] = React.useState(order.order_status);
+	const handleUpdate = props.handleUpdate;
 	const restoId = localStorage.getItem("RestoId");
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
@@ -97,13 +96,15 @@ const OrderCard = (param) => {
 	const handleStatus = (status) => {
 		handleClose();
 		setStatus(status);
-		axios
-			.patch(GET_RESTAURANT+restoId+'/orders/'+order.id, {
+		api
+			.patch(+'/orders/' + order.id, {
 				"order_status": status,
 				"payment_status": "success"
-			},{headers: { Authorization: 'Bearer '+localStorage.getItem("TOKEN")}});
+			}, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } });
+		setTimeout(() => {
+			handleUpdate();
+		}, 300);
 	}
-	console.log(status);
 	return (
 		<Card className={classes.root}>
 			<div className={classes.details}>

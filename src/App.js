@@ -10,32 +10,32 @@ import {
 function App() {
   return (
     <div className="App">
-    <Router>
-      <Switch>
-        {APP_ROUTE.map((value, index) => {
-          if (value.private) {
-            return (
-              <PrivateRoute 
-                key={value.name}
-                component={value.component}
-                path={value.path}
-                exact={value.exact}
-              />
-            )
-          } else {
-            return (
-              <PublicRoute
-                key={value.name}
-                restricted={value.restricted}
-                path={value.path}
-                component={value.component}
-                exact={value.exact}
-              />
-            );
-          }
-        })}
-      </Switch>
-    </Router>
+      <Router>
+        <Switch>
+          {APP_ROUTE.map((value, index) => {
+            if (value.private) {
+              return (
+                <PrivateRoute
+                  key={value.name}
+                  component={value.component}
+                  path={value.path}
+                  exact={value.exact}
+                />
+              )
+            } else {
+              return (
+                <PublicRoute
+                  key={value.name}
+                  restricted={value.restricted}
+                  path={value.path}
+                  component={value.component}
+                  exact={value.exact}
+                />
+              );
+            }
+          })}
+        </Switch>
+      </Router>
     </div>
   );
 }

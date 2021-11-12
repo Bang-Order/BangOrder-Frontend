@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {
     AppBar,
     Box,
@@ -27,8 +27,16 @@ import { logout } from '../../utils/Auth';
 import { NavLink, useHistory } from "react-router-dom";
 
 const drawerWidth = 260;
+const useStyles = makeStyles(() => ({
+    image: {
+        width: '80%',
+        height: 'auto',
+        paddingTop: 20,
+    }
+}));
 
 const Sidebar = (props) => {
+    const classes = useStyles();
     const { window } = props;
     const history = useHistory();
     const navIndex = props.index;
@@ -41,23 +49,13 @@ const Sidebar = (props) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
-    const useStyles = makeStyles(() => ({
-        image: {
-            width: '80%',
-            height: 'auto',
-            paddingTop: 20,
-        },
-        list: {
-        }
-    }));
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
     const _onLogout = () => {
         logout();
         history.replace("/login");
-    };
-    const classes = useStyles();
+    };  
 
     const CustomListItem = withStyles({
         root: {
@@ -77,7 +75,6 @@ const Sidebar = (props) => {
             //     }
             // }
         },
-        selected: {}
     })(ListItemButton);
     const drawer = (
         <div>
