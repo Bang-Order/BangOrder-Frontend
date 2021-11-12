@@ -71,7 +71,9 @@ const Login2 = () => {
                 password: password
             }).then((res) => {
                 login(res.data.data);
-                history.push("/order-list");
+                setTimeout(() => {
+                    history.push("/order-list");
+                }, 500);
             }).catch((err) => {
                 setError(err);
                 setLoading(false);

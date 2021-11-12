@@ -143,7 +143,7 @@ const EditMenu = (props) => {
     .then(setTimeout(()=>{
       setSaving(false);
       history.push("/list-menu");
-    }, 1000))
+    }, 500))
   }
   const handleReset = () => {
     setIsReset(!isReset);
@@ -296,7 +296,7 @@ const EditMenu = (props) => {
                 </div>
                 <div className={classes.right}>
                   <div>
-                    <img className={classes.image} src={image ? URL.createObjectURL(image) : menu.image} alt="" variant="outlined" />
+                    <img className={classes.image} src={image ? URL.createObjectURL(image) : menu.image} alt="" />
                     <label htmlFor="contained-button-file">
                       <Input onChange={handleImageChange} accept="image/*" id="contained-button-file" multiple type="file" />
                       <PrimaryButton width="100%" component="span">

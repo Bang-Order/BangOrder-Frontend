@@ -50,18 +50,17 @@ const ListMenu = () => {
   const [statusFilter, setStatusFilter] = useState("");
   const [searchKey, setSearchKey] = useState("");
   const [menus, setMenus] = useState(null);
-  console.log(menus);
   useEffect(() => {
     setTimeout(() => {
-      api.get("/menus?filter="+statusFilter)
-      .then((res) => {
-        setMenus(res.data.data);
-        setLoading(false)
-      })
-      .catch(err => {
-        setError(err.message);
-        setLoading(false)
-      })
+      api.get("/menus?filter=" + statusFilter)
+        .then((res) => {
+          setMenus(res.data.data);
+          setLoading(false)
+        })
+        .catch(err => {
+          setError(err.message);
+          setLoading(false)
+        })
     }, 300);
   }, [statusFilter])
 
@@ -148,9 +147,20 @@ const ListMenu = () => {
       <div className={classes.content}>
 
         {loading ?
-          <div className={classes.container}>
-            <Skeleton sx={{ width: "90%", height: 300 }} animation="wave" variant="rectangular" />
-          </div>
+          <>
+            <div className={classes.container}>
+              <Skeleton sx={{ width: "90%", height: 300 }} animation="wave" variant="rectangular" />
+            </div>
+            <div className={classes.container}>
+              <Skeleton sx={{ width: "90%", height: 300 }} animation="wave" variant="rectangular" />
+            </div>
+            <div className={classes.container}>
+              <Skeleton sx={{ width: "90%", height: 300 }} animation="wave" variant="rectangular" />
+            </div>
+            <div className={classes.container}>
+              <Skeleton sx={{ width: "90%", height: 300 }} animation="wave" variant="rectangular" />
+            </div>
+          </>
           :
           menus && menus.map(menu =>
             <Link to={"/edit-menu/" + menu.id} className={classes.container}>
