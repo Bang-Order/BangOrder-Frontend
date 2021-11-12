@@ -18,11 +18,16 @@
 10. start server
     > npm start
 
-# available route
+# Available route
     - /order-list
     - /list-menu
     - /login
     - /register
+    - /data-meja
+    - /kategori-menu
+    - /tambah-menu
+    - /edit-menu/:menuId
+    - /riwayat
 
 # Sprint Backlog
 1. Sprint 1
