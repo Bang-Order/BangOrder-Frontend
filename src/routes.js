@@ -8,6 +8,7 @@ import KategoriMenu from "./pages/KategoriMenu";
 import Riwayat from "./pages/Riwayat";
 import EditMenu from "./pages/EditMenu";
 import TambahMenu from "./pages/TambahMenu";
+import Akun from "./pages/Akun";
 
 export const APP_ROUTE = [
     {
@@ -78,6 +79,13 @@ export const APP_ROUTE = [
         path: "/tambah-menu",
         exact: true,
         component: TambahMenu,
+        private: true,
+    },
+    {
+        name: "Akun Saya",
+        Path: "/akun-saya",
+        exact: true,
+        component: Akun,
         private: true,
     },
 ];

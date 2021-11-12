@@ -184,7 +184,7 @@ const Sidebar = (props) => {
                         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                     >
-                        <MenuItem>
+                        <MenuItem onClick={() => history.push('/akun-saya')}>
                             Akun Saya
                         </MenuItem>
                         <MenuItem onClick={_onLogout}>
