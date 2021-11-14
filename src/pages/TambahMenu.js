@@ -13,6 +13,7 @@ import { useHistory } from "react-router-dom";
 import { Menu, MenuItem } from "@mui/material";
 import PrimaryButton from "../components/button/PrimaryButton";
 import { api } from "../utils/api";
+import Cookies from "js-cookie";
 
 const useStyles = makeStyles((theme) => ({
 	content: {
@@ -103,7 +104,7 @@ const TambahMenu = () => {
 	const history = useHistory();
 
 	useEffect(() => {
-		api.get('/menu-categories')
+		api.get('/menu-categories', {headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") }})
 			.then((res) => {
 				setAllCategory(res.data.data);
 			})

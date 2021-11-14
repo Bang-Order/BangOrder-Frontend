@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/sidebar/Sidebar';
 import { styled } from '@mui/material/styles';
 import axios from 'axios';
-import { GET_RESTAURANT } from "../utils/Urls";
 import PrimaryButton from '../components/button/PrimaryButton';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -10,8 +9,9 @@ import SecondaryButton from '../components/button/SecondaryButton';
 import { makeStyles } from '@mui/styles';
 import InputBase from '@mui/material/InputBase';
 import FormControl from '@mui/material/FormControl';
-import { InputLabel, Button,  Radio} from "@mui/material";
+import { InputLabel, Button, Radio } from "@mui/material";
 import { useHistory } from 'react-router';
+import { api } from '../utils/api';
 
 
 const Root = styled('div')(() => ({
@@ -34,8 +34,10 @@ const useStyles = makeStyles(() => ({
     width: "100%"
   },
   image: {
-    width: "100%",
+    width: 300,
     height: 'auto',
+    marginTop: 20,
+    marginBottom: 20
   },
   left: {
     display: 'flex',
@@ -97,55 +99,74 @@ const Akun = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [resto, setResto] = useState();
-  const restoId = localStorage.getItem("RestoId");
+  const [image, setImage] = useState();
   const history = useHistory();
 
-  useEffect(()  => {
-    axios.get(GET_RESTAURANT + restoId + '/restaurants/')
-    .then((res) => {
-        setResto(res.data);
-        setLoading(false);
-    })
-    .catch(err => {
-      setError(err.message);
-      setLoading(false);
-    })
-  }, [restoId])
-
-  const handleSaveButton = () => {
-    axios.put(GET_RESTAURANT + restoId + '/restaurants/' + resto, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } })
-      .then(history.push("/akun-saya"));
-  }
+  useEffect(() => {
+    api.get()
+      .then((res) => {
+        setResto(res.data)
+        setLoading(false)
+      })
+  }, [])
 
   const handleChange = (evt) => {
     const value = evt.target.value;
     setResto(prevState => ({
       ...prevState,
-      [evt.target.name]: value,
-      [evt.target.email]: value,
+      [evt.target.name]: value
     }));
+    console.log(resto);
   }
+	const handleImageChange = (evt) => {
+		setImage(evt.target.files[0]);
+		setResto(prevState => ({
+			...prevState,
+			image: image
+		}));
+	}
+  
+	const handleSaveButton = () => {
+		let formData = new FormData();
+		formData.append('image', image);
+		for ( var key in resto ) {
+			formData.append(key, resto[key]);
+		}
+    formData.delete('image');
+    if (image){
+      formData.append('image', image);
+    }
+		api.post('?_method=PUT', formData, {
+			headers: {
+				'Content-Type': 'application/form-data; ',
+			}
+		})
+		.then(history.push("/"));
+	}
 
   return (
     <Root>
       <div>
-        <Sidebar name="Akun Saya"/>
+        <Sidebar name="Akun Saya" />
         <div>
-            <Frame>
-              <div className={classes.content}>
+          {loading ? <p>loading</p>
+            :
+            <>
+              <Frame>
+                <div className={classes.content}>
                   <div className={classes.left}>
                     <h2>Data Restoran</h2>
                     <div className={classes.item}>
                       <FormControl variant="standard">
                         <InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
-                          Nama Restourant
+                          Nama Restoran
                         </InputLabel>
                         <BootstrapInput
-                          //onChange={handleChange}
-                          //value={resto.name}
+                          onChange={handleChange}
+                          value={resto.name}
                           placeholder="Nama restoran"
                           id="bootstrap-input"
-                          name="nameResto"
+                          name="name"
                         />
                       </FormControl>
                     </div>
@@ -155,8 +176,8 @@ const Akun = () => {
                           Email
                         </InputLabel>
                         <BootstrapInput
-                          //onChange={handleChange}
-                          //value={resto.email}
+                          onChange={handleChange}
+                          value={resto.email}
                           placeholder="email"
                           id="bootstrap-input"
                           name="email"
@@ -169,34 +190,30 @@ const Akun = () => {
                           Alamat Lengkap
                         </InputLabel>
                         <BootstrapInput
+                          onChange={handleChange}
                           placeholder="alamat"
                           id="bootstrap-input"
-                          name="alamat"
+                          name="address"
                           multiline
                           minRows={3}
+                          value={resto.address}
                           style={{ width: '400px' }}
                         />
                       </FormControl>
                     </div>
                   </div>
                   <div className={classes.right}>
-                    <div>
-                      <label style={{ fontSize: "24px" }}>
-                        Foto Restoran 
-                      </label>
-                      <img className={classes.image} alt="" variant="outlined" />
+                      <img className={classes.image} src={image ? URL.createObjectURL(image) : resto.image} alt="" variant="outlined" />
                       <label htmlFor="contained-button-file">
-                      <Input accept="image/*" id="contained-button-file" multiple type="file" />
-                      <PrimaryButton width="100%" component="span">
-                        Upload
-                      </PrimaryButton>
-                    </label>
-                    </div>
-                 </div>
-                 
-              </div>
-              <div className={classes.content}>
-                <div style={{width: '100%'}}>
+                        <Input accept="image/*" onChange={handleImageChange} id="contained-button-file" multiple type="file" />
+                        <PrimaryButton width="100%" component="span">
+                          Upload
+                        </PrimaryButton>
+                      </label>
+                  </div>
+                </div>
+                <div className={classes.content}>
+                  <div style={{ width: '100%' }}>
                     <h2>Data Pemilik</h2>
                     <div className={classes.item}>
                       <FormControl variant="standard">
@@ -204,9 +221,11 @@ const Akun = () => {
                           Nama Pemilik
                         </InputLabel>
                         <BootstrapInput
+                          onChange={handleChange}
                           placeholder="Nama Pemilik"
                           id="bootstrap-input"
-                          name="namePemilik"
+                          name="owner_name"
+                          value={resto.owner_name}
                         />
                       </FormControl>
                     </div>
@@ -216,38 +235,26 @@ const Akun = () => {
                           No Telepon
                         </InputLabel>
                         <BootstrapInput
+                          onChange={handleChange}
                           placeholder="no tlp"
                           id="bootstrap-input"
-                          name="tlp"
+                          name="telephone_number"
+                          value={resto.telephone_number}
                         />
                       </FormControl>
                     </div>
-                    <div className={classes.item}>
-                      <h4>Jenis Kelamin</h4>
-                      <RadioGroup name="kelamin">
-                        <FormControlLabel value="1" control={<Radio size="small" style={{ color: '#FFC300' }} />} label="Laki-Laki" />
-                        <FormControlLabel value="0" control={<Radio size="small" style={{ color: '#FFC300' }} />} label="Perempuan" />
-                      </RadioGroup>
-                    </div>
                     <div className={classes.navButton}>
-                      <PrimaryButton width="100px">
+                      <PrimaryButton width="100px" onClick={handleSaveButton}>
                         Simpan
                       </PrimaryButton>
                     </div>
-                    
                   </div>
-              </div>
-            </Frame>
-            <Frame style={{marginTop: 30}}>
-              <div className={classes.content}>
-                <div className={classes.item}>
-                  <h2>Rekening Bank</h2>
-                  
                 </div>
-              </div>
-            </Frame>
-          </div>
+              </Frame>
+            </>
+          }
         </div>
+      </div>
     </Root>
   )
 }

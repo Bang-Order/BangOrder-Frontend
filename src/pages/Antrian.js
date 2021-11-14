@@ -6,6 +6,7 @@ import { styled } from '@mui/material/styles';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import { api } from '../utils/api';
+import Cookies from 'js-cookie';
 
 const Content = styled('div')(({ theme }) => ({
     marginLeft: 280,
@@ -29,7 +30,9 @@ const Antrian = (props) => {
     const [loading, setLoading] = useState(true);
     const [update, setUpdate] = useState(false);
     useEffect(() => {
-        api.get('/orders?status='+value)
+        api.get('/orders?status='+value, 
+        {headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") }}
+        )
             .then((res) => {
                 setOrders(res.data.data);
                 setLoading(false);
