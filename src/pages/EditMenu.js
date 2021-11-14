@@ -14,6 +14,7 @@ import { Menu, MenuItem } from "@mui/material";
 import PrimaryButton from "../components/button/PrimaryButton";
 import SecondaryButton from "../components/button/SecondaryButton";
 import { api } from "../utils/api";
+import Cookies from "js-cookie";
 
 const useStyles = makeStyles(() => ({
   content: {
@@ -137,8 +138,9 @@ const EditMenu = (props) => {
     }
 		api.post('/menus/'+menuId+'?_method=PUT', formData, {
 			headers: {
+        Authorization: 'Bearer ' + Cookies.get("BangOrderToken"),
 				'Content-Type': 'application/form-data; ',
-			}
+			} 
 		})
     .then(setTimeout(()=>{
       setSaving(false);

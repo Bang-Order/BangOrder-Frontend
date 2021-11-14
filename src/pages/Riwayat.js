@@ -9,6 +9,7 @@ import Box from '@mui/material/Box';
 import HistoryCard from '../components/historycard/HistoryCard';
 import { makeStyles } from '@mui/styles';
 import { api } from '../utils/api';
+import Cookies from 'js-cookie';
 
 const useStyles = makeStyles(() => ({
     inputBase: {
@@ -42,7 +43,7 @@ const Riwayat = () => {
     const [update, setUpdate] = useState(false);
     const [date, setDate] = useState(["",""]);
     useEffect(() => {
-        api.get("orders/history?start_date="+date[0]+"&end_date="+date[1])
+        api.get("orders/history?start_date="+date[0]+"&end_date="+date[1], {headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") }})
             .then((res) => {
                 setOrders(res.data.data);
                 console.log(orders);

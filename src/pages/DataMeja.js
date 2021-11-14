@@ -77,6 +77,7 @@ const DataMeja = () => {
     const [addDialog, setAddDialog] = useState();
     const [update, setUpdate] = useState();
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(true);
 
     useEffect(() => {
         setLoading(true)
@@ -141,15 +142,12 @@ const DataMeja = () => {
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
                 <Button onClick={saveHandler}>Save</Button>
-            </DialogActions>
+            </DialogActions> 
         </Dialog>
     )
 
     const download = (table) => {
-        api.get("/tables/" + table.id + "/downloadQRCode")
-        .then(
-            saveAs(process.env.REACT_APP_API_URL + "restaurants/" + restoId + "/tables/" + table.id + "/downloadQRCode", 'Meja ' + table.table_number +'.jpg', {headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") }})
-        )
+        saveAs(process.env.REACT_APP_API_URL + "restaurants/" + restoId + "/tables/" + table.id + "/downloadQRCode", 'Meja ' + table.table_number +'.jpg')
     }; 
 
     return (

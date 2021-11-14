@@ -14,10 +14,11 @@ import {
     TextField,
     Container,
 } from '@mui/material';
-import { login } from "../utils/Auth";
+import { isLogin, login } from "../utils/Auth";
 import { Link, useHistory } from "react-router-dom";
 import axios from 'axios';
 import PrimaryButton from '../components/button/PrimaryButton';
+import Cookies from 'js-cookie';
 
 const useStyle = makeStyles({
     root: {
@@ -71,9 +72,10 @@ const Login2 = () => {
                 password: password
             }).then((res) => {
                 login(res.data.data);
-                setTimeout(() => {
+                if(isLogin){
+                    console.log(Cookies.get("BangOrderToken"));
                     history.push("/order-list");
-                }, 500);
+                }
             }).catch((err) => {
                 setError(err);
                 setLoading(false);
