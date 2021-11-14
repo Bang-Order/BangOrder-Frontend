@@ -5,6 +5,7 @@ import Divider from '@mui/material/Divider';
 import './cardlist.css';
 import PrimaryButton from '../button/PrimaryButton';
 import { api } from '../../utils/api';
+import Cookies from 'js-cookie';
 
 const useStyles = makeStyles(() => ({
 	root: {
@@ -97,10 +98,10 @@ const OrderCard = (props) => {
 		handleClose();
 		setStatus(status);
 		api
-			.patch(+'/orders/' + order.id, {
+			.patch('/orders/' + order.id, {
 				"order_status": status,
 				"payment_status": "success"
-			}, { headers: { Authorization: 'Bearer ' + localStorage.getItem("TOKEN") } });
+			}, { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } });
 		setTimeout(() => {
 			handleUpdate();
 		}, 300);

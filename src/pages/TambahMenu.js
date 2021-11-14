@@ -104,7 +104,7 @@ const TambahMenu = () => {
 	const history = useHistory();
 
 	useEffect(() => {
-		api.get('/menu-categories', {headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") }})
+		api.get('/menu-categories', { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
 			.then((res) => {
 				setAllCategory(res.data.data);
 			})
@@ -113,8 +113,10 @@ const TambahMenu = () => {
 	const handleSaveButton = () => {
 		let formData = new FormData();
 		console.log(formData);
-		formData.append('image', image);
-		for ( var key in menu ) {
+		if (image) {
+			formData.append('image', image);
+		}
+		for (var key in menu) {
 			formData.append(key, menu[key]);
 		}
 		api.post('/menus/', formData, {
@@ -122,7 +124,7 @@ const TambahMenu = () => {
 				'Content-Type': 'application/form-data; ',
 			}
 		})
-		.then(history.push("/list-menu"));
+			.then(history.push("/list-menu"));
 	}
 
 	const handleClick = (event) => {
