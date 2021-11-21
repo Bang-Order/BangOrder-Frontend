@@ -33,7 +33,7 @@
 1. Sprint 1
    > Login, Antrian page, Menu page, Detail menu page
 2. Sprint 2
-   > Tambah menu & Update status menu (Menu page), Edit data menu (Detail menu page), Riwayat pesanan page, Kategori menu page, Data meja page, Generate QR Code for every table in restaurant
+   > Tambah menu & Update status menu (Menu page), Edit data menu (Detail menu page), Riwayat pesanan page, Kategori menu page, Data meja page, Generate QR Code for every table in restaurant, Profile page
 
 # User Flow
 - User **login** first
