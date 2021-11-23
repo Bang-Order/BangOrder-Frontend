@@ -185,7 +185,7 @@ const Sidebar = (props) => {
                             Akun Saya
                         </MenuItem>
                         <MenuItem onClick={() => history.push('/ubah-sandi')}>
-                            Ubah Sandi
+                            Ubah Kata Sandi
                         </MenuItem>
                         <MenuItem onClick={_onLogout}>
                             Keluar
