@@ -9,6 +9,7 @@ import Riwayat from "./pages/Riwayat";
 import EditMenu from "./pages/EditMenu";
 import TambahMenu from "./pages/TambahMenu";
 import Akun from "./pages/Akun";
+import UbahSandi from "./pages/UbahSandi";
 
 export const APP_ROUTE = [
     {
@@ -86,6 +87,13 @@ export const APP_ROUTE = [
         Path: "/akun-saya",
         exact: true,
         component: Akun,
+        private: true,
+    },
+    {
+        name: "Ubah Sandi",
+        Path: "/ubah-sandi",
+        exact: true,
+        component: UbahSandi,
         private: true,
     },
 ];
