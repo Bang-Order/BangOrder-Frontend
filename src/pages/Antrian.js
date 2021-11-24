@@ -30,7 +30,7 @@ const Antrian = (props) => {
     const [loading, setLoading] = useState(true);
     const [update, setUpdate] = useState(false);
     useEffect(() => {
-        api.get('/orders?status='+value, 
+        api.get(Cookies.get("RestoId")+'/orders?status='+value, 
         {headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") }}
         )
             .then((res) => {

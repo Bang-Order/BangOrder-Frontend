@@ -3,6 +3,6 @@ import Cookies from "js-cookie";
 require('dotenv').config();
 
 export const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL + "restaurants/"+Cookies.get("RestoId"),
+  baseURL: process.env.REACT_APP_API_URL + "restaurants/",
   headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") }
 });

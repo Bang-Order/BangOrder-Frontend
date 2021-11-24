@@ -5,6 +5,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { styled } from "@mui/system";
 import Sidebar from "../components/sidebar/Sidebar";
 import PrimaryButton from '../components/button/PrimaryButton';
@@ -17,8 +18,8 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { api } from '../utils/api';
+import Cookies from 'js-cookie';
 
 const Content = styled('div')(({ theme }) => ({
   backgroundColor: '#fff',
@@ -93,7 +94,7 @@ const KategoriMenu = () => {
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
-      api.get('/menu-categories')
+      api.get(Cookies.get("RestoId")+'/menu-categories')
         .then((res) => {
           setAllCategory(res.data.data);
           setLoading(false);
@@ -123,17 +124,17 @@ const KategoriMenu = () => {
 
   const saveHandler = () => {
     addDialog ?
-      api.post('/menu-categories', newCategory)
+      api.post(Cookies.get("RestoId")+'/menu-categories', newCategory)
         .then(setOpen(false))
         .then(setUpdate(!update))
       :
-      api.patch('/menu-categories/' + category.id, newCategory)
+      api.patch(Cookies.get("RestoId")+'/menu-categories/' + category.id, newCategory)
         .then(setOpen(false))
         .then(setUpdate(!update))
   }
 
   const deleteHandler = (id) => {
-    api.delete('/menu-categories/' + id)
+    api.delete(Cookies.get("RestoId")+'/menu-categories/' + id)
       .then(setOpen(false))
       .then(setUpdate(!update))
   }

@@ -82,7 +82,7 @@ const DataMeja = () => {
     useEffect(() => {
         setLoading(true)
         setTimeout(() => {
-            api.get("/tables").then((res) => {
+            api.get(Cookies.get("RestoId")+"/tables").then((res) => {
                 setTables(res.data.data);
                 setLoading(false)
             })
@@ -109,17 +109,17 @@ const DataMeja = () => {
 
     const saveHandler = () => {
         addDialog ?
-            api.post('/tables', newTable)
+            api.post(Cookies.get("RestoId")+'/tables', newTable)
                 .then(setOpen(false))
                 .then(setUpdate(!update))
             :
-            api.patch('/tables/' + table.id, newTable)
+            api.patch(Cookies.get("RestoId")+'/tables/' + table.id, newTable)
                 .then(setOpen(false))
                 .then(setUpdate(!update))
     }
 
     const deleteClickHandler = (id) => {
-        api.delete('/tables/' + id)
+        api.delete(Cookies.get("RestoId")+'/tables/' + id)
             .then(setOpen(false))
             .then(setUpdate(!update))
     }

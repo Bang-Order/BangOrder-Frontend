@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import useDidMountEffect from "../componentDidMount/useDidMountEffect";
 import PrimaryButton from "../button/PrimaryButton";
 import { api } from "../../utils/api";
+import Cookies from "js-cookie";
 
 const useStyles = makeStyles(() => ({
   content: {
@@ -52,7 +53,7 @@ const ListMenu = () => {
   const [menus, setMenus] = useState(null);
   useEffect(() => {
     setTimeout(() => {
-      api.get("/menus?filter=" + statusFilter)
+      api.get(Cookies.get("RestoId")+"/menus?filter=" + statusFilter)
         .then((res) => {
           setMenus(res.data.data);
           setLoading(false)
@@ -67,7 +68,7 @@ const ListMenu = () => {
   useDidMountEffect(() => {
     const searchMenu = () => {
       setLoading(true);
-      api.get('/menus?search=' + searchKey)
+      api.get(Cookies.get("RestoId")+'/menus?search=' + searchKey)
         .then((res) => {
           setMenus(res.data.data);
           setLoading(false);
@@ -85,7 +86,7 @@ const ListMenu = () => {
   const handleStatusClick = (status) => {
     setStatusFilter(status)
     setAnchorEl(null);
-    api.get('/menus?filter=' + statusFilter)
+    api.get(Cookies.get("RestoId")+'/menus?filter=' + statusFilter)
       .then((res) => {
         setMenus(res.data.data);
       })
