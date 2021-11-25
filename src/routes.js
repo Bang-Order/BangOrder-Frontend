@@ -9,6 +9,7 @@ import Riwayat from "./pages/Riwayat";
 import EditMenu from "./pages/EditMenu";
 import TambahMenu from "./pages/TambahMenu";
 import Akun from "./pages/Akun";
+import Form from "./pages/Form";
 
 export const APP_ROUTE = [
     {
@@ -83,9 +84,16 @@ export const APP_ROUTE = [
     },
     {
         name: "Akun Saya",
-        Path: "/akun-saya",
+        path: "/akun-saya",
         exact: true,
         component: Akun,
         private: true,
     },
+    {
+        name: "Form Register",
+        path: "/form",
+        exact: true,
+        component: Form,
+        private: true,
+    }
 ];
