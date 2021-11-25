@@ -3,15 +3,14 @@ import Sidebar from '../components/sidebar/Sidebar';
 import { styled } from '@mui/material/styles';
 import axios from 'axios';
 import PrimaryButton from '../components/button/PrimaryButton';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import SecondaryButton from '../components/button/SecondaryButton';
 import { makeStyles } from '@mui/styles';
 import InputBase from '@mui/material/InputBase';
 import FormControl from '@mui/material/FormControl';
-import { InputLabel, Button, Radio } from "@mui/material";
+import { InputLabel, Button, ListItem, Tooltip, ListItemIcon } from "@mui/material";
 import { useHistory } from 'react-router';
 import { api } from '../utils/api';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 
 
 const Root = styled('div')(() => ({
@@ -101,6 +100,7 @@ const Akun = () => {
   const [resto, setResto] = useState();
   const [image, setImage] = useState();
   const history = useHistory();
+  const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
     api.get()
@@ -118,31 +118,39 @@ const Akun = () => {
     }));
     console.log(resto);
   }
-	const handleImageChange = (evt) => {
-		setImage(evt.target.files[0]);
-		setResto(prevState => ({
-			...prevState,
-			image: image
-		}));
-	}
-  
-	const handleSaveButton = () => {
-		let formData = new FormData();
-		formData.append('image', image);
-		for ( var key in resto ) {
-			formData.append(key, resto[key]);
-		}
+  const handleImageChange = (evt) => {
+    setImage(evt.target.files[0]);
+    setResto(prevState => ({
+      ...prevState,
+      image: image
+    }));
+  }
+
+  const handleSaveButton = () => {
+    let formData = new FormData();
+    formData.append('image', image);
+    for (var key in resto) {
+      formData.append(key, resto[key]);
+    }
     formData.delete('image');
-    if (image){
+    if (image) {
       formData.append('image', image);
     }
-		api.post('?_method=PUT', formData, {
-			headers: {
-				'Content-Type': 'application/form-data; ',
-			}
-		})
-		.then(history.push("/"));
-	}
+    api.post('?_method=PUT', formData, {
+      headers: {
+        'Content-Type': 'application/form-data; ',
+      }
+    })
+      .then(history.push("/"));
+  }
+
+  const handleTooltipClose = () => {
+    setOpen(false);
+  }
+
+  const handleTooltipOpen = () => {
+    setOpen(true);
+  }
 
   return (
     <Root>
@@ -203,13 +211,35 @@ const Akun = () => {
                     </div>
                   </div>
                   <div className={classes.right}>
+                    <div>
                       <img className={classes.image} src={image ? URL.createObjectURL(image) : resto.image} alt="" variant="outlined" />
                       <label htmlFor="contained-button-file">
                         <Input accept="image/*" onChange={handleImageChange} id="contained-button-file" multiple type="file" />
-                        <PrimaryButton width="100%" component="span">
-                          Upload
-                        </PrimaryButton>
+                        <ListItem>
+                          <PrimaryButton width="100%" component="span">
+                            Upload
+                          </PrimaryButton>
+                          <ClickAwayListener onClickAway={handleTooltipClose}>
+                            <Tooltip
+                              PopperProps={{
+                                disablePortal: true,
+                              }}
+                              onClose={handleTooltipClose}
+                              open={open}
+                              disableFocusListener
+                              disableHoverListener
+                              disableTouchListener
+                              title="Gunakan foto berekstensi jpg/png dengan rasio 1:1 (MAX 1 MB)">
+                              <ListItemIcon>
+                                <Button>
+                                  <InfoOutlinedIcon style={{ marginLeft: 20 }} onClick={handleTooltipOpen} />
+                                </Button>
+                              </ListItemIcon>
+                            </Tooltip>
+                          </ClickAwayListener>
+                        </ListItem>
                       </label>
+                    </div>
                   </div>
                 </div>
                 <div className={classes.content}>

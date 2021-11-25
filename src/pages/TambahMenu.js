@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Sidebar from '../components/sidebar/Sidebar';
 import { makeStyles } from '@mui/styles';
 import { styled } from "@mui/system";
-import { InputLabel, Button, Radio } from "@mui/material";
+import { InputLabel, Button, Radio, ListItem, Tooltip, ListItemIcon } from "@mui/material";
 import FormControl from '@mui/material/FormControl';
 import InputBase from '@mui/material/InputBase';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -14,6 +14,9 @@ import { Menu, MenuItem } from "@mui/material";
 import PrimaryButton from "../components/button/PrimaryButton";
 import { api } from "../utils/api";
 import Cookies from "js-cookie";
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+
 
 const useStyles = makeStyles((theme) => ({
 	content: {
@@ -102,6 +105,7 @@ const TambahMenu = () => {
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [isRecommended, setIsRecommended] = useState();
 	const history = useHistory();
+	const [open, setOpen] = React.useState(false);
 
 	useEffect(() => {
 		api.get('/menu-categories', { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
@@ -166,6 +170,14 @@ const TambahMenu = () => {
 			...prevState,
 			image: image
 		}));
+	}
+
+	const handleTooltipClose = () => {
+		setOpen(false);
+	}
+
+	const handleTooltipOpen = () => {
+		setOpen(true);
 	}
 
 	return (
@@ -269,9 +281,29 @@ const TambahMenu = () => {
 									<img className={classes.image} src={image ? URL.createObjectURL(image) : 'thumbnail.svg'} alt="" variant="outlined" />
 									<label htmlFor="contained-button-file">
 										<Input onChange={handleImageChange} accept="image/*" id="contained-button-file" multiple type="file" name="image" />
-										<PrimaryButton width="100%" component="span">
-											Upload
-										</PrimaryButton>
+										<ListItem>
+											<PrimaryButton width="100%" component="span">
+												Upload
+											</PrimaryButton>
+											<ClickAwayListener onClickAway={handleTooltipClose}>
+												<Tooltip
+													PopperProps={{
+														disablePortal: true,
+													}}
+													onClose={handleTooltipClose}
+													open={open}
+													disableFocusListener
+													disableHoverListener
+													disableTouchListener
+													title="Gunakan foto berekstensi jpg/png dengan rasio 1:1 (MAX 1 MB)">
+													<ListItemIcon>
+														<Button>
+															<InfoOutlinedIcon style={{ marginLeft: 20 }} onClick={handleTooltipOpen} />
+														</Button>
+													</ListItemIcon>
+												</Tooltip>
+											</ClickAwayListener>
+										</ListItem>
 									</label>
 								</div>
 								<div className={classes.navButton}>
