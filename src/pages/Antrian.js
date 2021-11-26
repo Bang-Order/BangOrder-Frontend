@@ -7,6 +7,8 @@ import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import { api } from '../utils/api';
 import Cookies from 'js-cookie';
+import firebase from '../utils/firebase';
+import { getDatabase, ref, onValue } from "firebase/database";
 
 const Content = styled('div')(({ theme }) => ({
     marginLeft: 280,
@@ -30,17 +32,23 @@ const Antrian = (props) => {
     const [loading, setLoading] = useState(true);
     const [update, setUpdate] = useState(false);
     useEffect(() => {
-        api.get(Cookies.get("RestoId")+'/orders?status='+value, 
-        {headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") }}
-        )
-            .then((res) => {
-                setOrders(res.data.data);
-                setLoading(false);
-            })
-            .catch(err => {
-                setError(err.message);
-                setLoading(false);
-            })
+        const db = getDatabase(firebase);
+        const orderRef = ref(db, "orders/" + Cookies.get("RestoId"))
+        onValue(orderRef, (snapshot) => {
+            let data = snapshot.val();
+            data = Object.values(data);
+            if (value) {
+                data = data.filter((el) => {
+                    return el.order_status == value;
+                })
+            } else {
+                data = data.filter((el) => {
+                    return el.order_status == "antri" || el.order_status == "dimasak"
+                })
+            }
+            setOrders(Object.values(data));
+        });
+        setLoading(false);
     }, [value, update])
 
     const handleUpdate = () => {
@@ -49,7 +57,7 @@ const Antrian = (props) => {
 
     return (
         <Root>
-            <Sidebar index="1" name="Antrian"/>
+            <Sidebar index="1" name="Antrian" />
             <Content>
                 <BottomNavigation
                     showLabels
@@ -66,7 +74,7 @@ const Antrian = (props) => {
                     <p>loading...</p>
                     :
                     orders && orders.map(order =>
-                        <OrderCard key={order.id} order={order} handleUpdate={handleUpdate}/>
+                        <OrderCard key={order.id} order={order} handleUpdate={handleUpdate} />
                     )
                 }
                 {error && <p>{error}</p>}

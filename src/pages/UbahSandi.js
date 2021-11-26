@@ -35,7 +35,6 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   'label + &': {
     marginTop: theme.spacing(4),

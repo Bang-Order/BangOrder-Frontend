@@ -181,7 +181,7 @@ const Sidebar = (props) => {
                         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                     >
-                        <MenuItem onClick={() => history.push('/akun-saya')}>
+                        <MenuItem onClick={() => history.push('/akun')}>
                             Akun Saya
                         </MenuItem>
                         <MenuItem onClick={() => history.push('/ubah-sandi')}>

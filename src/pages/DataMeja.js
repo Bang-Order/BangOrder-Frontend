@@ -82,7 +82,7 @@ const DataMeja = () => {
     useEffect(() => {
         setLoading(true)
         setTimeout(() => {
-            api.get(Cookies.get("RestoId")+"/tables").then((res) => {
+            api.get(Cookies.get("RestoId")+"/tables", { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } }).then((res) => {
                 setTables(res.data.data);
                 setLoading(false)
             })
