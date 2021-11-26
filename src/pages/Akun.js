@@ -12,6 +12,7 @@ import FormControl from '@mui/material/FormControl';
 import { InputLabel, Button, Radio } from "@mui/material";
 import { useHistory } from 'react-router';
 import { api } from '../utils/api';
+import Cookies from 'js-cookie';
 
 
 const Root = styled('div')(() => ({
@@ -103,7 +104,7 @@ const Akun = () => {
   const history = useHistory();
 
   useEffect(() => {
-    api.get()
+    api.get(Cookies.get("RestoId"))
       .then((res) => {
         setResto(res.data)
         setLoading(false)

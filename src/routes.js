@@ -83,17 +83,17 @@ export const APP_ROUTE = [
         private: true,
     },
     {
-        name: "Akun Saya",
-        Path: "/akun-saya",
+        name: "Akun",
+        path: "/akun",
         exact: true,
         component: Akun,
         private: true,
     },
     {
         name: "Ubah Sandi",
-        Path: "/ubah-sandi",
+        path: "/ubah-sandi",
         exact: true,
         component: UbahSandi,
         private: true,
-    },
+    }
 ];
