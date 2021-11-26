@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Sidebar from '../components/sidebar/Sidebar';
 import { makeStyles } from '@mui/styles';
 import { styled } from "@mui/system";
-import { InputLabel, Button, Radio } from "@mui/material";
+import { InputLabel, Button, Radio, ListItem, Tooltip, ListItemIcon } from "@mui/material";
 import FormControl from '@mui/material/FormControl';
 import InputBase from '@mui/material/InputBase';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -15,6 +15,9 @@ import PrimaryButton from "../components/button/PrimaryButton";
 import SecondaryButton from "../components/button/SecondaryButton";
 import { api } from "../utils/api";
 import Cookies from "js-cookie";
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+
 
 const useStyles = makeStyles(() => ({
   content: {
@@ -104,8 +107,9 @@ const EditMenu = (props) => {
   const [isRecommended, setIsRecommended] = useState();
   const [isReset, setIsReset] = useState(false);
   const history = useHistory();
-	const [image, setImage] = useState();
-  
+  const [image, setImage] = useState();
+  const [open, setOpen] = React.useState(false);
+
   useEffect(() => {
     api.get(Cookies.get("RestoId")+'/menus/' + menuId)
       .then((res) => {
@@ -129,23 +133,23 @@ const EditMenu = (props) => {
   const handleSaveButton = () => {
     setSaving(true);
     let formData = new FormData();
-		for ( var key in menu ) {
+    for (var key in menu) {
       formData.append(key, menu[key]);
-		}
+    }
     formData.delete('image');
-    if (image){
+    if (image) {
       formData.append('image', image);
     }
-		api.post('/menus/'+menuId+'?_method=PUT', formData, {
-			headers: {
+    api.post('/menus/' + menuId + '?_method=PUT', formData, {
+      headers: {
         Authorization: 'Bearer ' + Cookies.get("BangOrderToken"),
-				'Content-Type': 'application/form-data; ',
-			} 
-		})
-    .then(setTimeout(()=>{
-      setSaving(false);
-      history.push("/list-menu");
-    }, 500))
+        'Content-Type': 'application/form-data; ',
+      }
+    })
+      .then(setTimeout(() => {
+        setSaving(false);
+        history.push("/list-menu");
+      }, 500))
   }
   const handleReset = () => {
     setIsReset(!isReset);
@@ -187,13 +191,21 @@ const EditMenu = (props) => {
     }));
   }
 
-	const handleImageChange = (evt) => {
-		setImage(evt.target.files[0]);
-		setMenu(prevState => ({
-			...prevState,
-			image: image
-		}));
-	}
+  const handleImageChange = (evt) => {
+    setImage(evt.target.files[0]);
+    setMenu(prevState => ({
+      ...prevState,
+      image: image
+    }));
+  }
+
+  const handleTooltipClose = () => {
+    setOpen(false);
+  }
+
+  const handleTooltipOpen = () => {
+    setOpen(true);
+  }
 
   return (
     <Root>
@@ -301,9 +313,29 @@ const EditMenu = (props) => {
                     <img className={classes.image} src={image ? URL.createObjectURL(image) : menu.image} alt="" />
                     <label htmlFor="contained-button-file">
                       <Input onChange={handleImageChange} accept="image/*" id="contained-button-file" multiple type="file" />
-                      <PrimaryButton width="100%" component="span">
-                        Upload
-                      </PrimaryButton>
+                      <ListItem>
+                        <PrimaryButton width="100%" component="span">
+                          Upload
+                        </PrimaryButton>
+                        <ClickAwayListener onClickAway={handleTooltipClose}>
+                          <Tooltip
+                            PopperProps={{
+                              disablePortal: true,
+                            }}
+                            onClose={handleTooltipClose}
+                            open={open}
+                            disableFocusListener
+                            disableHoverListener
+                            disableTouchListener
+                            title="Gunakan foto berekstensi jpg/png dengan rasio 1:1 (MAX 1 MB)">
+                            <ListItemIcon>
+                              <Button>
+                                <InfoOutlinedIcon style={{ marginLeft: 20 }} onClick={handleTooltipOpen} />
+                              </Button>
+                            </ListItemIcon>
+                          </Tooltip>
+                        </ClickAwayListener>
+                      </ListItem>
                     </label>
                   </div>
                   <div className={classes.navButton}>
