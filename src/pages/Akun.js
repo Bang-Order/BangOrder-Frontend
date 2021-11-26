@@ -11,6 +11,7 @@ import { useHistory } from 'react-router';
 import { api } from '../utils/api';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Cookies from 'js-cookie';
 
 
 const Root = styled('div')(() => ({
@@ -103,7 +104,7 @@ const Akun = () => {
   const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
-    api.get()
+    api.get(Cookies.get("RestoId"))
       .then((res) => {
         setResto(res.data)
         setLoading(false)

@@ -63,7 +63,7 @@ const Input = styled('input')({
 });
 
 const Frame = styled('div')(({ theme }) => ({
-  backgroundColor: "#ffffff",
+  backgroundColor: "#fff",
   marginLeft: 280,
   marginRight: 20,
   marginTop: 90,
@@ -111,7 +111,7 @@ const EditMenu = (props) => {
   const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
-    api.get('/menus/' + menuId)
+    api.get(Cookies.get("RestoId")+'/menus/' + menuId)
       .then((res) => {
         setMenu(res.data);
         setIsRecommended(res.data.is_recommended);
