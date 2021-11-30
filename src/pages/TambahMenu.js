@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Sidebar from '../components/sidebar/Sidebar';
 import { makeStyles } from '@mui/styles';
 import { styled } from "@mui/system";
-import { InputLabel, Button, Radio } from "@mui/material";
+import { InputLabel, Button, Radio, ListItem, Tooltip, ListItemIcon } from "@mui/material";
 import FormControl from '@mui/material/FormControl';
 import InputBase from '@mui/material/InputBase';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -14,6 +14,10 @@ import { Menu, MenuItem } from "@mui/material";
 import PrimaryButton from "../components/button/PrimaryButton";
 import { api } from "../utils/api";
 import Cookies from "js-cookie";
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 const useStyles = makeStyles((theme) => ({
 	content: {
@@ -92,39 +96,49 @@ const Root = styled('div')(() => ({
 	backgroundColor: '#f1f1f1',
 	height: '100vh',
 }))
-
+const Alert = React.forwardRef(function Alert(props, ref) {
+	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const TambahMenu = () => {
 	const classes = useStyles();
-	const [menu, setMenu] = useState();
+	const [menu, setMenu] = useState({'name': null, 'price': null, 'menu_category_id': null});
 	const [image, setImage] = useState();
 	const [allCategory, setAllCategory] = useState();
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [isRecommended, setIsRecommended] = useState();
+	const [error, setError] = useState();
 	const history = useHistory();
+	const [open, setOpen] = React.useState(false);
 
 	useEffect(() => {
-		api.get('/menu-categories', { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
+		api.get(Cookies.get("RestoId")+'/menu-categories', { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
 			.then((res) => {
 				setAllCategory(res.data.data);
 			})
-	}, [])
+	}, [error])
 
 	const handleSaveButton = () => {
 		let formData = new FormData();
-		console.log(formData);
-		if (image) {
-			formData.append('image', image);
-		}
-		for (var key in menu) {
-			formData.append(key, menu[key]);
-		}
-		api.post('/menus/', formData, {
-			headers: {
-				'Content-Type': 'application/form-data; ',
+		if (menu.name && menu.price && menu.menu_category_id) {
+			if (image) {
+				formData.append('image', image);
 			}
-		})
-			.then(history.push("/list-menu"));
+			for (var key in menu) {
+				formData.append(key, menu[key]);
+			}
+			api.post(Cookies.get("RestoId")+'/menus/', formData, {
+				headers: {
+					'Content-Type': 'application/form-data; ',
+				}
+			})
+				.catch((err) => {
+					setError(err)
+				})
+			.then(history.push("/list-menu"))
+		} else {
+			setError('Data input kosong atau salah')
+		}
 	}
 
 	const handleClick = (event) => {
@@ -167,6 +181,20 @@ const TambahMenu = () => {
 			image: image
 		}));
 	}
+
+	const handleTooltipClose = () => {
+		setOpen(false);
+	}
+
+	const handleTooltipOpen = () => {
+		setOpen(true);
+	}
+	const handleCloseSnackbar = (event, reason) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+		setError(null);
+	};
 
 	return (
 		<Root>
@@ -269,9 +297,29 @@ const TambahMenu = () => {
 									<img className={classes.image} src={image ? URL.createObjectURL(image) : 'thumbnail.svg'} alt="" variant="outlined" />
 									<label htmlFor="contained-button-file">
 										<Input onChange={handleImageChange} accept="image/*" id="contained-button-file" multiple type="file" name="image" />
-										<PrimaryButton width="100%" component="span">
-											Upload
-										</PrimaryButton>
+										<ListItem>
+											<PrimaryButton width="100%" component="span">
+												Upload
+											</PrimaryButton>
+											<ClickAwayListener onClickAway={handleTooltipClose}>
+												<Tooltip
+													PopperProps={{
+														disablePortal: true,
+													}}
+													onClose={handleTooltipClose}
+													open={open}
+													disableFocusListener
+													disableHoverListener
+													disableTouchListener
+													title="Gunakan foto berekstensi jpg/png dengan rasio 1:1 (MAX 1 MB)">
+													<ListItemIcon>
+														<Button>
+															<InfoOutlinedIcon style={{ marginLeft: 20 }} onClick={handleTooltipOpen} />
+														</Button>
+													</ListItemIcon>
+												</Tooltip>
+											</ClickAwayListener>
+										</ListItem>
 									</label>
 								</div>
 								<div className={classes.navButton}>
@@ -279,6 +327,11 @@ const TambahMenu = () => {
 								</div>
 							</div>
 						</div>
+						<Snackbar open={error} autoHideDuration={5000} onClose={handleCloseSnackbar} anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}>
+							<Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%' }}>
+								{error}
+							</Alert>
+						</Snackbar>
 					</Frame>
 				</div>
 			</div >
