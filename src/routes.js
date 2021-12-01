@@ -9,6 +9,7 @@ import Riwayat from "./pages/Riwayat";
 import EditMenu from "./pages/EditMenu";
 import TambahMenu from "./pages/TambahMenu";
 import Akun from "./pages/Akun";
+import Form from "./pages/Form";
 import UbahSandi from "./pages/UbahSandi";
 
 export const APP_ROUTE = [
@@ -88,6 +89,12 @@ export const APP_ROUTE = [
         exact: true,
         component: Akun,
         private: true,
+    },
+    {
+        name: "Form Register",
+        path: "/form",
+        exact: true,
+        component: Form,
     },
     {
         name: "Ubah Sandi",
