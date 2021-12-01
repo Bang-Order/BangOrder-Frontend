@@ -98,7 +98,7 @@ const OrderCard = (props) => {
 		handleClose();
 		setStatus(status);
 		api
-			.patch('/orders/' + order.id, {
+			.patch(Cookies.get("RestoId")+'/orders/' + order.id, {
 				"order_status": status,
 				"payment_status": "success"
 			}, { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } });
@@ -112,7 +112,7 @@ const OrderCard = (props) => {
 				<CardContent className={classes.header}>
 					<div className={classes.left}>
 						<h4 className={classes.meja}>
-							Meja {order.table_id}
+							Meja {order.table_number}
 						</h4>
 						<h4 className={classes.id}>
 							Id Pesanan {order.id}

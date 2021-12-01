@@ -73,7 +73,6 @@ const Login2 = () => {
             }).then((res) => {
                 login(res.data.data);
                 if(isLogin){
-                    console.log(Cookies.get("BangOrderToken"));
                     history.push("/order-list");
                 }
             }).catch((err) => {
