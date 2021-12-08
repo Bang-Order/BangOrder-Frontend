@@ -73,8 +73,10 @@ const Antrian = (props) => {
                 {loading ?
                     <p>loading...</p>
                     :
-                    orders && orders.map(order =>
+                    orders && orders.length != 0 ? orders.map(order =>
                         <OrderCard key={order.id} order={order} handleUpdate={handleUpdate} />
+                    ) : (
+                        <h4 style={{marginTop: 10}}>Belum ada pesanan masuk</h4>
                     )
                 }
                 {error && <p>{error}</p>}

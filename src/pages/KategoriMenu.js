@@ -84,7 +84,7 @@ const StyledTableRow = styled(TableRow)({
 const KategoriMenu = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [allCategory, setAllCategory] = useState();
+  const [allCategory, setAllCategory] = useState(null);
   const [newCategory, setNewCategory] = useState();
   const [addDialog, setAddDialog] = useState();
   const [category, setCategory] = useState();
@@ -194,7 +194,7 @@ const KategoriMenu = () => {
                   </TableRow>
                 </>
                 :
-                allCategory && allCategory.map((category) => (
+                (allCategory.length != 0 ? allCategory.map((category) => (
                   <StyledTableRow
                     key={category.name}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -209,7 +209,18 @@ const KategoriMenu = () => {
                       </div>
                     </StyledTableCell >
                   </StyledTableRow>
-                ))}
+                ))
+              :
+                  <StyledTableRow
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <StyledTableCell component="th" scope="row">
+                      <h4>Belum ada kategori menu</h4>
+                    </StyledTableCell >
+                    <StyledTableCell sx={{ width: '20%' }} align="center">
+                    </StyledTableCell >
+                  </StyledTableRow>
+                )}
             </TableBody>
           </Table>
         </TableContainer>

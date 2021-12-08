@@ -12,7 +12,9 @@ import {
     FormControl
 } from '@mui/material';
 import { Link, useHistory } from "react-router-dom";
-import PrimaryButton from '../components/button/PrimaryButton'
+import PrimaryButton from '../components/button/PrimaryButton';
+import axios from 'axios';
+require('dotenv').config();
 
 const useStyle = makeStyles({
     root: {
@@ -39,6 +41,7 @@ const StyledLink = styled(Link)({
 })
 
 const Register2 = () => {
+    const [data, setData] = React.useState("");
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [confirmPassword, setConfirmPassword] = React.useState("");
@@ -57,14 +60,27 @@ const Register2 = () => {
         setError(false);
         if (email === "") {
             setIsEmailNull(true);
-        }
-        if (password === "") {
+        } else if (password === "") {
             setIsPasswordNull(true);
-        }
-        if (confirmPassword === "") {
+        } else if (confirmPassword === "") {
             setIsConfirmPasswordNull(true);
+        } else {
+            axios.post(process.env.REACT_APP_API_URL+'auth/register/account', {
+                email: email,
+                password: password,
+                confirm_password: confirmPassword
+            })
+            .then((res) => {
+                setData(res.data.data)
+                history.push({
+                    pathname: "/form",
+                    state: res.data.data
+                });
+            })
+            .catch((err) => {
+                setError(err.response.message);
+              })
         }
-        history.push("/login");
 
     }
 

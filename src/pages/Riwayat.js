@@ -87,9 +87,12 @@ const Riwayat = () => {
                         />
                     </LocalizationProvider>
                 </div>
-                {orders && orders.map(order =>
+                {orders && orders.length != 0 ? orders.map(order =>
                     <HistoryCard key={order.id} order={order} handleUpdate={handleUpdate} />
-                )}
+                )
+                :
+                <h4 style={{marginTop: 10}}>Riwayat kosong</h4>
+            }
             </Content>
         </Root>
     );

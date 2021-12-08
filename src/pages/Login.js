@@ -18,7 +18,7 @@ import { isLogin, login } from "../utils/Auth";
 import { Link, useHistory } from "react-router-dom";
 import axios from 'axios';
 import PrimaryButton from '../components/button/PrimaryButton';
-import Cookies from 'js-cookie';
+require('dotenv').config();
 
 const useStyle = makeStyles({
     root: {
@@ -67,7 +67,7 @@ const Login2 = () => {
             setIsPasswordNull(true);
         } else {
             setLoading(true);
-            axios.post('http://localhost:8000/api/auth/login', {
+            axios.post(process.env.REACT_APP_API_URL+'auth/login', {
                 email: email,
                 password: password
             }).then((res) => {
@@ -76,7 +76,8 @@ const Login2 = () => {
                     history.push("/order-list");
                 }
             }).catch((err) => {
-                setError(err);
+                console.log(err.response.data.message);
+                setError(err.response.data.message);
                 setLoading(false);
             })
         }
@@ -87,7 +88,7 @@ const Login2 = () => {
             <Container fixed >
                 <img className={classes.image} src="/logo-horizontal.png" alt="" />
                 <h5>Contactless Food Ordering with QR Code</h5>
-                {error && <Alert sx={{ marginTop: "30px" }} severity="error">Email atau password salah!</Alert>}
+                {error && <Alert sx={{ marginTop: "30px" }} severity="error">{error}</Alert>}
                 <TextField
                     label="Email"
                     id="outlined-size-small"

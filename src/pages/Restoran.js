@@ -102,11 +102,6 @@ const Restoran = () => {
 
   useEffect(() => {
     api.get(Cookies.get("RestoId") + "/dashboard", { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
-      // .then((res) => {
-      //   console.log(res.data.data);
-      //   setData(res.data);
-      //   setLoading(false);
-      // })
       .then((res) => {
         setData(res.data)
         for (var i = 0; i < res.data.data.length; i++) {
