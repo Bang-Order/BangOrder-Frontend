@@ -11,6 +11,10 @@ import TambahMenu from "./pages/TambahMenu";
 import Akun from "./pages/Akun";
 import Form from "./pages/Form";
 import UbahSandi from "./pages/UbahSandi";
+import VerifikasiEmail from "./pages/VerifikasiEmail";
+import VerifikasiSukses from "./pages/VerifikasiSukses";
+import VerifikasiExpired from "./pages/VerisikasiExpired";
+import Unverified from "./pages/Unverified";
 
 export const APP_ROUTE = [
     {
@@ -101,6 +105,34 @@ export const APP_ROUTE = [
         path: "/ubah-sandi",
         exact: true,
         component: UbahSandi,
+        private: true,
+    },
+    {
+        name: "Verifikasi Email",
+        path: "/verifikasi-email",
+        exact: true,
+        component: VerifikasiEmail,
+        private: true,
+    },
+    {
+        name: "Verifikasi Sukses",
+        path: "/verifikasi-sukses",
+        exact: true,
+        component: VerifikasiSukses,
+        private: true,
+    },
+    {
+        name: "Verifikasi Kadaluarsa",
+        path: "/verifikasi-kadaluarsa",
+        exact: true,
+        component: VerifikasiExpired,
+        private: true,
+    },
+    {
+        name: "Belum Verifikasi",
+        path: "/belum-verifikasi",
+        exact: true,
+        component: Unverified,
         private: true,
     }
 ];
