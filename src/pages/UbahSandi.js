@@ -5,6 +5,7 @@ import PrimaryButton from '../components/button/PrimaryButton';
 import { makeStyles } from '@mui/styles';
 import InputBase from '@mui/material/InputBase';
 import FormControl from '@mui/material/FormControl';
+import { Link } from "react-router-dom";
 import { InputLabel,  Radio} from "@mui/material";
 
 
@@ -63,6 +64,11 @@ const Frame = styled('div')(({ theme }) => ({
   },
 }));
 
+const StyledLink = styled(Link)({
+  textDecoration: 'none',
+  color: '#989999',
+})
+
 const UbahSandi = () => {
   const classes = useStyles();
 
@@ -83,7 +89,9 @@ const UbahSandi = () => {
                           id="bootstrap-input"
                           name="sandiLama"
                         />
+                      <StyledLink to="/lupa-password" >Lupa Password</StyledLink>
                       </FormControl>
+                      
                     </div>
                     <div className={classes.item}>
                       <FormControl variant="standard" font-size="24px">

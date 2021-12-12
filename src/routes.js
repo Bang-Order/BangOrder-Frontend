@@ -10,11 +10,11 @@ import EditMenu from "./pages/EditMenu";
 import TambahMenu from "./pages/TambahMenu";
 import Akun from "./pages/Akun";
 import Form from "./pages/Form";
+import LupaPassword from "./pages/LupaPassword";
+import LupaPassVerif from "./pages/LupaPassVerif";
+import ResetSandi from "./pages/ResetSandi";
+import ResetSandiBerhasil from "./pages/ResetSandiBerhasil";
 import UbahSandi from "./pages/UbahSandi";
-import VerifikasiEmail from "./pages/VerifikasiEmail";
-import VerifikasiSukses from "./pages/VerifikasiSukses";
-import VerifikasiExpired from "./pages/VerisikasiExpired";
-import Unverified from "./pages/Unverified";
 
 export const APP_ROUTE = [
     {
@@ -32,36 +32,11 @@ export const APP_ROUTE = [
         restricted: true,
     },
     {
-        name: "Restoran",
-        path: "/",
-        exact: true,
-        component: Restoran,
-        private: true,
-        index: 1
-    },
-    {
         name: "Antrian",
         path: "/order-list",
         exact: true,
         component: Antrian,
         private: true,
-        index: 2
-    },
-    {
-        name: "Data Meja",
-        path: "/data-meja",
-        exact: true,
-        component: DataMeja,
-        private: true,
-        index: 3
-    },
-    {
-        name: "Kategori Menu",
-        path: "/kategori-menu",
-        exact: true,
-        component: KategoriMenu,
-        private: true,
-        index: 4
     },
     {
         name: "Menu",
@@ -69,7 +44,27 @@ export const APP_ROUTE = [
         exact: true,
         component: Menu,
         private: true,
-        index: 5
+    },
+    {
+        name: "Restoran",
+        path: "/",
+        exact: true,
+        component: Restoran,
+        private: true,
+    },
+    {
+        name: "Data Meja",
+        path: "/data-meja",
+        exact: true,
+        component: DataMeja,
+        private: true,
+    },
+    {
+        name: "Kategori Menu",
+        path: "/kategori-menu",
+        exact: true,
+        component: KategoriMenu,
+        private: true,
     },
     {
         name: "Riwayat",
@@ -77,7 +72,6 @@ export const APP_ROUTE = [
         exact: true,
         component: Riwayat,
         private: true,
-        index: 6
     },
     {
         name: "Edit Menu",
@@ -107,38 +101,34 @@ export const APP_ROUTE = [
         component: Form,
     },
     {
+        name: "Lupa Password",
+        path: "/lupa-password",
+        exact: true,
+        component: LupaPassword,
+    },
+    {
+        name: "Verif Lupa Password",
+        path: "/lupa-pass-Verif",
+        exact: true,
+        component: LupaPassVerif,
+    },
+    {
+        name: "Reset Sandi",
+        path: "/reset-sandi",
+        exact: true,
+        component: ResetSandi,
+    },
+    {
+        name: "Reset Sandi Berhasil",
+        path: "/reset-sandi-berhasil",
+        exact: true,
+        component: ResetSandiBerhasil,
+    },
+    {
         name: "Ubah Sandi",
         path: "/ubah-sandi",
         exact: true,
         component: UbahSandi,
-        private: true,
-    },
-    {
-        name: "Verifikasi Email",
-        path: "/verifikasi-email",
-        exact: true,
-        component: VerifikasiEmail,
-        private: true,
-    },
-    {
-        name: "Verifikasi Sukses",
-        path: "/verifikasi-sukses",
-        exact: true,
-        component: VerifikasiSukses,
-        private: true,
-    },
-    {
-        name: "Verifikasi Kadaluarsa",
-        path: "/verifikasi-kadaluarsa",
-        exact: true,
-        component: VerifikasiExpired,
-        private: true,
-    },
-    {
-        name: "Belum Verifikasi",
-        path: "/belum-verifikasi",
-        exact: true,
-        component: Unverified,
         private: true,
     }
 ];

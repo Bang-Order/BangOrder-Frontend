@@ -18,7 +18,7 @@ import { isLogin, login } from "../utils/Auth";
 import { Link, useHistory } from "react-router-dom";
 import axios from 'axios';
 import PrimaryButton from '../components/button/PrimaryButton';
-require('dotenv').config();
+import Cookies from 'js-cookie';
 
 const useStyle = makeStyles({
     root: {
@@ -67,7 +67,7 @@ const Login2 = () => {
             setIsPasswordNull(true);
         } else {
             setLoading(true);
-            axios.post(process.env.REACT_APP_API_URL+'auth/login', {
+            axios.post('http://localhost:8000/api/auth/login', {
                 email: email,
                 password: password
             }).then((res) => {
@@ -76,8 +76,7 @@ const Login2 = () => {
                     history.push("/order-list");
                 }
             }).catch((err) => {
-                console.log(err.response.data.message);
-                setError(err.response.data.message);
+                setError(err);
                 setLoading(false);
             })
         }
@@ -88,7 +87,7 @@ const Login2 = () => {
             <Container fixed >
                 <img className={classes.image} src="/logo-horizontal.png" alt="" />
                 <h5>Contactless Food Ordering with QR Code</h5>
-                {error && <Alert sx={{ marginTop: "30px" }} severity="error">{error}</Alert>}
+                {error && <Alert sx={{ marginTop: "30px" }} severity="error">Email atau password salah!</Alert>}
                 <TextField
                     label="Email"
                     id="outlined-size-small"
@@ -125,8 +124,9 @@ const Login2 = () => {
                         }
                     />
                 </FormControl>
-                <div style={{ display: 'flex' }}>
+                <div style={{ display: 'flex', justifyContent:'space-between'}}>
                     <FormControlLabel control={<Checkbox />} label="Ingat Saya" />
+                    <p><StyledLink to="/lupa-password" >Lupa Password</StyledLink></p>
                 </div>
                 <div>
                     <PrimaryButton onClick={_onSubmit} loading={Loading} width='100%'>Masuk</PrimaryButton>
