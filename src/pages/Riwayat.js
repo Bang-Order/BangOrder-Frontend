@@ -21,9 +21,9 @@ const useStyles = makeStyles(() => ({
 }))
 
 const Content = styled('div')(({ theme }) => ({
-    marginLeft: 280,
+    marginLeft: 260,
     marginRight: 20,
-    marginTop: 90,
+    marginTop: 50,
     padding: 15,
     paddingBottom: 20,
     [theme.breakpoints.down('md')]: {
@@ -34,6 +34,7 @@ const Content = styled('div')(({ theme }) => ({
 const Root = styled('div')(() => ({
     backgroundColor: '#f1f1f1',
     minHeight: '100vh',
+    paddingTop: 20
 }))
 
 const Riwayat = () => {
@@ -64,7 +65,6 @@ const Riwayat = () => {
 
     return (
         <Root>
-            <Sidebar index="5" name="Riwayat" />
             <Content>
                 <div style={{ backgroundColor: '#fff', paddingTop: 10, paddingBottom: 10 }}>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>

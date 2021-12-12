@@ -16,10 +16,11 @@ function App() {
             if (value.private) {
               return (
                 <PrivateRoute
-                  key={value.name}
+                  name={value.name}
                   component={value.component}
                   path={value.path}
                   exact={value.exact}
+                  index={value.index}
                 />
               )
             } else {

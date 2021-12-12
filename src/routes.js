@@ -28,25 +28,20 @@ export const APP_ROUTE = [
         restricted: true,
     },
     {
-        name: "Antrian",
-        path: "/order-list",
-        exact: true,
-        component: Antrian,
-        private: true,
-    },
-    {
-        name: "Menu",
-        path: "/list-menu",
-        exact: true,
-        component: Menu,
-        private: true,
-    },
-    {
         name: "Restoran",
         path: "/",
         exact: true,
         component: Restoran,
         private: true,
+        index: 1
+    },
+    {
+        name: "Antrian",
+        path: "/order-list",
+        exact: true,
+        component: Antrian,
+        private: true,
+        index: 2
     },
     {
         name: "Data Meja",
@@ -54,6 +49,7 @@ export const APP_ROUTE = [
         exact: true,
         component: DataMeja,
         private: true,
+        index: 3
     },
     {
         name: "Kategori Menu",
@@ -61,6 +57,15 @@ export const APP_ROUTE = [
         exact: true,
         component: KategoriMenu,
         private: true,
+        index: 4
+    },
+    {
+        name: "Menu",
+        path: "/list-menu",
+        exact: true,
+        component: Menu,
+        private: true,
+        index: 5
     },
     {
         name: "Riwayat",
@@ -68,6 +73,7 @@ export const APP_ROUTE = [
         exact: true,
         component: Riwayat,
         private: true,
+        index: 6
     },
     {
         name: "Edit Menu",

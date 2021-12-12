@@ -9,6 +9,7 @@ import {
     Toolbar,
     Menu,
     MenuItem,
+    ListItem,
     ListItemButton
 } from '@mui/material';
 import {
@@ -32,6 +33,9 @@ const useStyles = makeStyles(() => ({
         width: '80%',
         height: 'auto',
         paddingTop: 20,
+    },
+    root: {
+        backgroundColor: 'transparent'
     }
 }));
 
@@ -55,67 +59,66 @@ const Sidebar = (props) => {
     const _onLogout = () => {
         logout();
         history.replace("/login");
-    };  
+    };
+    console.log(navIndex);
 
     const CustomListItem = withStyles({
         root: {
-            paddingLeft: 10,
-            "&$selected": {
-                backgroundColor: "#ffc300",
-                color: "white",
-            },
             "&$selected:hover": {
                 backgroundColor: "#FFD755",
+                color: "white"
             },
-            // "&:hover": {
-            //     backgroundColor: "blue",
-            //     color: "white",
-            //     "& .MuiListItemIcon-root": {
-            //         color: "white"
-            //     }
-            // }
+            "&:hover": {
+                backgroundColor: "#FFD755",
+                color: "white",
+            },
         },
-    })(ListItemButton);
+        selected: {}
+    })(ListItem);
     const drawer = (
         <div>
             <img src="/logo-horizontal.png" alt="" className={classes.image} />
             <Toolbar />
-            <List className={classes.list}>
+            <List className={classes.list} sx={{
+                '&& .Mui-selected, && .Mui-selected:hover': {
+                    bgcolor: '#ffc300'
+                }
+            }}>
                 <NavLink to="/">
-                <CustomListItem selected={navIndex == 0}>
-                    <ListItemIcon><Home /></ListItemIcon>
-                    <h4>Restoran</h4>
-                </CustomListItem>
+                    <CustomListItem selected={navIndex === 1}>
+                        <ListItemIcon><Home /></ListItemIcon>
+                        <h4>Restoran</h4>
+                    </CustomListItem>
                 </NavLink>
                 <NavLink to="/order-list">
-                <CustomListItem selected={navIndex == 1}>
-                    <ListItemIcon><RoomService /></ListItemIcon>
-                    <h4>Antrian</h4>
-                </CustomListItem>
+                    <CustomListItem selected={navIndex === 2}>
+                        <ListItemIcon><RoomService /></ListItemIcon>
+                        <h4>Antrian</h4>
+                    </CustomListItem>
                 </NavLink>
                 <NavLink to="/data-meja">
-                <CustomListItem selected={navIndex == 2}>
-                    <ListItemIcon><EventSeat /></ListItemIcon>
-                    <h4>Data Meja</h4>
-                </CustomListItem>
+                    <CustomListItem selected={navIndex === 3}>
+                        <ListItemIcon><EventSeat /></ListItemIcon>
+                        <h4>Data Meja</h4>
+                    </CustomListItem>
                 </NavLink>
                 <NavLink to="/kategori-menu">
-                <CustomListItem selected={navIndex == 3}>
-                    <ListItemIcon><ViewList /></ListItemIcon>
-                    <h4>Kategori Menu</h4>
-                </CustomListItem>
+                    <CustomListItem selected={navIndex === 4}>
+                        <ListItemIcon><ViewList /></ListItemIcon>
+                        <h4>Kategori Menu</h4>
+                    </CustomListItem>
                 </NavLink>
                 <NavLink to="/list-menu">
-                <CustomListItem selected={navIndex == 4}>
-                    <ListItemIcon><Fastfood /></ListItemIcon>
-                    <h4>Menu Restoran</h4>
-                </CustomListItem>
+                    <CustomListItem selected={navIndex === 5}>
+                        <ListItemIcon><Fastfood /></ListItemIcon>
+                        <h4>Menu Restoran</h4>
+                    </CustomListItem>
                 </NavLink>
                 <NavLink to="/riwayat">
-                <CustomListItem selected={navIndex == 5}>
-                    <ListItemIcon><History /></ListItemIcon>
-                    <h4>Riwayat</h4>
-                </CustomListItem>
+                    <CustomListItem selected={navIndex === 6}>
+                        <ListItemIcon><History /></ListItemIcon>
+                        <h4>Riwayat</h4>
+                    </CustomListItem>
                 </NavLink>
             </List>
         </div >
