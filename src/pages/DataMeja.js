@@ -35,7 +35,7 @@ const Content = styled('div')(({ theme }) => ({
     backgroundColor: "#ffffff",
     marginLeft: 280,
     marginRight: 20,
-    marginTop: 90,
+    marginTop: 65,
     padding: 25,
     borderRadius: 7,
     [theme.breakpoints.down('md')]: {
@@ -46,6 +46,7 @@ const Content = styled('div')(({ theme }) => ({
 const Root = styled('div')(() => ({
     backgroundColor: '#f1f1f1',
     minHeight: '100vh',
+    paddingTop: 20
 }))
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -152,7 +153,6 @@ const DataMeja = () => {
 
     return (
         <Root>
-            <Sidebar index="2" name="Data Meja" />
             <Content>
                 <div className={classes.header}>
                     <PrimaryButton onClick={addClickHandler}>Tambah Meja</PrimaryButton>

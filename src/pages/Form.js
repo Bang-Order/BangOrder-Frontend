@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Grid, InputLabel, InputBase, FormControl, Button, ListItem, ListItemIcon, Tooltip, Menu, MenuItem } from "@mui/material";
 import { styled } from "@mui/system";
 import { makeStyles } from "@mui/styles";
@@ -7,6 +7,9 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Divider from '@mui/material/Divider';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import axios from "axios";
+import { useHistory } from "react-router-dom";
+require('dotenv').config();
 
 const useStyles = makeStyles(() => ({
   logo: {
@@ -244,13 +247,16 @@ const options = [
   // Bank Yudha Bhakti (Bank Neo Commerce)
 ];
 
-const Form = () => {
+const Form = (props) => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selectedIndex, setSelectedIndex] = React.useState();
+  const [data, setData] = useState(props.location.state);
+  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [bank, setBank] = useState();
+  const [image, setImage] = useState();
+  const [error, setError] = useState();
+  const history = useHistory();
   // const open = Boolean(anchorEl);
-
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -259,8 +265,12 @@ const Form = () => {
     setAnchorEl(null);
   };
 
-  const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index);
+  const handleMenuItemClick = (bank) => {
+    setBank(bank);
+    setData(prevState => ({
+			...prevState,
+			bank_name: bank
+		}));
     setAnchorEl(null);
   };
 
@@ -271,6 +281,30 @@ const Form = () => {
   const handleTooltipOpen = () => {
     setOpen(true);
   }
+
+  const handleChange = (evt) => {
+    const value = evt.target.value;
+    setData(prevState => ({
+      ...prevState,
+      [evt.target.name]: value
+    }));
+    console.log(data);
+  }
+	const handleImageChange = (evt) => {
+		setImage(evt.target.files[0]);
+		setData(prevState => ({
+			...prevState,
+			image: image
+		}));
+	}
+  const handleSubmit = () => {
+    axios.post(process.env.REACT_APP_API_URL+'auth/register/profile', data)
+    .then(history.push("/login"))
+    .catch((err) => {
+      setError(err.response.message);
+    })
+  }
+
   return (
     <Root>
       <div>
@@ -293,7 +327,8 @@ const Form = () => {
                         <BootstrapInput
                           placeholder="Nama restoran"
                           id="bootstrap-input"
-                          name="resto-name"
+                          onChange={handleChange}
+                          name="name"
                         />
                       </FormControl>
                     </div>
@@ -305,7 +340,8 @@ const Form = () => {
                         <BootstrapInput
                           placeholder="Alamat lengkap"
                           id="bootstrap-input"
-                          name="resto-address"
+                          onChange={handleChange}
+                          name="address"
                           multiline
                           minRows={3}
                         />
@@ -314,9 +350,9 @@ const Form = () => {
                   </div>
                   <div className={classes.right}>
                     <div>
-                      <img src="./logo512.png" alt="" variant="outlined" className={classes.image} />
+                      <img src={image ? URL.createObjectURL(image) : 'thumbnail.svg'} alt="" variant="outlined" className={classes.image} />
                       <label htmlFor="contained-button-file">
-                        <Input />
+                        <Input onChange={handleImageChange} accept="image/*" id="contained-button-file" multiple type="file" name="image" />
                         <ListItem>
                           <PrimaryButton width="100%" component="span">
                             Upload
@@ -357,7 +393,8 @@ const Form = () => {
                       <BootstrapInput
                         placeholder="Nama pemilik"
                         id="bootstrap-input"
-                        name="owner-name"
+                        name="owner_name"
+                        onChange={handleChange}
                       />
                     </FormControl>
                     <FormControl variant="standard" style={{ marginLeft: 30 }}>
@@ -367,7 +404,8 @@ const Form = () => {
                       <BootstrapInput
                         placeholder="Nomor telepon"
                         id="bootstrap-input"
-                        name="telp"
+                        onChange={handleChange}
+                        name="telephone_number"
                       />
                     </FormControl>
                   </div>
@@ -384,7 +422,8 @@ const Form = () => {
                         <BootstrapInput
                           placeholder="Nama"
                           id="bootstrap-input"
-                          name="account-name"
+                          onChange={handleChange}
+                          name="account_holder_name"
                         />
                       </FormControl>
                       <FormControl variant="standard" style={{ marginLeft: 30 }}>
@@ -394,7 +433,8 @@ const Form = () => {
                         <BootstrapInput
                           placeholder="Nomor rekening"
                           id="bootstrap-input"
-                          name="account-number"
+                          onChange={handleChange}
+                          name="account_number"
                         />
                       </FormControl>
                       <div >
@@ -411,7 +451,7 @@ const Form = () => {
                           className='dropdown'
                           onClick={handleClick}
                         >
-                          Pilih Bank
+                          {bank ? bank : "Pilih Bank"}
                           <ArrowDropDownIcon />
                         </Button>
                         <Menu
@@ -430,8 +470,7 @@ const Form = () => {
                           {options.map((option, index) => (
                             <MenuItem
                               key={option}
-                              selected={index === selectedIndex}
-                              onClick={(event) => handleMenuItemClick(event, index)}
+                              onClick={() => handleMenuItemClick(option)}
                             >
                               {option}
                             </MenuItem>
@@ -442,8 +481,9 @@ const Form = () => {
                   </div>
                 </div>
               </div>
+              {error && <p>{error}</p>}
               <div style={{ marginBottom: 50 }}>
-                <PrimaryButton style={{ float: 'right', marginRight: 25 }}>Selesai</PrimaryButton>
+                <PrimaryButton onClick={handleSubmit} style={{ float: 'right', marginRight: 25 }}>Selesai</PrimaryButton>
               </div>
             </div>
           </Frame>

@@ -7,7 +7,7 @@ const Content = styled('div')(({ theme }) => ({
   backgroundColor: '#fff',
   marginLeft: 280,
   marginRight: 20,
-  marginTop: 90,
+  marginTop: 65,
   padding: 25,
   paddingBottom: 20,
   [theme.breakpoints.down('md')]: {
@@ -18,13 +18,13 @@ const Content = styled('div')(({ theme }) => ({
 const Root = styled('div')(() => ({
   backgroundColor: '#f1f1f1',
   minHeight: '100vh',
-  paddingBottom: 20
+  paddingBottom: 20,
+  paddingTop: 20
 }))
 
 const Menu = () => {
   return (
     <Root>
-      <Sidebar index="4" name="Menu Restoran"/>
       <Content>        
         <ListMenu />
       </Content>

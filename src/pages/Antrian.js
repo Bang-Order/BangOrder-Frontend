@@ -13,7 +13,7 @@ import { getDatabase, ref, onValue } from "firebase/database";
 const Content = styled('div')(({ theme }) => ({
     marginLeft: 280,
     marginRight: 20,
-    marginTop: 90,
+    marginTop: 65,
     paddingBottom: 20,
     [theme.breakpoints.down('md')]: {
         marginLeft: 20,
@@ -22,6 +22,7 @@ const Content = styled('div')(({ theme }) => ({
 
 const Root = styled('div')(() => ({
     backgroundColor: '#f1f1f1',
+    paddingTop: 20,
     minHeight: '100vh',
 }))
 
@@ -57,7 +58,6 @@ const Antrian = (props) => {
 
     return (
         <Root>
-            <Sidebar index="1" name="Antrian" />
             <Content>
                 <BottomNavigation
                     showLabels
@@ -73,8 +73,10 @@ const Antrian = (props) => {
                 {loading ?
                     <p>loading...</p>
                     :
-                    orders && orders.map(order =>
+                    orders && orders.length != 0 ? orders.map(order =>
                         <OrderCard key={order.id} order={order} handleUpdate={handleUpdate} />
+                    ) : (
+                        <h4 style={{marginTop: 10}}>Belum ada pesanan masuk</h4>
                     )
                 }
                 {error && <p>{error}</p>}

@@ -25,7 +25,7 @@ const Content = styled('div')(({ theme }) => ({
   backgroundColor: '#fff',
   marginLeft: 280,
   marginRight: 20,
-  marginTop: 90,
+  marginTop: 65,
   padding: 25,
   paddingBottom: 20,
   [theme.breakpoints.down('md')]: {
@@ -36,6 +36,7 @@ const Content = styled('div')(({ theme }) => ({
 const Root = styled('div')(() => ({
   backgroundColor: '#f1f1f1',
   minHeight: '100vh',
+  paddingTop: 20
 }))
 
 const useStyles = makeStyles(() => ({
@@ -84,7 +85,7 @@ const StyledTableRow = styled(TableRow)({
 const KategoriMenu = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [allCategory, setAllCategory] = useState();
+  const [allCategory, setAllCategory] = useState(null);
   const [newCategory, setNewCategory] = useState();
   const [addDialog, setAddDialog] = useState();
   const [category, setCategory] = useState();
@@ -160,7 +161,6 @@ const KategoriMenu = () => {
   )
   return (
     <Root>
-      <Sidebar index="3" name="Kategori Menu" />
       <Content>
         <div className={classes.header}>
             <PrimaryButton onClick={addClickHandler}>Tambah Kategori</PrimaryButton>
@@ -194,7 +194,7 @@ const KategoriMenu = () => {
                   </TableRow>
                 </>
                 :
-                allCategory && allCategory.map((category) => (
+                (allCategory.length != 0 ? allCategory.map((category) => (
                   <StyledTableRow
                     key={category.name}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -209,7 +209,18 @@ const KategoriMenu = () => {
                       </div>
                     </StyledTableCell >
                   </StyledTableRow>
-                ))}
+                ))
+              :
+                  <StyledTableRow
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <StyledTableCell component="th" scope="row">
+                      <h4>Belum ada kategori menu</h4>
+                    </StyledTableCell >
+                    <StyledTableCell sx={{ width: '20%' }} align="center">
+                    </StyledTableCell >
+                  </StyledTableRow>
+                )}
             </TableBody>
           </Table>
         </TableContainer>
