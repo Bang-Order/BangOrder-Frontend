@@ -157,7 +157,6 @@ const Restoran = () => {
             y: parseInt(res.data.income_data[i].total_income)
           });
         }
-        console.log(dataPoints);
         setOptions({
           animationEnabled: true,
           theme: "light2",

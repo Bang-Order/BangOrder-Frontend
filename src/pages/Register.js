@@ -9,12 +9,12 @@ import {
     IconButton,
     OutlinedInput,
     InputLabel,
-    FormControl
+    FormControl,
+    Alert
 } from '@mui/material';
 import { Link, useHistory } from "react-router-dom";
-import PrimaryButton from '../components/button/PrimaryButton';
+import PrimaryButton from '../components/button/PrimaryButton'
 import axios from 'axios';
-require('dotenv').config();
 
 const useStyle = makeStyles({
     root: {
@@ -40,8 +40,7 @@ const StyledLink = styled(Link)({
     fontWeight: 'bold',
 })
 
-const Register2 = () => {
-    const [data, setData] = React.useState("");
+const Register = () => {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [confirmPassword, setConfirmPassword] = React.useState("");
@@ -50,6 +49,7 @@ const Register2 = () => {
     const [isEmailNull, setIsEmailNull] = React.useState(false);
     const [isPasswordNull, setIsPasswordNull] = React.useState(false);
     const [isConfirmPasswordNull, setIsConfirmPasswordNull] = React.useState(false);
+    const [data, setData] = React.useState();
     const history = useHistory();
     const classes = useStyle();
     const handleClickShowPassword = () => {
@@ -60,27 +60,29 @@ const Register2 = () => {
         setError(false);
         if (email === "") {
             setIsEmailNull(true);
-        } else if (password === "") {
+        }
+        if (password === "") {
             setIsPasswordNull(true);
-        } else if (confirmPassword === "") {
+        }
+        if (confirmPassword === "") {
             setIsConfirmPasswordNull(true);
         } else {
-            axios.post(process.env.REACT_APP_API_URL+'auth/register/account', {
+            axios.post(process.env.REACT_APP_API_URL + 'auth/register/account', {
                 email: email,
                 password: password,
                 confirm_password: confirmPassword
             })
-            .then((res) => {
-                setData(res.data.data)
-                history.push({
-                    pathname: "/form",
-                    state: res.data.data
-                });
-            })
-            .catch((err) => {
-                setError(err.response.message);
-              })
+                .then((res) => {
+                    history.push({
+                        pathname: "/form",
+                        state: res.data.data
+                    });
+                })
+                // .catch((err) => {
+                //     setError(err.response.data.message);
+                // })
         }
+        history.push("/login");
 
     }
 
@@ -89,6 +91,7 @@ const Register2 = () => {
             <Container>
                 <img className={classes.image} src="/logo-horizontal.png" alt="" />
                 <h5>Contactless Food Ordering with QR Code</h5>
+                {error && <Alert sx={{ marginTop: "30px" }} severity="error">{error}</Alert>}
                 <TextField
                     label="Email"
                     id="outlined-size-small"
@@ -165,4 +168,4 @@ const Register2 = () => {
     );
 }
 
-export default Register2;
+export default Register;

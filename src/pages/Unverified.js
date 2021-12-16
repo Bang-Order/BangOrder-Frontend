@@ -1,9 +1,11 @@
-import * as React from 'react';
+import React, { useState } from "react";
 import { Box, Paper } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { styled } from "@mui/system";
 import PrimaryButton from '../components/button/PrimaryButton';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { Link } from 'react-router-dom';
+import axios from "axios";
 
 const useStyle = makeStyles({
   logo: {
@@ -34,8 +36,23 @@ const useStyle = makeStyles({
   },
 })
 
-const Unverified = () => {
+const Unverified = (props) => {
   const classes = useStyle();
+  const [error, setError] = useState();
+  const data = useState(props.location.state);
+  const [loading, setLoading] = useState(false);
+
+  const handleResend = () => {
+    setLoading(true);
+    axios.post(process.env.REACT_APP_API_URL + 'auth/email/resend', null, { headers: { Authorization: 'Bearer ' + data[0].access_token } })
+      .then((res) => {
+        setLoading(false)
+      })
+      .catch((err) => {
+        setError(err.response.message);
+        setLoading(false)
+      })
+  }
 
   return (
     <div>
@@ -46,13 +63,15 @@ const Unverified = () => {
         <Paper elevation={10} className={classes.paperStyle}>
 
           <h2>
-            <ArrowBackIosIcon style={{ float: 'left' }} />
+            <Link to="/login">
+              <ArrowBackIosIcon style={{ float: 'left' }} />
+            </Link>
             Akun Kamu Belum Terverifikasi
           </h2>
 
           <img className={classes.image} src="/unverified.png" alt="" />
           <p>Akun kamu belum terverifikasi, silahkan kirim email untuk melanjutkan. </p>
-          <PrimaryButton style={{ width: '80%', fontSize: '16px', marginTop: 20 }}>Kirim Email</PrimaryButton>
+          <PrimaryButton loading={loading} onClick={handleResend} style={{ width: '80%', fontSize: '16px', marginTop: 20 }}>Kirim Email</PrimaryButton>
         </Paper>
       </div>
     </div >

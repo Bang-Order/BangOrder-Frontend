@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, InputLabel, InputBase, FormControl, Button, ListItem, ListItemIcon, Tooltip, Menu, MenuItem } from "@mui/material";
 import { styled } from "@mui/system";
 import { makeStyles } from "@mui/styles";
@@ -9,6 +9,7 @@ import Divider from '@mui/material/Divider';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { login } from "../utils/Auth";
 require('dotenv').config();
 
 const useStyles = makeStyles(() => ({
@@ -250,27 +251,19 @@ const options = [
 const Form = (props) => {
   const classes = useStyles();
   const [data, setData] = useState(props.location.state);
-  const [open, setOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [bank, setBank] = useState();
   const [image, setImage] = useState();
+  const [open, setOpen] = useState(false);
   const [error, setError] = useState();
+  const [anchorEl, setAnchorEl] = useState(null);
   const history = useHistory();
-  // const open = Boolean(anchorEl);
+  const [selectedIndex, setSelectedIndex] = useState();
+  const [loading, setLoading] = useState();
+ 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleMenuItemClick = (bank) => {
-    setBank(bank);
-    setData(prevState => ({
-			...prevState,
-			bank_name: bank
-		}));
     setAnchorEl(null);
   };
 
@@ -290,19 +283,42 @@ const Form = (props) => {
     }));
     console.log(data);
   }
-	const handleImageChange = (evt) => {
-		setImage(evt.target.files[0]);
-		setData(prevState => ({
-			...prevState,
-			image: image
-		}));
-	}
+  const handleImageChange = (evt) => {
+    setImage(evt.target.files[0]);
+    setData(prevState => ({
+      ...prevState,
+      image: image
+    }));
+  }
+
+  const handleBankChange = (name) => {
+    setData(prevState => ({
+      ...prevState,
+      bank_name: name
+    }));
+  }
+
   const handleSubmit = () => {
-    axios.post(process.env.REACT_APP_API_URL+'auth/register/profile', data)
-    .then(history.push("/login"))
-    .catch((err) => {
-      setError(err.response.message);
-    })
+    setLoading(true);
+    let formData = new FormData();
+    if (image) {
+      formData.append('image', image);
+    }
+    for (var key in data) {
+      formData.append(key, data[key]);
+    }
+    axios.post(process.env.REACT_APP_API_URL + 'auth/register/profile', formData)
+      .then((res) => {
+        login(res.data.data);
+        history.push({
+          pathname: "/verifikasi-email",
+          state: res.data.data
+        });
+      })
+      .catch((err) => {
+        setError(err.response.message);
+        setLoading(false);
+      })
   }
 
   return (
@@ -327,8 +343,8 @@ const Form = (props) => {
                         <BootstrapInput
                           placeholder="Nama restoran"
                           id="bootstrap-input"
-                          onChange={handleChange}
                           name="name"
+                          onChange={handleChange}
                         />
                       </FormControl>
                     </div>
@@ -340,17 +356,17 @@ const Form = (props) => {
                         <BootstrapInput
                           placeholder="Alamat lengkap"
                           id="bootstrap-input"
-                          onChange={handleChange}
                           name="address"
                           multiline
                           minRows={3}
+                          onChange={handleChange}
                         />
                       </FormControl>
                     </div>
                   </div>
                   <div className={classes.right}>
                     <div>
-                      <img src={image ? URL.createObjectURL(image) : 'thumbnail.svg'} alt="" variant="outlined" className={classes.image} />
+                      <img className={classes.image} src={image ? URL.createObjectURL(image) : 'thumbnail.svg'} alt="" variant="outlined" />
                       <label htmlFor="contained-button-file">
                         <Input onChange={handleImageChange} accept="image/*" id="contained-button-file" multiple type="file" name="image" />
                         <ListItem>
@@ -404,8 +420,8 @@ const Form = (props) => {
                       <BootstrapInput
                         placeholder="Nomor telepon"
                         id="bootstrap-input"
-                        onChange={handleChange}
                         name="telephone_number"
+                        onChange={handleChange}
                       />
                     </FormControl>
                   </div>
@@ -422,8 +438,8 @@ const Form = (props) => {
                         <BootstrapInput
                           placeholder="Nama"
                           id="bootstrap-input"
-                          onChange={handleChange}
                           name="account_holder_name"
+                          onChange={handleChange}
                         />
                       </FormControl>
                       <FormControl variant="standard" style={{ marginLeft: 30 }}>
@@ -433,8 +449,8 @@ const Form = (props) => {
                         <BootstrapInput
                           placeholder="Nomor rekening"
                           id="bootstrap-input"
-                          onChange={handleChange}
                           name="account_number"
+                          onChange={handleChange}
                         />
                       </FormControl>
                       <div >
@@ -451,7 +467,7 @@ const Form = (props) => {
                           className='dropdown'
                           onClick={handleClick}
                         >
-                          {bank ? bank : "Pilih Bank"}
+                          {data && data.bank_name ? data.bank_name : "Pilih Bank"}
                           <ArrowDropDownIcon />
                         </Button>
                         <Menu
@@ -470,7 +486,8 @@ const Form = (props) => {
                           {options.map((option, index) => (
                             <MenuItem
                               key={option}
-                              onClick={() => handleMenuItemClick(option)}
+                              selected={index === selectedIndex}
+                              onClick={() => handleBankChange(option)}
                             >
                               {option}
                             </MenuItem>
@@ -481,9 +498,8 @@ const Form = (props) => {
                   </div>
                 </div>
               </div>
-              {error && <p>{error}</p>}
               <div style={{ marginBottom: 50 }}>
-                <PrimaryButton onClick={handleSubmit} style={{ float: 'right', marginRight: 25 }}>Selesai</PrimaryButton>
+                <PrimaryButton loading={loading} onClick={handleSubmit} style={{ float: 'right', marginRight: 25 }}>Selesai</PrimaryButton>
               </div>
             </div>
           </Frame>

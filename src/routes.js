@@ -15,6 +15,10 @@ import LupaPassVerif from "./pages/LupaPassVerif";
 import ResetSandi from "./pages/ResetSandi";
 import ResetSandiBerhasil from "./pages/ResetSandiBerhasil";
 import UbahSandi from "./pages/UbahSandi";
+import VerifikasiSukses from "./pages/VerifikasiSukses";
+import VerifikasiExpired from "./pages/VerifikasiExpired";
+import VerifikasiEmail from "./pages/VerifikasiEmail";
+import Unverified from "./pages/Unverified";
 
 export const APP_ROUTE = [
     {
@@ -130,5 +134,30 @@ export const APP_ROUTE = [
         exact: true,
         component: UbahSandi,
         private: true,
+    },
+    
+    {
+        name: "Verifikasi Email",
+        path: "/verifikasi-email",
+        exact: true,
+        component: VerifikasiEmail,
+    },
+    {
+        name: "Verifikasi Sukses",
+        path: "/verifikasi-sukses",
+        exact: true,
+        component: VerifikasiSukses,
+    },
+    {
+        name: "Verifikasi Kadaluarsa",
+        path: "/verifikasi-kadaluarsa",
+        exact: true,
+        component: VerifikasiExpired,
+    },
+    {
+        name: "Belum Verifikasi",
+        path: "/belum-verifikasi",
+        exact: true,
+        component: Unverified,
     }
 ];
