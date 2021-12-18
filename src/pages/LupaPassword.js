@@ -1,10 +1,13 @@
-import * as React from 'react';
-import { Box, Paper, Button, InputBase, FormControl, } from '@mui/material';
+import React, { useState } from "react";
+import { Box, Paper, Button, InputBase, FormControl } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { styled } from "@mui/system";
+import { Link } from 'react-router-dom';
 import PrimaryButton from '../components/button/PrimaryButton';
 import { useHistory } from 'react-router';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import axios from "axios";
+require('dotenv').config();
 
 
 const useStyle = makeStyles({
@@ -49,9 +52,30 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 const LupaPassword = () => {
   const classes = useStyle();
   const history = useHistory();
+  const [email, setEmail] = useState();
+  const [loading, setLoading] = useState(false);
 
   const handleContinueButton = () => {
-      history.push("/lupa-pass-Verif");
+    setLoading(true);
+    axios.post(process.env.REACT_APP_API_URL + 'auth/password/send-email', { email: email })
+      .then((res) => {
+        console.log(res.data);
+        history.push({
+          pathname: "/lupa-pass-Verif",
+          state: {
+            email: email
+          }
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      })
+  }
+
+  const handleEmailChange = (evt) => {
+    const value = evt.target.value;
+    setEmail(value);
   }
 
   return (
@@ -62,28 +86,29 @@ const LupaPassword = () => {
       <div>
         <Paper elevation={10} className={classes.paperStyle}>
           <h2>
-            <Button style={{ float: 'left' }} >
-              <ArrowBackIosIcon />
-            </Button>
+            <Link to="/login">
+              <ArrowBackIosIcon style={{ float: 'left' }} />
+            </Link>
             Reset Kata Sandi
           </h2>
-          <FormControl 
-            style={{ marginTop: '30px'}} 
+          <FormControl
+            style={{ marginTop: '30px' }}
             fullWidth
             variant="standard"
           >
-              <BootstrapInput
-                 placeholder="Email"
-                 id="bootstrap-input"
-                 name="email"
-                 />
+            <BootstrapInput
+              placeholder="Email"
+              id="bootstrap-input"
+              name="email"
+              onChange={handleEmailChange}
+            />
           </FormControl>
-          <PrimaryButton style={{ width: '70%', fontSize: '16px', marginTop: 20 }} onClick={handleContinueButton}>Berikutnya</PrimaryButton>
+          <PrimaryButton loading={loading} style={{ width: '70%', fontSize: '16px', marginTop: 20 }} onClick={handleContinueButton}>Berikutnya</PrimaryButton>
         </Paper>
       </div>
     </div >
   )
 }
 
-export default LupaPassword; 
+export default LupaPassword;
 

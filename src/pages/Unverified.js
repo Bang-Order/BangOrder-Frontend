@@ -61,7 +61,6 @@ const Unverified = (props) => {
       </header>
       <div>
         <Paper elevation={10} className={classes.paperStyle}>
-
           <h2>
             <Link to="/login">
               <ArrowBackIosIcon style={{ float: 'left' }} />

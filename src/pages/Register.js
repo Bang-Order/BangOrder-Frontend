@@ -78,12 +78,11 @@ const Register = () => {
                         state: res.data.data
                     });
                 })
-                // .catch((err) => {
-                //     setError(err.response.data.message);
-                // })
+                .catch((err) => {
+                    console.log(err.response.data.errors);
+                    setError(err.response.data);
+                })
         }
-        history.push("/login");
-
     }
 
     return (
@@ -91,7 +90,7 @@ const Register = () => {
             <Container>
                 <img className={classes.image} src="/logo-horizontal.png" alt="" />
                 <h5>Contactless Food Ordering with QR Code</h5>
-                {error && <Alert sx={{ marginTop: "30px" }} severity="error">{error}</Alert>}
+                {error && <Alert sx={{ marginTop: "30px" }} severity="error">{error.errors.email || error.errors.password || error.errors.confirm_password}</Alert>}
                 <TextField
                     label="Email"
                     id="outlined-size-small"
@@ -139,7 +138,7 @@ const Register = () => {
                     <InputLabel htmlFor="outlined-adornment-password">Konfirmasi Password</InputLabel>
                     <OutlinedInput
                         id="outlined-password-input"
-                        label="Password"
+                        label="Konfirmasi Password"
                         type={!showPassword ? "password" : "text"}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         autoComplete="off"

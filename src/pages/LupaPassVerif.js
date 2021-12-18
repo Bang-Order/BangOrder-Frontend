@@ -3,7 +3,6 @@ import { Box, Paper, Button, InputBase, FormControl, } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { styled } from "@mui/system";
 import { useHistory } from 'react-router';
-import PrimaryButton from '../components/button/PrimaryButton';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 const useStyle = makeStyles({
@@ -15,8 +14,6 @@ const useStyle = makeStyles({
   },
   box: {
     boxShadow: 3,
-    // width: '70%',
-    // alignContent: 'center'
   },
   image: {
     width: '20%',
@@ -48,13 +45,29 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 }));
 
 
-const LupaPassword = () => {
+const LupaPassword = (props) => {
   const classes = useStyle();
   const history = useHistory();
+  const [email, setEmail] = React.useState(props.location.state.email);
 
-  const handleContinueButton = () => {
-    history.push("/reset-sandi");
-}
+  const censorEmail = (email) => {
+    var parts = email.split("@");
+    var name = parts[0];
+    var result = name.charAt(0);
+    for (var i = 1; i < name.length; i++) {
+      result += "*";
+    }
+    result += name.charAt(name.length - 1);
+    result += "@";
+    var domain = parts[1];
+    result += domain.charAt(0);
+    var dot = domain.indexOf(".");
+    for (var i = 1; i < dot; i++) {
+      result += "*";
+    }
+    result += domain.substring(dot);
+    return result;
+  }
 
   return (
     <div>
@@ -70,10 +83,7 @@ const LupaPassword = () => {
             Reset Kata Sandi
           </h2>
           <img className={classes.image} src="/Email1.png" alt="" />
-          <p>Email verifikasi telah dikirimkan ke
-            ai*****@gmail.com
-            Mohon verifikasi </p>
-          <PrimaryButton style={{ width: '70%', fontSize: '16px', marginTop: 20 }} onClick={handleContinueButton} >Oke</PrimaryButton>
+          <p>{'Email verifikasi telah dikirimkan ke ' + censorEmail(email)}</p>
         </Paper>
       </div>
     </div >

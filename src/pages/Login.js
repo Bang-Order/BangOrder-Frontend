@@ -135,8 +135,9 @@ const Login2 = () => {
                         }
                     />
                 </FormControl>
-                <div style={{ display: 'flex' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <FormControlLabel control={<Checkbox />} label="Ingat Saya" />
+                    <p><StyledLink to="/lupa-password" >Lupa password?</StyledLink></p>
                 </div>
                 <div>
                     <PrimaryButton onClick={_onSubmit} loading={Loading} width='100%'>Masuk</PrimaryButton>

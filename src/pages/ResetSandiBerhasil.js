@@ -67,7 +67,7 @@ const ResetSandiBerhasil = () => {
           </h2>
           <img className={classes.image} src="/success.png" alt="" />
           <p>
-              Berhasil mengatur ulang kata sandi dengan email ai*****@gmail.com 
+              Berhasil mengatur ulang kata sandi
           </p>
           <PrimaryButton style={{ width: '70%', fontSize: '16px', marginTop: 20 }} onClick={handleContinueButton} >Kembali Ke Log in</PrimaryButton>
         </Paper>
