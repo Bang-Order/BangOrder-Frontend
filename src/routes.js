@@ -118,7 +118,7 @@ export const APP_ROUTE = [
     },
     {
         name: "Reset Sandi",
-        path: "/reset-sandi",
+        path: "/reset-password",
         exact: true,
         component: ResetSandi,
     },

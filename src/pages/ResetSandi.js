@@ -67,6 +67,7 @@ const ResetSandi = (props) => {
   }, [])
 
   const handleContinueButton = () => {
+    console.log(data);
     axios.post(process.env.REACT_APP_API_URL + 'auth/password/reset', data)
       .then((res) => {
         history.push("/reset-sandi-berhasil");
