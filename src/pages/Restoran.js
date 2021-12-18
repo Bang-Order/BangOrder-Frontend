@@ -24,6 +24,11 @@ var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 
 const useStyles = makeStyles(() => ({
+  header: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   date: {
     backgroundColor: '#fff',
     padding: 10,
@@ -141,7 +146,7 @@ const Restoran = () => {
   const handleClose = () => {
     setOpen(false);
   }
-  
+
   useEffect(() => {
     api.get(Cookies.get("RestoId") + "/dashboard", { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
       .then((res) => {
@@ -259,7 +264,10 @@ const Restoran = () => {
           :
           <>
             <div className={classes.date}>
-              <h3>{today}</h3>
+              <div className={classes.header}>
+                <h3>{today}</h3>
+                <PrimaryButton onClick={takeClickHandler} style={{ marginRight: 10, fontSize: 16 }}>Tarik dana</PrimaryButton>
+              </div>
               <div className={classes.overview}>
                 <div className={classes.order}>
                   <h4>Pesanan hari ini</h4>
