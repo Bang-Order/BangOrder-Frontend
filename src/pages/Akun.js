@@ -434,11 +434,6 @@ const Akun = () => {
                         />
                       </FormControl>
                     </div>
-                    <div className={classes.navButton}>
-                      <PrimaryButton width="100px" onClick={handleSaveButton}>
-                        Simpan
-                      </PrimaryButton>
-                    </div>
                   </div>
                 </div>
               </Frame>
@@ -454,7 +449,8 @@ const Akun = () => {
                         <BootstrapInput
                           placeholder="Nama"
                           id="bootstrap-input"
-                          name="account-name"
+                          name="account_holder_name"
+                          value={resto.account_holder_name}
                         />
                       </FormControl>
                     </div>
@@ -503,7 +499,9 @@ const Akun = () => {
                           <BootstrapInput
                             placeholder="Nomor rekening"
                             id="bootstrap-input"
-                            name="account-number"
+                            name="account_number"
+                            value={resto.account_number}
+                            
                           />
                         </FormControl>
                     </div>

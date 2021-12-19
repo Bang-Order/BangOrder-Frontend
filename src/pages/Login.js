@@ -97,7 +97,7 @@ const Login2 = () => {
         <div className={classes.root}>
             <Container fixed >
                 <img className={classes.image} src="/logo-horizontal.png" alt="" />
-                <h5>Contactless Food Ordering with QR Code</h5>
+                <h4>Contactless Food Ordering with QR Code</h4>
                 {error && <Alert sx={{ marginTop: "30px" }} severity="error">Email atau password salah!</Alert>}
                 <TextField
                     label="Email"

@@ -124,7 +124,7 @@ const EditMenu = (props) => {
   }, [menuId, isReset])
 
   useEffect(() => {
-    api.get('/menu-categories')
+    api.get(Cookies.get("RestoId")+'/menu-categories')
       .then((res) => {
         setAllCategory(res.data.data);
       })
@@ -140,7 +140,7 @@ const EditMenu = (props) => {
     if (image) {
       formData.append('image', image);
     }
-    api.post('/menus/' + menuId + '?_method=PUT', formData, {
+    api.post(Cookies.get("RestoId")+'/menus/' + menuId + '?_method=PUT', formData, {
       headers: {
         Authorization: 'Bearer ' + Cookies.get("BangOrderToken"),
         'Content-Type': 'application/form-data; ',

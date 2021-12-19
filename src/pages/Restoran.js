@@ -101,6 +101,7 @@ const Restoran = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
   const [addDialog, setAddDialog] = useState();
+  const [resto, setResto] = useState();
   const Frame = styled('div')(({ theme }) => ({
     backgroundColor: '#fff',
     marginLeft: 280,
@@ -128,7 +129,6 @@ const Restoran = () => {
     paddingTop: 20
   }))
 
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -139,6 +139,10 @@ const Restoran = () => {
   };
 
   const takeClickHandler = () => {
+    api.get(Cookies.get("RestoId"))
+      .then((res) => {
+        setResto(res.data)
+      })
     setAddDialog(true);
     setOpen(true);
   }
@@ -197,7 +201,7 @@ const Restoran = () => {
               placeholder="0"
               id="rupiah"
               name="rupiah-nominal"
-              type="text"
+              type="number"
             />
           </div>
 
@@ -208,15 +212,15 @@ const Restoran = () => {
         {/* <DialogTitle style={{ margin: 0 }}><EditOutlinedIcon /></DialogTitle> */}
         <div style={{ marginLeft: 10, marginTop: 0 }}>
           <p style={{ fontSize: 14, margin: 0 }}>Nama (harus sama dengan Rekening Bank)</p>
-          <h4>Aisyah Maulidiyah</h4>
+          <h4>{resto && resto.account_holder_name}</h4>
         </div>
         <div style={{ marginTop: 15, marginLeft: 10 }}>
           <p style={{ fontSize: 14, margin: 0 }}>Bank</p>
-          <h4>Mandiri</h4>
+          <h4>{resto && resto.bank_name}</h4>
         </div>
         <div style={{ marginTop: 15, marginLeft: 10 }}>
           <p style={{ fontSize: 14, margin: 0 }}>No. Rekening</p>
-          <h4>2********</h4>
+          <h4>{resto && resto.account_number}</h4>
         </div>
         <div className={classes.note}>
           Setiap melakukan transaksi, saldo akan dipotong sebesar Rp 5000.
@@ -357,7 +361,7 @@ const Restoran = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {data.income_data.length != 0 ? data.income_data
+                      {data.withdraw_data.length != 0 ? data.withdraw_data
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((row) => (
                           <StyledTableRow
@@ -365,13 +369,10 @@ const Restoran = () => {
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                           >
                             <StyledTableCell component="th" scope="row">
-                              <h4>{row.date}</h4>
+                              <h4>{row.time}</h4>
                             </StyledTableCell >
                             <StyledTableCell align="center">
-                              <h4>{row.total_order}</h4>
-                            </StyledTableCell >
-                            <StyledTableCell align="center">
-                              <h4>Rp. {row.total_income.toLocaleString(['id'])}</h4>
+                              <h4>Rp. {row.amount.toLocaleString(['id'])}</h4>
                             </StyledTableCell >
                           </StyledTableRow>
                         ))

@@ -89,7 +89,7 @@ const Register = () => {
         <div className={classes.root}>
             <Container>
                 <img className={classes.image} src="/logo-horizontal.png" alt="" />
-                <h5>Contactless Food Ordering with QR Code</h5>
+                <h4>Contactless Food Ordering with QR Code</h4>
                 {error && <Alert sx={{ marginTop: "30px" }} severity="error">{error.errors.email || error.errors.password || error.errors.confirm_password}</Alert>}
                 <TextField
                     label="Email"
