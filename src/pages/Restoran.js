@@ -354,7 +354,7 @@ const Restoran = () => {
                     <TableHead>
                       <TableRow>
                         <StyledTableCell ><h3>Tanggal</h3></StyledTableCell>
-                        <StyledTableCell><h3>Jumlah Pengeluaran</h3></StyledTableCell>
+                        <StyledTableCell align="center"><h3>Jumlah Pengeluaran</h3></StyledTableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
