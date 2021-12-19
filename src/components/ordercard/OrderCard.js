@@ -65,7 +65,8 @@ const useStyles = makeStyles(() => ({
 	item: {
 		display: 'flex',
 		flexDirection: 'row',
-		justifyContent: 'space-between'
+		justifyContent: 'space-between',
+		marginBottom: 5,
 	},
 	total: {
 		alignSelf: 'flex-end',
@@ -74,7 +75,11 @@ const useStyles = makeStyles(() => ({
 		marginRight: 40,
 		marginBottom: 20,
 		marginTop: 20,
-		width: 170,
+		minWidth: '10%',
+		maxWidth: '50%',
+	},
+	fontStyle: {
+		fontWeight: 'normal',
 	}
 }));
 
@@ -97,7 +102,7 @@ const OrderCard = (props) => {
 		handleClose();
 		setStatus(status);
 		api
-			.patch(Cookies.get("RestoId")+'/orders/' + order.id, {
+			.patch(Cookies.get("RestoId") + '/orders/' + order.id, {
 				"order_status": status,
 				"payment_status": "success"
 			}, { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } });
@@ -119,9 +124,10 @@ const OrderCard = (props) => {
 					</div>
 					<div className={classes.right}>
 						<h4>
-							Status :
+							Status:
 						</h4>
-						<Button width="150px" onClick={handleClick} className="dropdown">
+						&ensp;
+						<Button style={{ fontSize: '16px', borderColor: '#ffc300', borderRadius: 7 }} width="150px" onClick={handleClick} className="dropdown">
 							{status}
 						</Button>
 						<Menu
@@ -146,16 +152,16 @@ const OrderCard = (props) => {
 					orderItem.map(item =>
 						<div key={item.name} className={classes.content}>
 							<div className={classes.item}>
-								<h4>{item.quantity}x {item.name}</h4>
+								<h4>{item.quantity}x&ensp; {item.name}</h4>
 								<h4>{item.price}</h4>
 							</div>
-							<h5>Catatan : {item.notes}</h5>
-							<Divider />
+							<h5 className={classes.fontStyle}>Catatan : {item.notes}</h5>
+							<Divider style={{ marginTop: 10 }} />
 						</div>
 					)}
 
 				<div className={classes.total}>
-					<h4>Total harga : </h4>
+					<h4>Total harga: &ensp;</h4>
 					<h4>{order.total_price}</h4>
 				</div>
 			</div>

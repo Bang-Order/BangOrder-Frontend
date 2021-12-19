@@ -43,7 +43,7 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     left: 'true',
     marginBottom: 20
-},
+  },
   left: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -58,6 +58,9 @@ const useStyles = makeStyles(() => ({
   actionButton: {
     display: 'flex',
     justifyContent: 'space-around'
+  },
+  fontStyle: {
+    fontWeight: 'normal',
   }
 }));
 
@@ -94,7 +97,7 @@ const KategoriMenu = () => {
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
-      api.get(Cookies.get("RestoId")+'/menu-categories')
+      api.get(Cookies.get("RestoId") + '/menu-categories')
         .then((res) => {
           setAllCategory(res.data.data);
           setLoading(false);
@@ -124,17 +127,17 @@ const KategoriMenu = () => {
 
   const saveHandler = () => {
     addDialog ?
-      api.post(Cookies.get("RestoId")+'/menu-categories', newCategory)
+      api.post(Cookies.get("RestoId") + '/menu-categories', newCategory)
         .then(setOpen(false))
         .then(setUpdate(!update))
       :
-      api.patch(Cookies.get("RestoId")+'/menu-categories/' + category.id, newCategory)
+      api.patch(Cookies.get("RestoId") + '/menu-categories/' + category.id, newCategory)
         .then(setOpen(false))
         .then(setUpdate(!update))
   }
 
   const deleteHandler = (id) => {
-    api.delete(Cookies.get("RestoId")+'/menu-categories/' + id)
+    api.delete(Cookies.get("RestoId") + '/menu-categories/' + id)
       .then(setOpen(false))
       .then(setUpdate(!update))
   }
@@ -162,7 +165,7 @@ const KategoriMenu = () => {
     <Root>
       <Content>
         <div className={classes.header}>
-            <PrimaryButton onClick={addClickHandler}>Tambah Kategori</PrimaryButton>
+          <PrimaryButton onClick={addClickHandler}>Tambah Kategori</PrimaryButton>
         </div>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 500 }} aria-label="a dense table">
@@ -198,18 +201,18 @@ const KategoriMenu = () => {
                     key={category.name}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
-                    <StyledTableCell  component="th" scope="row">
-                      <h4>{category.name}</h4>
+                    <StyledTableCell component="th" scope="row">
+                      <h4 className={classes.fontStyle}>{category.name}</h4>
                     </StyledTableCell >
                     <StyledTableCell sx={{ width: '20%' }} align="center">
                       <div className={classes.actionButton}>
-                        <TertiaryButton  onClick={() => { editClickHandler(category) }}>Edit</TertiaryButton >
-                        <DeleteButton  onClick={() => { deleteHandler(category.id) }}>Hapus</DeleteButton >
+                        <TertiaryButton onClick={() => { editClickHandler(category) }}>Edit</TertiaryButton >
+                        <DeleteButton onClick={() => { deleteHandler(category.id) }}>Hapus</DeleteButton >
                       </div>
                     </StyledTableCell >
                   </StyledTableRow>
                 ))
-              :
+                  :
                   <StyledTableRow
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
