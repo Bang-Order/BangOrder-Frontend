@@ -6,7 +6,7 @@ const PrimaryButton = (props) => {
         backgroundColor: '#ffc300',
         borderRadius: 7,
         width: props.width,
-        fontSize: '18px',
+        fontSize: '16px',
         fontFamily: 'manrope',
         textTransform: "capitalize",
         fontWeight: "bolder",

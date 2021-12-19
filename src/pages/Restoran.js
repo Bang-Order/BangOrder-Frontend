@@ -45,6 +45,9 @@ const useStyles = makeStyles(() => ({
     justifyContent: "space-between",
     marginTop: 20,
     width: "80%"
+  },
+  fontStyle: {
+    fontWeight: 'normal',
   }
 }));
 
@@ -141,7 +144,7 @@ const Restoran = () => {
   const handleClose = () => {
     setOpen(false);
   }
-  
+
   useEffect(() => {
     api.get(Cookies.get("RestoId") + "/dashboard", { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
       .then((res) => {
@@ -161,7 +164,7 @@ const Restoran = () => {
           animationEnabled: true,
           theme: "light2",
           title: {
-            text: "Pendapatan Restoran"
+            text: "Pendapatan Restoran",
           },
           axisY: {
             title: "Pendapatan",
@@ -262,23 +265,23 @@ const Restoran = () => {
               <h3>{today}</h3>
               <div className={classes.overview}>
                 <div className={classes.order}>
-                  <h4>Pesanan hari ini</h4>
+                  <h4 className={classes.fontStyle}>Pesanan hari ini</h4>
                   <h3>{data.today_data.total_order}</h3>
                 </div>
                 <Divider orientation="vertical" flexItem />
                 <div className={classes.income}>
-                  <h4>Pendapatan hari ini</h4>
-                  <h3>Rp. {data.today_data.total_income.toLocaleString(['id'])}</h3>
+                  <h4 className={classes.fontStyle}>Pendapatan hari ini</h4>
+                  <h3> {data.today_data.total_income.toLocaleString(['id'])}</h3>
                 </div>
                 <Divider orientation="vertical" flexItem />
                 <div className={classes.saldo}>
-                  <h4>Saldo</h4>
-                  <h3>Rp. {data.total_balance.toLocaleString(['id'])}</h3>
+                  <h4 className={classes.fontStyle}>Saldo</h4>
+                  <h3> {data.total_balance.toLocaleString(['id'])}</h3>
                 </div>
               </div>
             </div>
             <div className={classes.summary}>
-              <h3>Ringkasan</h3>
+              <h3 style={{ marginBottom: 20 }}>Ringkasan</h3>
               <div className={classes.summaryTable}>
                 <TableContainer component={Paper}>
                   <Table sx={{ minWidth: 500 }} stickyHeader aria-label="a dense table">
@@ -298,13 +301,13 @@ const Restoran = () => {
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                           >
                             <StyledTableCell component="th" scope="row">
-                              <h4>{row.date}</h4>
+                              <h4 className={classes.fontStyle}>{row.date}</h4>
                             </StyledTableCell >
                             <StyledTableCell align="center">
-                              <h4>{row.total_order}</h4>
+                              <h4 className={classes.fontStyle}>{row.total_order}</h4>
                             </StyledTableCell >
                             <StyledTableCell align="center">
-                              <h4>Rp. {row.total_income.toLocaleString(['id'])}</h4>
+                              <h4 className={classes.fontStyle}>{row.total_income.toLocaleString(['id'])}</h4>
                             </StyledTableCell >
                           </StyledTableRow>
                         ))
@@ -357,13 +360,13 @@ const Restoran = () => {
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                           >
                             <StyledTableCell component="th" scope="row">
-                              <h4>{row.date}</h4>
+                              <h4 className={classes.fontStyle}>{row.date}</h4>
                             </StyledTableCell >
                             <StyledTableCell align="center">
-                              <h4>{row.total_order}</h4>
+                              <h4 className={classes.fontStyle}>{row.total_order}</h4>
                             </StyledTableCell >
                             <StyledTableCell align="center">
-                              <h4>Rp. {row.total_income.toLocaleString(['id'])}</h4>
+                              <h4 className={classes.fontStyle}>{row.total_income.toLocaleString(['id'])}</h4>
                             </StyledTableCell >
                           </StyledTableRow>
                         ))

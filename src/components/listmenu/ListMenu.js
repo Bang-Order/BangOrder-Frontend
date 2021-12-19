@@ -53,7 +53,7 @@ const ListMenu = () => {
   const [menus, setMenus] = useState(null);
   useEffect(() => {
     setTimeout(() => {
-      api.get(Cookies.get("RestoId")+"/menus?filter=" + statusFilter)
+      api.get(Cookies.get("RestoId") + "/menus?filter=" + statusFilter)
         .then((res) => {
           setMenus(res.data.data);
           setLoading(false)
@@ -68,7 +68,7 @@ const ListMenu = () => {
   useDidMountEffect(() => {
     const searchMenu = () => {
       setLoading(true);
-      api.get(Cookies.get("RestoId")+'/menus?search=' + searchKey)
+      api.get(Cookies.get("RestoId") + '/menus?search=' + searchKey)
         .then((res) => {
           setMenus(res.data.data);
           setLoading(false);
@@ -86,7 +86,7 @@ const ListMenu = () => {
   const handleStatusClick = (status) => {
     setStatusFilter(status)
     setAnchorEl(null);
-    api.get(Cookies.get("RestoId")+'/menus?filter=' + statusFilter)
+    api.get(Cookies.get("RestoId") + '/menus?filter=' + statusFilter)
       .then((res) => {
         setMenus(res.data.data);
       })
@@ -119,9 +119,9 @@ const ListMenu = () => {
         </div>
         <div className={classes.right}>
           <Link to={"/tambah-menu"}>
-            <PrimaryButton>Tambah Menu</PrimaryButton>
+            <PrimaryButton width='150px'>Tambah Menu</PrimaryButton>
           </Link>
-          <Button onClick={handleClick} className="dropdown">
+          <Button style={{ fontSize: '16px', borderRadius: 7, height: 'auto' }} onClick={handleClick} className="dropdown">
             {statusFilter ? statusFilter : "All Menu"}
             <ArrowDropDownIcon />
           </Button>

@@ -31,9 +31,9 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    width: '40%',
-    minWidth: 370,
-    maxWidth: 390,
+    width: 130, //'40%'
+    // minWidth: 370,
+    // maxWidth: 390,
     marginRight: 20,
   },
   content: {
@@ -71,7 +71,11 @@ const useStyles = makeStyles(() => ({
     marginRight: 40,
     marginBottom: 20,
     marginTop: 20,
-    width: 170,
+    minWidth: '10%',
+    maxWidth: '50%',
+  },
+  fontStyle: {
+    fontWeight: 'normal',
   }
 }));
 
@@ -105,14 +109,15 @@ const HistoryCard = (props) => {
                 <h4>{item.quantity}x {item.name}</h4>
                 <h4>{item.price}</h4>
               </div>
-              <Divider />
+              <h5 className={classes.fontStyle}>Catatan : {item.notes}</h5>
+              <Divider style={{ marginTop: 10 }} />
             </div>
           )
           :
           <p>no data</p>
         }
         <div className={classes.total}>
-          <h4>Total harga : </h4>
+          <h4>Total harga: &ensp; </h4>
           <h4>{order.total_price}</h4>
         </div>
       </div>

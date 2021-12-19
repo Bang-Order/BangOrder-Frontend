@@ -28,6 +28,9 @@ const useStyle = makeStyles({
     actionButton: {
         display: 'flex',
         justifyContent: 'space-around'
+    },
+    fontStyle: {
+        fontWeight: 'normal',
     }
 })
 
@@ -83,7 +86,7 @@ const DataMeja = () => {
     useEffect(() => {
         setLoading(true)
         setTimeout(() => {
-            api.get(Cookies.get("RestoId")+"/tables", { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } }).then((res) => {
+            api.get(Cookies.get("RestoId") + "/tables", { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } }).then((res) => {
                 setTables(res.data.data);
                 setLoading(false)
             })
@@ -110,17 +113,17 @@ const DataMeja = () => {
 
     const saveHandler = () => {
         addDialog ?
-            api.post(Cookies.get("RestoId")+'/tables', newTable)
+            api.post(Cookies.get("RestoId") + '/tables', newTable)
                 .then(setOpen(false))
                 .then(setUpdate(!update))
             :
-            api.patch(Cookies.get("RestoId")+'/tables/' + table.id, newTable)
+            api.patch(Cookies.get("RestoId") + '/tables/' + table.id, newTable)
                 .then(setOpen(false))
                 .then(setUpdate(!update))
     }
 
     const deleteClickHandler = (id) => {
-        api.delete(Cookies.get("RestoId")+'/tables/' + id)
+        api.delete(Cookies.get("RestoId") + '/tables/' + id)
             .then(setOpen(false))
             .then(setUpdate(!update))
     }
@@ -143,13 +146,13 @@ const DataMeja = () => {
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
                 <Button onClick={saveHandler}>Save</Button>
-            </DialogActions> 
+            </DialogActions>
         </Dialog>
     )
 
     const download = (table) => {
-        saveAs(process.env.REACT_APP_API_URL + "restaurants/" + restoId + "/tables/" + table.id + "/downloadQRCode", 'Meja ' + table.table_number +'.jpg')
-    }; 
+        saveAs(process.env.REACT_APP_API_URL + "restaurants/" + restoId + "/tables/" + table.id + "/downloadQRCode", 'Meja ' + table.table_number + '.jpg')
+    };
 
     return (
         <Root>
@@ -198,10 +201,10 @@ const DataMeja = () => {
                                     :
                                     tables && tables.map((table) => (
                                         <StyledTableRow key={table.id}>
-                                            <StyledTableCell component="th" scope="row"><h4>{table.table_number}</h4></StyledTableCell>
+                                            <StyledTableCell component="th" scope="row"><h4 className={classes.fontStyle}>{table.table_number}</h4></StyledTableCell>
                                             <StyledTableCell >
-                                                <Link component="h4" onClick={() => download(table)}>Unduh disini</Link>
-                                            </StyledTableCell> 
+                                                <Link component="h4" onClick={() => download(table)} className={classes.fontStyle}>Unduh disini</Link>
+                                            </StyledTableCell>
                                             <StyledTableCell>
                                                 <div className={classes.actionButton}>
                                                     <TertiaryButton onClick={() => editClickHandler(table)}>Edit</TertiaryButton>

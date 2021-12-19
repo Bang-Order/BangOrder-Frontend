@@ -36,7 +36,7 @@ const MenuCard = (param) => {
                         {menu.name}
                     </h3>
                     <Typography variant="body2" color="text.secondary">
-                        Rp {(menu.price).toLocaleString(['id'])}
+                        {(menu.price).toLocaleString(['id'])}
                     </Typography>
                 </CardContent>
             </CardActionArea>

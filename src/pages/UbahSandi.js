@@ -6,7 +6,7 @@ import { makeStyles } from '@mui/styles';
 import InputBase from '@mui/material/InputBase';
 import FormControl from '@mui/material/FormControl';
 import { Link } from "react-router-dom";
-import { InputLabel,  Radio} from "@mui/material";
+import { InputLabel, Radio } from "@mui/material";
 
 
 const Root = styled('div')(() => ({
@@ -75,57 +75,57 @@ const UbahSandi = () => {
   return (
     <Root>
       <div>
-        <Sidebar name="Ubah Kata Sandi"/>
+        <Sidebar name="Ubah Kata Sandi" />
         <div>
-            <Frame>
-              <div className={classes.content}>
-                    <div className={classes.item}>
-                      <FormControl variant="standard">
-                        <InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
-                          Kata Sandi Lama
-                        </InputLabel>
-                        <BootstrapInput
-                          placeholder="Kata Sandi Lama"
-                          id="bootstrap-input"
-                          name="sandiLama"
-                        />
-                      <StyledLink to="/lupa-password" >Lupa Password</StyledLink>
-                      </FormControl>
-                      
-                    </div>
-                    <div className={classes.item}>
-                      <FormControl variant="standard" font-size="24px">
-                        <InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
-                          Kata Sandi Baru
-                        </InputLabel>
-                        <BootstrapInput
-                          placeholder="Kata Sandi Baru"
-                          id="bootstrap-input"
-                          name="sandiBaru"
-                        />
-                      </FormControl>
-                    </div>
-                    <div className={classes.item}>
-                      <FormControl variant="standard" font-size="24px">
-                        <InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
-                          Konfirmasi Kata Sandi
-                        </InputLabel>
-                        <BootstrapInput
-                          placeholder="Konfirmasi Kata Sandi"
-                          id="bootstrap-input"
-                          name="konfirmasiSandi"
-                        />
-                      </FormControl>
-                    </div>
-                    <div className={classes.navButton}>
-                      <PrimaryButton width="100px">
-                        Simpan
-                      </PrimaryButton>
-                    </div>
+          <Frame>
+            <div className={classes.content}>
+              <div className={classes.item}>
+                <FormControl variant="standard">
+                  <InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
+                    Kata Sandi Lama
+                  </InputLabel>
+                  <BootstrapInput
+                    placeholder="Kata Sandi Lama"
+                    id="bootstrap-input"
+                    name="sandiLama"
+                  />
+                  <StyledLink to="/lupa-password" >Lupa Password</StyledLink>
+                </FormControl>
               </div>
-            </Frame>
-          </div>
+
+              <div className={classes.item}>
+                <FormControl variant="standard" font-size="24px">
+                  <InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
+                    Kata Sandi Baru
+                  </InputLabel>
+                  <BootstrapInput
+                    placeholder="Kata Sandi Baru"
+                    id="bootstrap-input"
+                    name="sandiBaru"
+                  />
+                </FormControl>
+              </div>
+              <div className={classes.item}>
+                <FormControl variant="standard" font-size="24px">
+                  <InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
+                    Konfirmasi Kata Sandi
+                  </InputLabel>
+                  <BootstrapInput
+                    placeholder="Konfirmasi Kata Sandi"
+                    id="bootstrap-input"
+                    name="konfirmasiSandi"
+                  />
+                </FormControl>
+              </div>
+              <div className={classes.navButton}>
+                <PrimaryButton width="100px">
+                  Simpan
+                </PrimaryButton>
+              </div>
+            </div>
+          </Frame>
         </div>
+      </div>
     </Root>
   )
 }
