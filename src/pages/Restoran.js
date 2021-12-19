@@ -1,8 +1,6 @@
-import Sidebar from "../components/sidebar/Sidebar";
 import { styled } from '@mui/material/styles';
 import CanvasJSReact from '../lib/canvasjs.react';
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { makeStyles } from '@mui/styles';
 import Divider from '@mui/material/Divider';
 import Table from '@mui/material/Table';
@@ -18,12 +16,16 @@ import { Skeleton } from "@mui/material";
 import TablePagination from '@mui/material/TablePagination';
 import PrimaryButton from '../components/button/PrimaryButton';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import { Card, Dialog, DialogActions, DialogContent, DialogTitle, InputBase, InputLabel, Link } from "@mui/material";
-var CanvasJS = CanvasJSReact.CanvasJS;
+import {  Dialog, DialogActions, DialogContent, DialogTitle, InputBase, InputLabel, Link } from "@mui/material";
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 
 const useStyles = makeStyles(() => ({
+  header: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   date: {
     backgroundColor: '#fff',
     padding: 10,
@@ -91,14 +93,15 @@ const Restoran = () => {
   const day = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"]
   const month = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"]
   // const [today, setToday] = useState(new Date().getDay().toLocaleString(['id']) + new Date().toLocaleString(['id']));
-  const [today, setToday] = useState(day[new Date().getDay()] + ", " + new Date().getDate() + " " + month[new Date().getMonth()] + " " + new Date().getFullYear());
+  const [today] = useState(day[new Date().getDay()] + ", " + new Date().getDate() + " " + month[new Date().getMonth()] + " " + new Date().getFullYear());
   const dataPoints = [];
   const [options, setOptions] = useState();
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
-  const [addDialog, setAddDialog] = useState();
+  const [setAddDialog] = useState();
+  const [resto, setResto] = useState();
   const Frame = styled('div')(({ theme }) => ({
     backgroundColor: '#fff',
     marginLeft: 280,
@@ -126,7 +129,6 @@ const Restoran = () => {
     paddingTop: 20
   }))
 
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -137,6 +139,10 @@ const Restoran = () => {
   };
 
   const takeClickHandler = () => {
+    api.get(Cookies.get("RestoId"))
+      .then((res) => {
+        setResto(res.data)
+      })
     setAddDialog(true);
     setOpen(true);
   }
@@ -195,7 +201,7 @@ const Restoran = () => {
               placeholder="0"
               id="rupiah"
               name="rupiah-nominal"
-              type="text"
+              type="number"
             />
           </div>
 
@@ -206,21 +212,21 @@ const Restoran = () => {
         {/* <DialogTitle style={{ margin: 0 }}><EditOutlinedIcon /></DialogTitle> */}
         <div style={{ marginLeft: 10, marginTop: 0 }}>
           <p style={{ fontSize: 14, margin: 0 }}>Nama (harus sama dengan Rekening Bank)</p>
-          <h4>Aisyah Maulidiyah</h4>
+          <h4>{resto && resto.account_holder_name}</h4>
         </div>
         <div style={{ marginTop: 15, marginLeft: 10 }}>
           <p style={{ fontSize: 14, margin: 0 }}>Bank</p>
-          <h4>Mandiri</h4>
+          <h4>{resto && resto.bank_name}</h4>
         </div>
         <div style={{ marginTop: 15, marginLeft: 10 }}>
           <p style={{ fontSize: 14, margin: 0 }}>No. Rekening</p>
-          <h4>2********</h4>
+          <h4>{resto && resto.account_number}</h4>
         </div>
         <div className={classes.note}>
           Setiap melakukan transaksi, saldo akan dipotong sebesar Rp 5000.
           Waktu dana akan sampai ke pengguna bergantung pada waktu pemrosesan bank.
           Informasi selengkapnya silahkan &nbsp;
-          <a href='https://rebrand.ly/Limit-dan-Waktu' target='_blank'>klik disini</a>.
+          <a href='https://rebrand.ly/Limit-dan-Waktu' rel="noreferrer" target='_blank'>klik disini</a>.
         </div>
       </DialogContent>
       <DialogActions>
@@ -262,7 +268,10 @@ const Restoran = () => {
           :
           <>
             <div className={classes.date}>
-              <h3>{today}</h3>
+              <div className={classes.header}>
+                <h3>{today}</h3>
+                <PrimaryButton onClick={takeClickHandler} style={{ marginRight: 10, fontSize: 16 }}>Tarik dana</PrimaryButton>
+              </div>
               <div className={classes.overview}>
                 <div className={classes.order}>
                   <h4 className={classes.fontStyle}>Pesanan hari ini</h4>
@@ -293,7 +302,7 @@ const Restoran = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {data.income_data.length != 0 ? data.income_data
+                      {data.income_data.length !== 0 ? data.income_data
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((row) => (
                           <StyledTableRow
@@ -330,7 +339,7 @@ const Restoran = () => {
                 {dialog}
                 {/* showPagination={data.length > 10 ? true : false} */}
 
-                {data.income_data.length != 0 &&
+                {data.income_data.length !== 0 &&
                   <TablePagination
                     rowsPerPageOptions={[5, 10, 25, 100]}
                     component="div"
@@ -348,11 +357,11 @@ const Restoran = () => {
                     <TableHead>
                       <TableRow>
                         <StyledTableCell ><h3>Tanggal</h3></StyledTableCell>
-                        <StyledTableCell><h3>Jumlah Pengeluaran</h3></StyledTableCell>
+                        <StyledTableCell align="center"><h3>Jumlah Pengeluaran</h3></StyledTableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {data.income_data.length != 0 ? data.income_data
+                      {data.withdraw_data.length !== 0 ? data.withdraw_data
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((row) => (
                           <StyledTableRow
@@ -384,7 +393,7 @@ const Restoran = () => {
                     </TableBody>
                   </Table>
                 </TableContainer>
-                {data.income_data.length != 0 &&
+                {data.income_data.length !== 0 &&
                   <TablePagination
                     rowsPerPageOptions={[5, 10, 25, 100]}
                     component="div"

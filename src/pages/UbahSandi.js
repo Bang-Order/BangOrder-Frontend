@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import Sidebar from '../components/sidebar/Sidebar';
+import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import PrimaryButton from '../components/button/PrimaryButton';
 import { makeStyles } from '@mui/styles';
@@ -8,6 +7,11 @@ import FormControl from '@mui/material/FormControl';
 import { Link } from "react-router-dom";
 import { InputLabel, Radio } from "@mui/material";
 
+import { Alert, InputLabel } from "@mui/material";
+import { api } from '../utils/api';
+import Cookies from "js-cookie";
+import { useHistory } from 'react-router';
+require('dotenv').config();
 
 const Root = styled('div')(() => ({
   backgroundColor: '#f1f1f1',
@@ -64,45 +68,67 @@ const Frame = styled('div')(({ theme }) => ({
   },
 }));
 
-const StyledLink = styled(Link)({
-  textDecoration: 'none',
-  color: '#989999',
-})
-
 const UbahSandi = () => {
   const classes = useStyles();
+  const [data, setData] = useState();
+  const [error, setError] = useState();
+  const history = useHistory();
+
+  const handleChange = (evt) => {
+    const value = evt.target.value;
+    setData(prevState => ({
+      ...prevState,
+      [evt.target.name]: value
+    }));
+    console.log(data);
+  }
+
+  const handleSubmit = (evt) => {
+    api.post(Cookies.get("RestoId") + '/change-password', data, { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
+      .then((res) => {
+        history.push("/");
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+        setError(err.response.data);
+      })
+  }
 
   return (
     <Root>
       <div>
-        <Sidebar name="Ubah Kata Sandi" />
         <div>
           <Frame>
             <div className={classes.content}>
+              {error && <Alert sx={{ marginTop: "10px" }} severity="error">{error.errors ? (error.errors.old_password || error.errors.new_password || error.errors.confirm_new_password[0]) : error.message}</Alert>}
               <div className={classes.item}>
                 <FormControl variant="standard">
                   <InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
                     Kata Sandi Lama
                   </InputLabel>
                   <BootstrapInput
+                    type='password'
                     placeholder="Kata Sandi Lama"
                     id="bootstrap-input"
-                    name="sandiLama"
-                  />
-                  <StyledLink to="/lupa-password" >Lupa Password</StyledLink>
+                    name="old_password"
+                    onChange={handleChange}
+                    />
+                  {/* <StyledLink to="/lupa-password" >Lupa Password</StyledLink> */}
                 </FormControl>
-              </div>
 
+              </div>
               <div className={classes.item}>
                 <FormControl variant="standard" font-size="24px">
                   <InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
                     Kata Sandi Baru
                   </InputLabel>
                   <BootstrapInput
+                    type='password'
                     placeholder="Kata Sandi Baru"
                     id="bootstrap-input"
-                    name="sandiBaru"
-                  />
+                    name="new_password"
+                    onChange={handleChange}
+                    />
                 </FormControl>
               </div>
               <div className={classes.item}>
@@ -111,14 +137,16 @@ const UbahSandi = () => {
                     Konfirmasi Kata Sandi
                   </InputLabel>
                   <BootstrapInput
+                    type='password'
                     placeholder="Konfirmasi Kata Sandi"
                     id="bootstrap-input"
-                    name="konfirmasiSandi"
+                    name="confirm_new_password"
+                    onChange={handleChange}
                   />
                 </FormControl>
               </div>
               <div className={classes.navButton}>
-                <PrimaryButton width="100px">
+                <PrimaryButton width="100px" onClick={handleSubmit}>
                   Simpan
                 </PrimaryButton>
               </div>

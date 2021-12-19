@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Sidebar from '../components/sidebar/Sidebar';
 import { styled } from '@mui/material/styles';
 import PrimaryButton from '../components/button/PrimaryButton';
 import { makeStyles } from '@mui/styles';
 import InputBase from '@mui/material/InputBase';
 import FormControl from '@mui/material/FormControl';
-import { InputLabel, Button, ListItem, Tooltip, ListItemIcon, Menu, MenuItem} from "@mui/material";
+import { InputLabel, Button, ListItem, Tooltip, ListItemIcon, Menu, MenuItem } from "@mui/material";
 import { useHistory } from 'react-router';
 import { api } from '../utils/api';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -93,162 +92,45 @@ const Frame = styled('div')(({ theme }) => ({
   },
 }));
 
-const options = [
-  'BPD Aceh',
-  'BPD Aceh UUS',
-  'Bank Agris',
-  // Bank BRI Agroniaga
-  // Bank Amar Indonesia (formerly Anglomas International Bank)
-  // Bank Andara
-  // Anglomas International Bank
-  // Bank ANZ Indonesia
-  // Bank Arta Niaga Kencana
-  // Bank Artha Graha International
-  // Bank Artos Indonesia (Bank Jago)
-  // BPD Bali
-  // Bank of America Merill-Lynch
-  // Bangkok Bank
-  // BPD Banten (formerly Bank Pundi Indonesia)
-  // Bank Central Asia (BCA)
-  // Bank Central Asia Digital (BluBCA)
-  // Bank Central Asia (BCA) Syariah
-  // BPD Bengkulu
-  // Bank Bisnis Internasional
-  // Bank BJB
-  // Bank BJB Syariah
-  // Bank Negara Indonesia (BNI)
-  // Bank BNP Paribas
-  // Bank of China (BOC)
-  // Bank Rakyat Indonesia (BRI)
-  // Bank Tabungan Negara (BTN)
-  // Bank Tabungan Negara (BTN) UUS
-  // BTPN Syariah (formerly BTPN UUS and Bank Sahabat Purba Danarta)
-  // Bank Bukopin
-  // Bank Syariah Bukopin
-  // Bank Bumi Arta
-  // Bank Syariah Indonesia (BSI)
-  // Bank Capital Indonesia
-  // China Construction Bank Indonesia (formerly Bank Antar Daerah and Bank Windu Kentjana International)
-  // Centratama Nasional Bank
-  // Bank Chinatrust Indonesia
-  // Bank CIMB Niaga
-  // Bank CIMB Niaga UUS
-  // Citibank
-  // Bank Commonwealth
-  // BPD Daerah Istimewa Yogyakarta (DIY)
-  // BPD Daerah Istimewa Yogyakarta (DIY) UUS
-  // Bank Danamon
-  // Bank Danamon UUS
-  // Bank DBS Indonesia
-  // Deutsche Bank
-  // Bank Dinar Indonesia
-  // Bank DKI
-  // Bank DKI UUS
-  // Indonesia Eximbank (formerly Bank Ekspor Indonesia)
-  // Bank Fama International
-  // Bank Ganesha
-  // Bank Hana
-  // Bank Harda Internasional
-  // Bank Himpunan Saudara 1906
-  // HSBC Indonesia (formerly Bank Ekonomi Raharja)
-  // Hongkong and Shanghai Bank Corporation (HSBC) UUS
-  // Bank ICBC Indonesia
-  // Bank Ina Perdania
-  // Bank Index Selindo
-  // Bank of India Indonesia
-  // BPD Jambi
-  // BPD Jambi UUS
-  // Bank Jasa Jakarta
-  // BPD Jawa Tengah
-  // BPD Jawa Tengah UUS
-  // BPD Jawa Timur
-  // BPD Jawa Timur UUS
-  // JP Morgan Chase Bank
-  // Bank JTrust Indonesia (formerly Bank Mutiara)
-  // BPD Kalimantan Barat
-  // BPD Kalimantan Barat UUS
-  // BPD Kalimantan Selatan
-  // BPD Kalimantan Selatan UUS
-  // BPD Kalimantan Tengah
-  // BPD Kalimantan Timur
-  // BPD Kalimantan Timur UUS
-  // Bank Kesejahteraan Ekonomi
-  // BPD Lampung
-  // BPD Maluku
-  // Bank Mandiri
-  // Mandiri Taspen Pos (formerly Bank Sinar Harapan Bali)
-  // Bank Maspion Indonesia
-  // Bank Mayapada International
-  // Bank Maybank
-  // Bank Maybank Syariah Indonesia
-  // Bank Mayora
-  // Bank Mega
-  // Bank Syariah Mega
-  // Bank Mestika Dharma
-  // Bank Mitra Niaga
-  // Bank Sumitomo Mitsui Indonesia
-  // Bank Mizuho Indonesia
-  // Bank MNC Internasional
-  // Bank Muamalat Indonesia
-  // Bank Multi Arta Sentosa
-  // Bank Nationalnobu
-  // BPD Nusa Tenggara Barat
-  // BPD Nusa Tenggara Barat UUS
-  // BPD Nusa Tenggara Timur
-  // Bank Nusantara Parahyangan
-  // Bank OCBC NISP
-  // Bank OCBC NISP UUS
-  // Bank Oke Indonesia (formerly Bank Andara)
-  // Bank Panin
-  // Bank Panin Syariah
-  // BPD Papua
-  // Bank Permata
-  // Bank Permata UUS
-  // Prima Master Bank
-  // Bank QNB Indonesia (formerly Bank QNB Kesawan)
-  // Bank Rabobank International Indonesia
-  // Royal Bank of Scotland (RBS)
-  // Bank Resona Perdania
-  // BPD Riau Dan Kepri
-  // BPD Riau Dan Kepri UUS
-  // Bank Royal Indonesia
-  // Bank Sahabat Sampoerna
-  // Bank SBI Indonesia
-  // Bank Shinhan Indonesia (formerly Bank Metro Express)
-  // Bank Sinarmas
-  // Bank Sinarmas UUS
-  // Standard Charted Bank
-  // BPD Sulawesi Tengah
-  // BPD Sulawesi Tenggara
-  // BPD Sulselbar
-  // BPD Sulselbar UUS
-  // BPD Sulut
-  // BPD Sumatera Barat
-  // BPD Sumatera Barat UUS
-  // BPD Sumsel Dan Babel
-  // BPD Sumsel Dan Babel UUS
-  // BPD Sumut
-  // BPD Sumut UUS
-  // Bank Tabungan Pensiunan Nasional (BTPN)
-  // Bank of Tokyo Mitsubishi UFJ (MUFJ)
-  // Bank UOB Indonesia
-  // Bank Victoria Internasional
-  // Bank Victoria Syariah
-  // Bank Woori Indonesia
-  // Bank Woori Saudara Indonesia 1906 (formerly Bank Himpunan Saudara and Bank Woori Indonesia)
-  // Bank Yudha Bhakti (Bank Neo Commerce)
-];
-
 const Akun = () => {
   const classes = useStyles();
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [resto, setResto] = useState();
   const [image, setImage] = useState();
   const history = useHistory();
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selectedIndex, setSelectedIndex] = React.useState();
+  const [selectedIndex] = React.useState();
+  const banks = [
+    {
+      "id": "BCA",
+      "name": "Bank Central Asia (BCA)"
+    },
+    {
+      "id": "BNI",
+      "name": "Bank Negara Indonesia (BNI)"
+    },
+    {
+      "id": "BRI",
+      "name": "Bank Rakyat Indonesia (BRI)"
+    },
+    {
+      "id": "BTN",
+      "name": "Bank Tabungan Negara (BTN)"
+    },
+    {
+      "id": "CIMB",
+      "name": "Bank CIMB Niaga"
+    },
+    {
+      "id": "DANAMON",
+      "name": "Bank Danamon"
+    },
+    {
+      "id": "MANDIRI",
+      "name": "Bank Mandiri"
+    }
+  ]
 
   useEffect(() => {
     api.get(Cookies.get("RestoId"))
@@ -258,6 +140,14 @@ const Akun = () => {
       })
   }, [])
 
+  const getBankName = (id) => {
+    for (var i = 0; i < banks.length; i++) {
+      if (banks[i].id === id) {
+        return banks[0].name;
+      }
+    }
+  }
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -266,10 +156,14 @@ const Akun = () => {
     setAnchorEl(null);
   };
 
-  const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index);
-    setAnchorEl(null);
-  };
+  const handleBankChange = (bank) => {
+    setResto(prevState => ({
+      ...prevState,
+      bank_name: bank.id,
+      bank_code: bank.name
+    }));
+    handleClose()
+  }
 
   const handleChange = (evt) => {
     const value = evt.target.value;
@@ -302,7 +196,10 @@ const Akun = () => {
         'Content-Type': 'application/form-data; ',
       }
     })
-      .then(history.push("/"));
+    .then(() => {history.push("/")})
+    .catch((err) => {
+      console.log(err);
+    })
   }
 
   const handleTooltipClose = () => {
@@ -316,7 +213,6 @@ const Akun = () => {
   return (
     <Root>
       <div>
-        <Sidebar name="Akun Saya" />
         <div>
           {loading ? <p>loading</p>
             :
@@ -434,16 +330,11 @@ const Akun = () => {
                         />
                       </FormControl>
                     </div>
-                    <div className={classes.navButton}>
-                      <PrimaryButton width="100px" onClick={handleSaveButton}>
-                        Simpan
-                      </PrimaryButton>
-                    </div>
                   </div>
                 </div>
               </Frame>
-              <Frame style={{marginTop: 20}}>
-              <div className={classes.content}>
+              <Frame style={{ marginTop: 20 }}>
+                <div className={classes.content}>
                   <div style={{ width: '100%' }}>
                     <h2>Data Rekening Bank</h2>
                     <div className={classes.item}>
@@ -454,12 +345,13 @@ const Akun = () => {
                         <BootstrapInput
                           placeholder="Nama"
                           id="bootstrap-input"
-                          name="account-name"
+                          name="account_holder_name"
+                          value={resto.account_holder_name}
                         />
                       </FormControl>
                     </div>
                     <div className={classes.item}>
-                    <FormControl variant="standard" font-size="24px">
+                      <FormControl variant="standard" font-size="24px">
                         <InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
                           Bank
                         </InputLabel>
@@ -469,7 +361,7 @@ const Akun = () => {
                           className='dropdown'
                           onClick={handleClick}
                         >
-                          Pilih Bank
+                          {resto && resto.bank_code ? resto.bank_code : getBankName(resto.bank_name)}
                           <ArrowDropDownIcon />
                         </Button>
                         <Menu
@@ -485,27 +377,30 @@ const Akun = () => {
                             },
                           }}
                         >
-                          {options.map((option, index) => (
+
+                          {banks.map(bank =>
                             <MenuItem
-                              key={option}
-                              selected={index === selectedIndex}
-                              onClick={(event) => handleMenuItemClick(event, index)}
+                              key={bank.id}
+                              selected={bank.id === selectedIndex}
+                              onClick={() => handleBankChange(bank)}
                             >
-                              {option}
+                              {bank.name}
                             </MenuItem>
-                          ))}
+                          )}
                         </Menu>
                       </FormControl>
                       <FormControl variant="standard" style={{ marginLeft: 30 }}>
-                          <InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
-                            Nomor Rekening
-                          </InputLabel>
-                          <BootstrapInput
-                            placeholder="Nomor rekening"
-                            id="bootstrap-input"
-                            name="account-number"
-                          />
-                        </FormControl>
+                        <InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
+                          Nomor Rekening
+                        </InputLabel>
+                        <BootstrapInput
+                          placeholder="Nomor rekening"
+                          id="bootstrap-input"
+                          name="account_number"
+                          value={resto.account_number}
+
+                        />
+                      </FormControl>
                     </div>
                     <div className={classes.navButton}>
                       <PrimaryButton width="100px" onClick={handleSaveButton}>

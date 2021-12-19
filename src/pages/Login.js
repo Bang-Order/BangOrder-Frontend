@@ -18,7 +18,6 @@ import { isLogin, login } from "../utils/Auth";
 import { Link, useHistory } from "react-router-dom";
 import axios from 'axios';
 import PrimaryButton from '../components/button/PrimaryButton';
-import Cookies from 'js-cookie';
 
 const useStyle = makeStyles({
     root: {
@@ -77,7 +76,7 @@ const Login2 = () => {
                 }
             }).catch((err) => {
                 console.log(err.response);
-                if (err.response.status == 403) {
+                if (err.response.status === 403) {
                     history.push({
                         pathname: "/belum-verifikasi",
                         state: {
@@ -97,7 +96,7 @@ const Login2 = () => {
         <div className={classes.root}>
             <Container fixed >
                 <img className={classes.image} src="/logo-horizontal.png" alt="" />
-                <h5>Contactless Food Ordering with QR Code</h5>
+                <h4>Contactless Food Ordering with QR Code</h4>
                 {error && <Alert sx={{ marginTop: "30px" }} severity="error">Email atau password salah!</Alert>}
                 <TextField
                     label="Email"
@@ -135,8 +134,9 @@ const Login2 = () => {
                         }
                     />
                 </FormControl>
-                <div style={{ display: 'flex' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <FormControlLabel control={<Checkbox />} label="Ingat Saya" />
+                    <p><StyledLink to="/lupa-password" >Lupa password?</StyledLink></p>
                 </div>
                 <div>
                     <PrimaryButton onClick={_onSubmit} loading={Loading} width='100%'>Masuk</PrimaryButton>

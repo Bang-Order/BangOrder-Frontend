@@ -90,7 +90,6 @@ const OrderCard = (props) => {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [status, setStatus] = React.useState(order.order_status);
 	const handleUpdate = props.handleUpdate;
-	const restoId = localStorage.getItem("RestoId");
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
 	};

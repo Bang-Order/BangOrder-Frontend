@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Box, Paper } from '@mui/material';
+import { Paper } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { styled } from "@mui/system";
 import PrimaryButton from '../components/button/PrimaryButton';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { Link } from 'react-router-dom';
@@ -38,7 +37,7 @@ const useStyle = makeStyles({
 
 const Unverified = (props) => {
   const classes = useStyle();
-  const [error, setError] = useState();
+  const [setError] = useState();
   const data = useState(props.location.state);
   const [loading, setLoading] = useState(false);
 
@@ -61,7 +60,6 @@ const Unverified = (props) => {
       </header>
       <div>
         <Paper elevation={10} className={classes.paperStyle}>
-
           <h2>
             <Link to="/login">
               <ArrowBackIosIcon style={{ float: 'left' }} />

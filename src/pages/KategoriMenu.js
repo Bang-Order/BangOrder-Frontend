@@ -7,7 +7,6 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { styled } from "@mui/system";
-import Sidebar from "../components/sidebar/Sidebar";
 import PrimaryButton from '../components/button/PrimaryButton';
 import SecondaryButton from '../components/button/SecondaryButton';
 import TertiaryButton from '../components/button/TertiaryButton';
@@ -197,7 +196,7 @@ const KategoriMenu = () => {
                   </TableRow>
                 </>
                 :
-                (allCategory.length != 0 ? allCategory.map((category) => (
+                (allCategory.length !== 0 ? allCategory.map((category) => (
                   <StyledTableRow
                     key={category.name}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

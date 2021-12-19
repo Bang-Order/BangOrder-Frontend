@@ -49,7 +49,6 @@ const Register = () => {
     const [isEmailNull, setIsEmailNull] = React.useState(false);
     const [isPasswordNull, setIsPasswordNull] = React.useState(false);
     const [isConfirmPasswordNull, setIsConfirmPasswordNull] = React.useState(false);
-    const [data, setData] = React.useState();
     const history = useHistory();
     const classes = useStyle();
     const handleClickShowPassword = () => {
@@ -78,20 +77,19 @@ const Register = () => {
                         state: res.data.data
                     });
                 })
-                // .catch((err) => {
-                //     setError(err.response.data.message);
-                // })
+                .catch((err) => {
+                    console.log(err.response.data.errors);
+                    setError(err.response.data);
+                })
         }
-        history.push("/login");
-
     }
 
     return (
         <div className={classes.root}>
             <Container>
                 <img className={classes.image} src="/logo-horizontal.png" alt="" />
-                <h5>Contactless Food Ordering with QR Code</h5>
-                {error && <Alert sx={{ marginTop: "30px" }} severity="error">{error}</Alert>}
+                <h4>Contactless Food Ordering with QR Code</h4>
+                {error && <Alert sx={{ marginTop: "30px" }} severity="error">{error.errors.email || error.errors.password || error.errors.confirm_password}</Alert>}
                 <TextField
                     label="Email"
                     id="outlined-size-small"
@@ -139,7 +137,7 @@ const Register = () => {
                     <InputLabel htmlFor="outlined-adornment-password">Konfirmasi Password</InputLabel>
                     <OutlinedInput
                         id="outlined-password-input"
-                        label="Password"
+                        label="Konfirmasi Password"
                         type={!showPassword ? "password" : "text"}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         autoComplete="off"

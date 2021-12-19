@@ -1,4 +1,5 @@
 # Getting Started with BangOrder Frontend
+link: bangorder.me
 
 # How to Install
 
@@ -35,7 +36,7 @@
 2. Sprint 2
    > Tambah menu & Update status menu (Menu page), Edit data menu (Detail menu page), Riwayat pesanan page, Kategori menu page, Data meja page, Generate QR Code for every table in restaurant, Profile page
 3. Sprint 3
-   > Dashboard, Register, Change password
+   > Dashboard, Register, Verify email, Change password, Forget password
 
 # User Flow
 - User **login** first

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "../components/sidebar/Sidebar";
 import { styled } from '@mui/material/styles';
 import PrimaryButton from "../components/button/PrimaryButton";
 import DeleteButton from '../components/button/DeleteButton';
@@ -16,7 +15,6 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, L
 import { saveAs } from 'file-saver'
 import { api } from "../utils/api";
 import Cookies from "js-cookie";
-import axios from "axios";
 require('dotenv').config();
 
 const useStyle = makeStyles({
@@ -81,14 +79,17 @@ const DataMeja = () => {
     const [addDialog, setAddDialog] = useState();
     const [update, setUpdate] = useState();
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(true);
 
     useEffect(() => {
         setLoading(true)
         setTimeout(() => {
-            api.get(Cookies.get("RestoId") + "/tables", { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } }).then((res) => {
+            api.get(Cookies.get("RestoId")+"/tables", { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
+            .then((res) => {
                 setTables(res.data.data);
                 setLoading(false)
+            })
+            .catch((err) => {
+                console.log(err.response);
             })
         }, 300);
     }, [update])

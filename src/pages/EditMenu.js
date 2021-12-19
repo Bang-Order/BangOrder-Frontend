@@ -98,8 +98,6 @@ const Root = styled('div')(() => ({
 const EditMenu = (props) => {
   const classes = useStyles();
   const menuId = props.match.params.menuId;
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [menu, setMenu] = useState();
   const [allCategory, setAllCategory] = useState();
@@ -115,16 +113,14 @@ const EditMenu = (props) => {
       .then((res) => {
         setMenu(res.data);
         setIsRecommended(res.data.is_recommended);
-        setLoading(false);
       })
       .catch(err => {
-        setError(err.message);
-        setLoading(false);
+        console.log(err.response);
       })
   }, [menuId, isReset])
 
   useEffect(() => {
-    api.get('/menu-categories')
+    api.get(Cookies.get("RestoId")+'/menu-categories')
       .then((res) => {
         setAllCategory(res.data.data);
       })
@@ -140,7 +136,7 @@ const EditMenu = (props) => {
     if (image) {
       formData.append('image', image);
     }
-    api.post('/menus/' + menuId + '?_method=PUT', formData, {
+    api.post(Cookies.get("RestoId")+'/menus/' + menuId + '?_method=PUT', formData, {
       headers: {
         Authorization: 'Bearer ' + Cookies.get("BangOrderToken"),
         'Content-Type': 'application/form-data; ',
