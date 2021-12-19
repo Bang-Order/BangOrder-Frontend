@@ -101,7 +101,6 @@ const UbahSandi = () => {
   return (
     <Root>
       <div>
-        <Sidebar name="Ubah Kata Sandi" />
         <div>
           <Frame>
             <div className={classes.content}>

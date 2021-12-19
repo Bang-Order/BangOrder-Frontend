@@ -5,7 +5,7 @@ import PrimaryButton from '../components/button/PrimaryButton';
 import { makeStyles } from '@mui/styles';
 import InputBase from '@mui/material/InputBase';
 import FormControl from '@mui/material/FormControl';
-import { InputLabel, Button, ListItem, Tooltip, ListItemIcon, Menu, MenuItem} from "@mui/material";
+import { InputLabel, Button, ListItem, Tooltip, ListItemIcon, Menu, MenuItem } from "@mui/material";
 import { useHistory } from 'react-router';
 import { api } from '../utils/api';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -249,6 +249,36 @@ const Akun = () => {
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectedIndex, setSelectedIndex] = React.useState();
+  const banks = [
+    {
+      "id": "BCA",
+      "name": "Bank Central Asia (BCA)"
+    },
+    {
+      "id": "BNI",
+      "name": "Bank Negara Indonesia (BNI)"
+    },
+    {
+      "id": "BRI",
+      "name": "Bank Rakyat Indonesia (BRI)"
+    },
+    {
+      "id": "BTN",
+      "name": "Bank Tabungan Negara (BTN)"
+    },
+    {
+      "id": "CIMB",
+      "name": "Bank CIMB Niaga"
+    },
+    {
+      "id": "DANAMON",
+      "name": "Bank Danamon"
+    },
+    {
+      "id": "MANDIRI",
+      "name": "Bank Mandiri"
+    }
+  ]
 
   useEffect(() => {
     api.get(Cookies.get("RestoId"))
@@ -258,6 +288,14 @@ const Akun = () => {
       })
   }, [])
 
+  const getBankName = (id) => {
+    for (var i = 0; i < banks.length; i++) {
+      if (banks[i].id === id) {
+        return banks[0].name;
+      }
+    }
+  }
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -266,10 +304,14 @@ const Akun = () => {
     setAnchorEl(null);
   };
 
-  const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index);
-    setAnchorEl(null);
-  };
+  const handleBankChange = (bank) => {
+    setResto(prevState => ({
+      ...prevState,
+      bank_name: bank.id,
+      bank_code: bank.name
+    }));
+    handleClose()
+  }
 
   const handleChange = (evt) => {
     const value = evt.target.value;
@@ -302,7 +344,10 @@ const Akun = () => {
         'Content-Type': 'application/form-data; ',
       }
     })
-      .then(history.push("/"));
+    .then(() => {history.push("/")})
+    .catch((err) => {
+      console.log(err);
+    })
   }
 
   const handleTooltipClose = () => {
@@ -316,7 +361,6 @@ const Akun = () => {
   return (
     <Root>
       <div>
-        <Sidebar name="Akun Saya" />
         <div>
           {loading ? <p>loading</p>
             :
@@ -437,8 +481,8 @@ const Akun = () => {
                   </div>
                 </div>
               </Frame>
-              <Frame style={{marginTop: 20}}>
-              <div className={classes.content}>
+              <Frame style={{ marginTop: 20 }}>
+                <div className={classes.content}>
                   <div style={{ width: '100%' }}>
                     <h2>Data Rekening Bank</h2>
                     <div className={classes.item}>
@@ -455,7 +499,7 @@ const Akun = () => {
                       </FormControl>
                     </div>
                     <div className={classes.item}>
-                    <FormControl variant="standard" font-size="24px">
+                      <FormControl variant="standard" font-size="24px">
                         <InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
                           Bank
                         </InputLabel>
@@ -465,7 +509,7 @@ const Akun = () => {
                           className='dropdown'
                           onClick={handleClick}
                         >
-                          Pilih Bank
+                          {resto && resto.bank_code ? resto.bank_code : getBankName(resto.bank_name)}
                           <ArrowDropDownIcon />
                         </Button>
                         <Menu
@@ -481,29 +525,30 @@ const Akun = () => {
                             },
                           }}
                         >
-                          {options.map((option, index) => (
+
+                          {banks.map(bank =>
                             <MenuItem
-                              key={option}
-                              selected={index === selectedIndex}
-                              onClick={(event) => handleMenuItemClick(event, index)}
+                              key={bank.id}
+                              selected={bank.id === selectedIndex}
+                              onClick={() => handleBankChange(bank)}
                             >
-                              {option}
+                              {bank.name}
                             </MenuItem>
-                          ))}
+                          )}
                         </Menu>
                       </FormControl>
                       <FormControl variant="standard" style={{ marginLeft: 30 }}>
-                          <InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
-                            Nomor Rekening
-                          </InputLabel>
-                          <BootstrapInput
-                            placeholder="Nomor rekening"
-                            id="bootstrap-input"
-                            name="account_number"
-                            value={resto.account_number}
-                            
-                          />
-                        </FormControl>
+                        <InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
+                          Nomor Rekening
+                        </InputLabel>
+                        <BootstrapInput
+                          placeholder="Nomor rekening"
+                          id="bootstrap-input"
+                          name="account_number"
+                          value={resto.account_number}
+
+                        />
+                      </FormControl>
                     </div>
                     <div className={classes.navButton}>
                       <PrimaryButton width="100px" onClick={handleSaveButton}>

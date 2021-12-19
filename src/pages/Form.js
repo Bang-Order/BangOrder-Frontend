@@ -258,7 +258,37 @@ const Form = (props) => {
   const history = useHistory();
   const [selectedIndex, setSelectedIndex] = useState();
   const [loading, setLoading] = useState();
- 
+  const banks = [
+    {
+      "id": "BCA",
+      "name": "Bank Central Asia (BCA)"
+    },
+    {
+      "id": "BNI",
+      "name": "Bank Negara Indonesia (BNI)"
+    },
+    {
+      "id": "BRI",
+      "name": "Bank Rakyat Indonesia (BRI)"
+    },
+    {
+      "id": "BTN",
+      "name": "Bank Tabungan Negara (BTN)"
+    },
+    {
+      "id": "CIMB",
+      "name": "Bank CIMB Niaga"
+    },
+    {
+      "id": "DANAMON",
+      "name": "Bank Danamon"
+    },
+    {
+      "id": "MANDIRI",
+      "name": "Bank Mandiri"
+    }
+  ]
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -291,11 +321,13 @@ const Form = (props) => {
     }));
   }
 
-  const handleBankChange = (name) => {
+  const handleBankChange = (bank) => {
     setData(prevState => ({
       ...prevState,
-      bank_name: name
+      bank_name: bank.id,
+      bank_code: bank.name
     }));
+    handleClose()
   }
 
   const handleSubmit = () => {
@@ -467,7 +499,7 @@ const Form = (props) => {
                           className='dropdown'
                           onClick={handleClick}
                         >
-                          {data && data.bank_name ? data.bank_name : "Pilih Bank"}
+                          {data && data.bank_code ? data.bank_code : "Pilih Bank"}
                           <ArrowDropDownIcon />
                         </Button>
                         <Menu
@@ -483,15 +515,15 @@ const Form = (props) => {
                             },
                           }}
                         >
-                          {options.map((option, index) => (
+                          {banks.map(bank =>
                             <MenuItem
-                              key={option}
-                              selected={index === selectedIndex}
-                              onClick={() => handleBankChange(option)}
+                              key={bank.id}
+                              selected={bank.id === selectedIndex}
+                              onClick={() => handleBankChange(bank)}
                             >
-                              {option}
+                              {bank.name}
                             </MenuItem>
-                          ))}
+                          )}
                         </Menu>
                       </FormControl>
                     </div>
