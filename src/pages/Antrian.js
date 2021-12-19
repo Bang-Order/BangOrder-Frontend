@@ -1,11 +1,9 @@
 import * as React from 'react';
-import Sidebar from '../components/sidebar/Sidebar';
 import OrderCard from '../components/ordercard/OrderCard';
 import { useEffect, useState } from "react";
 import { styled } from '@mui/material/styles';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import { api } from '../utils/api';
 import Cookies from 'js-cookie';
 import firebase from '../utils/firebase';
 import { getDatabase, ref, onValue } from "firebase/database";
@@ -26,10 +24,10 @@ const Root = styled('div')(() => ({
     minHeight: '100vh',
 }))
 
-const Antrian = (props) => {
+const Antrian = () => {
     const [orders, setOrders] = useState(null);
     const [value, setValue] = useState("");
-    const [error, setError] = useState(null);
+    const [error] = useState(null);
     const [loading, setLoading] = useState(true);
     const [update, setUpdate] = useState(false);
     useEffect(() => {
@@ -40,11 +38,11 @@ const Antrian = (props) => {
             data = Object.values(data);
             if (value) {
                 data = data.filter((el) => {
-                    return el.order_status == value;
+                    return el.order_status === value;
                 })
             } else {
                 data = data.filter((el) => {
-                    return el.order_status == "antri" || el.order_status == "dimasak"
+                    return el.order_status === "antri" || el.order_status === "dimasak"
                 })
             }
             setOrders(Object.values(data));
@@ -73,7 +71,7 @@ const Antrian = (props) => {
                 {loading ?
                     <p>loading...</p>
                     :
-                    orders && orders.length != 0 ? orders.map(order =>
+                    orders && orders.length !== 0 ? orders.map(order =>
                         <OrderCard key={order.id} order={order} handleUpdate={handleUpdate} />
                     ) : (
                         <h4 style={{marginTop: 10}}>Belum ada pesanan masuk</h4>

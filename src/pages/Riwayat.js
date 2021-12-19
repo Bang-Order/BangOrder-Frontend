@@ -1,6 +1,5 @@
 import { styled } from '@mui/system';
 import React, { useEffect, useState } from 'react';
-import Sidebar from "../components/sidebar/Sidebar";
 import { InputBase } from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -87,7 +86,7 @@ const Riwayat = () => {
                         />
                     </LocalizationProvider>
                 </div>
-                {orders && orders.length != 0 ? orders.map(order =>
+                {orders && orders.length !== 0 ? orders.map(order =>
                     <HistoryCard key={order.id} order={order} handleUpdate={handleUpdate} />
                 )
                 :

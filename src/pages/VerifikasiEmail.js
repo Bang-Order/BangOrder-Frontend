@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Box, Paper } from '@mui/material';
+import { Paper } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { styled } from "@mui/system";
 import PrimaryButton from '../components/button/PrimaryButton';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { Link } from 'react-router-dom';
@@ -33,7 +32,7 @@ const useStyle = makeStyles({
 })
 
 const VerfikasiEmail = (props) => {
-  const [error, setError] = useState();
+  const [setError] = useState();
   const classes = useStyle();
   const token = props.location.state;
   const [loading, setLoading] = useState(false);

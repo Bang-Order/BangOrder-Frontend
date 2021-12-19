@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
   Paper,
   Button,
-  InputBase,
   FormControl,
   InputLabel,
   OutlinedInput,
@@ -12,7 +10,6 @@ import {
   Alert
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { styled } from "@mui/system";
 import { useHistory } from 'react-router';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import PrimaryButton from '../components/button/PrimaryButton';
@@ -51,7 +48,7 @@ const ResetSandi = (props) => {
   const [error, setError] = useState();
   const [data, setData] = useState();
   const [showPassword, setShowPassword] = React.useState(false);
-  const [isPasswordNull, setIsPasswordNull] = React.useState(false);
+  const [isPasswordNull] = React.useState(false);
 
   useEffect(() => {
     var param = query.split(("&"));
@@ -64,7 +61,7 @@ const ResetSandi = (props) => {
         [key]: value
       }));
     }
-  }, [])
+  }, [query])
 
   const handleContinueButton = () => {
     console.log(data);
@@ -102,7 +99,7 @@ const ResetSandi = (props) => {
     var domain = parts[1];
     result += domain.charAt(0);
     var dot = domain.indexOf(".");
-    for (var i = 1; i < dot; i++) {
+    for (i = 1; i < dot; i++) {
       result += "*";
     }
     result += domain.substring(dot);

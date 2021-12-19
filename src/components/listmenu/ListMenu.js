@@ -46,7 +46,6 @@ const useStyles = makeStyles(() => ({
 const ListMenu = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState("");
   const [searchKey, setSearchKey] = useState("");
@@ -59,7 +58,7 @@ const ListMenu = () => {
           setLoading(false)
         })
         .catch(err => {
-          setError(err.message);
+          console.log(err.response);
           setLoading(false)
         })
     }, 300);
@@ -91,7 +90,7 @@ const ListMenu = () => {
         setMenus(res.data.data);
       })
       .catch(err => {
-        setError(err.message);
+        console.log(err.response);
       })
   }
 

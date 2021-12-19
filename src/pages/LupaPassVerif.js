@@ -1,8 +1,6 @@
 import * as React from 'react';
-import { Box, Paper, Button, InputBase, FormControl, } from '@mui/material';
+import { Paper, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { styled } from "@mui/system";
-import { useHistory } from 'react-router';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 const useStyle = makeStyles({
@@ -29,26 +27,9 @@ const useStyle = makeStyles({
 
 })
 
-const BootstrapInput = styled(InputBase)(({ theme }) => ({
-  'label + &': {
-    marginTop: theme.spacing(4),
-  },
-  '& .MuiInputBase-input': {
-    borderRadius: 4,
-    position: 'flex',
-    backgroundColor: theme.palette.mode === 'light' ? '#ffffff' : '#2b2b2b',
-    border: '1px solid #ced4da',
-    fontSize: 14,
-    padding: '10px 12px',
-    width: '380px'
-  },
-}));
-
-
 const LupaPassword = (props) => {
   const classes = useStyle();
-  const history = useHistory();
-  const [email, setEmail] = React.useState(props.location.state.email);
+  const [email] = React.useState(props.location.state.email);
 
   const censorEmail = (email) => {
     var parts = email.split("@");
@@ -62,7 +43,7 @@ const LupaPassword = (props) => {
     var domain = parts[1];
     result += domain.charAt(0);
     var dot = domain.indexOf(".");
-    for (var i = 1; i < dot; i++) {
+    for (i = 1; i < dot; i++) {
       result += "*";
     }
     result += domain.substring(dot);

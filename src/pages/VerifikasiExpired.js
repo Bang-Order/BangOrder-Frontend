@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Box, Paper } from '@mui/material';
+import { Paper } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { styled } from "@mui/system";
 import PrimaryButton from '../components/button/PrimaryButton';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 

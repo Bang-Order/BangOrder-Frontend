@@ -18,7 +18,6 @@ import { isLogin, login } from "../utils/Auth";
 import { Link, useHistory } from "react-router-dom";
 import axios from 'axios';
 import PrimaryButton from '../components/button/PrimaryButton';
-import Cookies from 'js-cookie';
 
 const useStyle = makeStyles({
     root: {
@@ -77,7 +76,7 @@ const Login2 = () => {
                 }
             }).catch((err) => {
                 console.log(err.response);
-                if (err.response.status == 403) {
+                if (err.response.status === 403) {
                     history.push({
                         pathname: "/belum-verifikasi",
                         state: {

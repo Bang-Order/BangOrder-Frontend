@@ -1,8 +1,6 @@
-import Sidebar from "../components/sidebar/Sidebar";
 import { styled } from '@mui/material/styles';
 import CanvasJSReact from '../lib/canvasjs.react';
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { makeStyles } from '@mui/styles';
 import Divider from '@mui/material/Divider';
 import Table from '@mui/material/Table';
@@ -18,8 +16,7 @@ import { Skeleton } from "@mui/material";
 import TablePagination from '@mui/material/TablePagination';
 import PrimaryButton from '../components/button/PrimaryButton';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import { Card, Dialog, DialogActions, DialogContent, DialogTitle, InputBase, InputLabel, Link } from "@mui/material";
-var CanvasJS = CanvasJSReact.CanvasJS;
+import {  Dialog, DialogActions, DialogContent, DialogTitle, InputBase, InputLabel, Link } from "@mui/material";
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 
@@ -93,14 +90,14 @@ const Restoran = () => {
   const day = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"]
   const month = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"]
   // const [today, setToday] = useState(new Date().getDay().toLocaleString(['id']) + new Date().toLocaleString(['id']));
-  const [today, setToday] = useState(day[new Date().getDay()] + ", " + new Date().getDate() + " " + month[new Date().getMonth()] + " " + new Date().getFullYear());
+  const [today] = useState(day[new Date().getDay()] + ", " + new Date().getDate() + " " + month[new Date().getMonth()] + " " + new Date().getFullYear());
   const dataPoints = [];
   const [options, setOptions] = useState();
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
-  const [addDialog, setAddDialog] = useState();
+  const [setAddDialog] = useState();
   const [resto, setResto] = useState();
   const Frame = styled('div')(({ theme }) => ({
     backgroundColor: '#fff',
@@ -226,7 +223,7 @@ const Restoran = () => {
           Setiap melakukan transaksi, saldo akan dipotong sebesar Rp 5000.
           Waktu dana akan sampai ke pengguna bergantung pada waktu pemrosesan bank.
           Informasi selengkapnya silahkan &nbsp;
-          <a href='https://rebrand.ly/Limit-dan-Waktu' target='_blank'>klik disini</a>.
+          <a href='https://rebrand.ly/Limit-dan-Waktu' rel="noreferrer" target='_blank'>klik disini</a>.
         </div>
       </DialogContent>
       <DialogActions>
@@ -302,7 +299,7 @@ const Restoran = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {data.income_data.length != 0 ? data.income_data
+                      {data.income_data.length !== 0 ? data.income_data
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((row) => (
                           <StyledTableRow
@@ -339,7 +336,7 @@ const Restoran = () => {
                 {dialog}
                 {/* showPagination={data.length > 10 ? true : false} */}
 
-                {data.income_data.length != 0 &&
+                {data.income_data.length !== 0 &&
                   <TablePagination
                     rowsPerPageOptions={[5, 10, 25, 100]}
                     component="div"
@@ -361,7 +358,7 @@ const Restoran = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {data.withdraw_data.length != 0 ? data.withdraw_data
+                      {data.withdraw_data.length !== 0 ? data.withdraw_data
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((row) => (
                           <StyledTableRow
@@ -390,7 +387,7 @@ const Restoran = () => {
                     </TableBody>
                   </Table>
                 </TableContainer>
-                {data.income_data.length != 0 &&
+                {data.income_data.length !== 0 &&
                   <TablePagination
                     rowsPerPageOptions={[5, 10, 25, 100]}
                     component="div"

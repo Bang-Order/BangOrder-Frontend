@@ -49,7 +49,6 @@ const Register = () => {
     const [isEmailNull, setIsEmailNull] = React.useState(false);
     const [isPasswordNull, setIsPasswordNull] = React.useState(false);
     const [isConfirmPasswordNull, setIsConfirmPasswordNull] = React.useState(false);
-    const [data, setData] = React.useState();
     const history = useHistory();
     const classes = useStyle();
     const handleClickShowPassword = () => {

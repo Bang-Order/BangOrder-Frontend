@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Box, Paper, Button, InputBase, FormControl, } from '@mui/material';
+import { Paper } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { styled } from "@mui/system";
 import { useHistory } from 'react-router';
 import PrimaryButton from '../components/button/PrimaryButton';
 
@@ -30,22 +29,6 @@ const useStyle = makeStyles({
   }
 
 })
-
-const BootstrapInput = styled(InputBase)(({ theme }) => ({
-  'label + &': {
-    marginTop: theme.spacing(4),
-  },
-  '& .MuiInputBase-input': {
-    borderRadius: 4,
-    position: 'flex',
-    backgroundColor: theme.palette.mode === 'light' ? '#ffffff' : '#2b2b2b',
-    border: '1px solid #ced4da',
-    fontSize: 14,
-    padding: '10px 12px',
-    width: '380px'
-  },
-}));
-
 
 const ResetSandiBerhasil = () => {
   const classes = useStyle();

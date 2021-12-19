@@ -98,8 +98,6 @@ const Root = styled('div')(() => ({
 const EditMenu = (props) => {
   const classes = useStyles();
   const menuId = props.match.params.menuId;
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [menu, setMenu] = useState();
   const [allCategory, setAllCategory] = useState();
@@ -115,11 +113,9 @@ const EditMenu = (props) => {
       .then((res) => {
         setMenu(res.data);
         setIsRecommended(res.data.is_recommended);
-        setLoading(false);
       })
       .catch(err => {
-        setError(err.message);
-        setLoading(false);
+        console.log(err.response);
       })
   }, [menuId, isReset])
 

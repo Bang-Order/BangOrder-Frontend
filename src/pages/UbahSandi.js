@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import Sidebar from '../components/sidebar/Sidebar';
 import { styled } from '@mui/material/styles';
 import PrimaryButton from '../components/button/PrimaryButton';
 import { makeStyles } from '@mui/styles';
 import InputBase from '@mui/material/InputBase';
 import FormControl from '@mui/material/FormControl';
-import { Link } from "react-router-dom";
-import { Alert, InputLabel, Radio } from "@mui/material";
+import { Alert, InputLabel } from "@mui/material";
 import { api } from '../utils/api';
 import Cookies from "js-cookie";
 import { useHistory } from 'react-router';
@@ -66,11 +64,6 @@ const Frame = styled('div')(({ theme }) => ({
     marginLeft: 20,
   },
 }));
-
-const StyledLink = styled(Link)({
-  textDecoration: 'none',
-  color: '#989999',
-})
 
 const UbahSandi = () => {
   const classes = useStyles();
