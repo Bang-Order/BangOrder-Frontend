@@ -100,7 +100,6 @@ const Restoran = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
-  const [setAddDialog] = useState();
   const [resto, setResto] = useState();
   const Frame = styled('div')(({ theme }) => ({
     backgroundColor: '#fff',
@@ -142,9 +141,8 @@ const Restoran = () => {
     api.get(Cookies.get("RestoId"))
       .then((res) => {
         setResto(res.data)
+        setOpen(true);
       })
-    setAddDialog(true);
-    setOpen(true);
   }
 
   const handleClose = () => {
@@ -237,7 +235,6 @@ const Restoran = () => {
 
   return (
     <Root>
-      {/* <Sidebar index="0" name="Restoran" /> */}
       <Frame>
         <CanvasJSChart options={options} />
       </Frame>

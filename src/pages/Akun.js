@@ -196,10 +196,10 @@ const Akun = () => {
         'Content-Type': 'application/form-data; ',
       }
     })
-    .then(() => {history.push("/")})
-    .catch((err) => {
-      console.log(err);
-    })
+      .then(() => { history.push("/") })
+      .catch((err) => {
+        console.log(err);
+      })
   }
 
   const handleTooltipClose = () => {
@@ -322,11 +322,12 @@ const Akun = () => {
                           No Telepon
                         </InputLabel>
                         <BootstrapInput
+                          type='number'
                           onChange={handleChange}
-                          placeholder="no tlp"
+                          placeholder="Nomor Telepon"
                           id="bootstrap-input"
                           name="telephone_number"
-                          value={resto.telephone_number}
+                          value={Number(resto.telephone_number)}
                         />
                       </FormControl>
                     </div>
@@ -347,6 +348,7 @@ const Akun = () => {
                           id="bootstrap-input"
                           name="account_holder_name"
                           value={resto.account_holder_name}
+                          onChange={handleChange}
                         />
                       </FormControl>
                     </div>
@@ -398,7 +400,7 @@ const Akun = () => {
                           id="bootstrap-input"
                           name="account_number"
                           value={resto.account_number}
-
+                          onChange={handleChange}
                         />
                       </FormControl>
                     </div>

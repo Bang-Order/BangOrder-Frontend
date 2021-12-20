@@ -59,7 +59,6 @@ const Sidebar = (props) => {
         logout();
         history.replace("/login");
     };
-    console.log(navIndex);
 
     const CustomListItem = withStyles({
         root: {

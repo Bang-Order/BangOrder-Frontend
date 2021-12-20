@@ -4,9 +4,6 @@ import PrimaryButton from '../components/button/PrimaryButton';
 import { makeStyles } from '@mui/styles';
 import InputBase from '@mui/material/InputBase';
 import FormControl from '@mui/material/FormControl';
-import { Link } from "react-router-dom";
-import { InputLabel, Radio } from "@mui/material";
-
 import { Alert, InputLabel } from "@mui/material";
 import { api } from '../utils/api';
 import Cookies from "js-cookie";
