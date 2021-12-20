@@ -16,7 +16,7 @@ import { Skeleton } from "@mui/material";
 import TablePagination from '@mui/material/TablePagination';
 import PrimaryButton from '../components/button/PrimaryButton';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import {  Dialog, DialogActions, DialogContent, DialogTitle, InputBase, InputLabel, Link } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, DialogTitle, InputBase, InputLabel, Link, FormControl } from "@mui/material";
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 
@@ -50,6 +50,17 @@ const useStyles = makeStyles(() => ({
   },
   fontStyle: {
     fontWeight: 'normal',
+  },
+  titleStyle: {
+    marginTop: 30,
+    marginBottom: 10
+  },
+  note: {
+    backgroundColor: '#f1f1f1',
+    padding: 10,
+    fontSize: 12,
+    marginTop: 20,
+    borderRadius: 5
   }
 }));
 
@@ -71,19 +82,20 @@ const StyledTableRow = styled(TableRow)({
     border: 0,
   },
 });
+
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   'label + &': {
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(3),
   },
   '& .MuiInputBase-input': {
     borderRadius: 4,
     position: 'relative',
-    backgroundColor: 'transparent', //theme.palette.mode === 'light' ? '#ffffff' : '#2b2b2b'
-    // border: '1px solid #ced4da',
+    backgroundColor: theme.palette.mode === 'light' ? '#ffffff' : '#2b2b2b',
+    border: '1px solid #ced4da',
     fontSize: 14,
-    padding: '10px 0px',
-    marginLeft: 5,
-    width: '380px',
+    padding: '10px 12px',
+    marginLeft: 10,
+    width: '380px'
   },
 }));
 
@@ -187,27 +199,21 @@ const Restoran = () => {
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle style={{ margin: 0 }}><h4>Tarik Dana</h4></DialogTitle>
       <DialogContent>
-        <InputLabel style={{ fontSize: 16, marginLeft: 10 }}>
-          Nominal Tarik
-        </InputLabel>
-        <div className={classes.inputWrapper}>
-          <div className={classes.prefix}>
-            Rp
-          </div>
-          <div>
-            <BootstrapInput
-              placeholder="0"
-              id="rupiah"
-              name="rupiah-nominal"
-              type="number"
-            />
-          </div>
+        <FormControl variant="standard">
+          <InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: 20, marginLeft: 10, color: '#000' }}>
+            Nominal Tarik
+          </InputLabel>
+          <BootstrapInput
+            placeholder="0"
+            id="rupiah"
+            name="rupiah-nominal"
+            type="number"
+          />
+        </FormControl>
 
-        </div>
-        <h3 className={classes.dialogTitle}>Kirim ke &nbsp;
+        <h3 className={classes.titleStyle}>Kirim ke &nbsp;
           <Link href="/akun"><EditOutlinedIcon style={{ fontSize: 'medium', color: '#BCBCBC' }} /> </Link>
         </h3>
-        {/* <DialogTitle style={{ margin: 0 }}><EditOutlinedIcon /></DialogTitle> */}
         <div style={{ marginLeft: 10, marginTop: 0 }}>
           <p style={{ fontSize: 14, margin: 0 }}>Nama (harus sama dengan Rekening Bank)</p>
           <h4>{resto && resto.account_holder_name}</h4>
@@ -221,12 +227,12 @@ const Restoran = () => {
           <h4>{resto && resto.account_number}</h4>
         </div>
         <div className={classes.note}>
-          Setiap melakukan transaksi, saldo akan dipotong sebesar Rp 5000.
+          Setiap melakukan transaksi Tarik Dana, saldo akan dipotong sebesar 5000.
           Waktu dana akan sampai ke pengguna bergantung pada waktu pemrosesan bank.
           Informasi selengkapnya silahkan &nbsp;
           <a href='https://rebrand.ly/Limit-dan-Waktu' rel="noreferrer" target='_blank'>klik disini</a>.
         </div>
-      </DialogContent>
+      </DialogContent >
       <DialogActions>
         <PrimaryButton onClick={handleClose} style={{ marginRight: 15, marginBottom: 10 }}>Tarik</PrimaryButton>
       </DialogActions>
