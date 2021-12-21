@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	image: {
 		width: "100%",
+		minWidth: "400px",
 		height: 'auto',
 		marginTop: 20
 	},
@@ -199,7 +200,6 @@ const TambahMenu = () => {
 	return (
 		<Root>
 			<div>
-				<Sidebar index="4" name="Tambah Menu" />
 				<div>
 					<Frame>
 						<div className={classes.content}>

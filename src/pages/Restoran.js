@@ -16,7 +16,7 @@ import { Skeleton } from "@mui/material";
 import TablePagination from '@mui/material/TablePagination';
 import PrimaryButton from '../components/button/PrimaryButton';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import { Dialog, DialogActions, DialogContent, DialogTitle, InputBase, InputLabel, Link, FormControl } from "@mui/material";
+import { Alert, Dialog, DialogActions, DialogContent, DialogTitle, InputBase, InputLabel, Link, FormControl, Snackbar } from "@mui/material";
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 
@@ -113,6 +113,9 @@ const Restoran = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
   const [resto, setResto] = useState();
+  const [error, setError] = useState();
+  const [success, setSuccess] = useState(false);
+  var amount;
   const Frame = styled('div')(({ theme }) => ({
     backgroundColor: '#fff',
     marginLeft: 280,
@@ -149,17 +152,39 @@ const Restoran = () => {
     setPage(0);
   };
 
+  const handleNominal = (value) => {
+    amount = value;
+  }
+
   const takeClickHandler = () => {
-    api.get(Cookies.get("RestoId"))
+    api.get(Cookies.get("RestoId"), { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
       .then((res) => {
         setResto(res.data)
         setOpen(true);
       })
   }
 
+  const tarikHandler = () => {
+    api.post(Cookies.get("RestoId") + "/withdraw", { amount: amount }, { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
+      .then(() => {
+        setSuccess(true);
+        handleClose();
+      })
+      .catch((err) => {
+        setError(err.response.data.errors.amount[0])
+        console.log(err.response.data.errors.amount[0]);
+      })
+  }
+
   const handleClose = () => {
     setOpen(false);
   }
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSuccess(false)
+  };
 
   useEffect(() => {
     api.get(Cookies.get("RestoId") + "/dashboard", { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
@@ -198,16 +223,17 @@ const Restoran = () => {
   const dialog = (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle style={{ margin: 0 }}><h4>Tarik Dana</h4></DialogTitle>
+      {error && <Alert severity="error">{error}</Alert>}
       <DialogContent>
         <FormControl variant="standard">
           <InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: 20, marginLeft: 10, color: '#000' }}>
             Nominal Tarik
           </InputLabel>
           <BootstrapInput
-            placeholder="0"
-            id="rupiah"
+            autoFocus
             name="rupiah-nominal"
             type="number"
+            onChange={(e) => { handleNominal(e.target.value) }}
           />
         </FormControl>
 
@@ -227,14 +253,14 @@ const Restoran = () => {
           <h4>{resto && resto.account_number}</h4>
         </div>
         <div className={classes.note}>
-          Setiap melakukan transaksi Tarik Dana, saldo akan dipotong sebesar 5000.
+          Setiap melakukan transaksi Tarik Dana, saldo akan dipotong sebesar 5500.
           Waktu dana akan sampai ke pengguna bergantung pada waktu pemrosesan bank.
           Informasi selengkapnya silahkan &nbsp;
           <a href='https://rebrand.ly/Limit-dan-Waktu' rel="noreferrer" target='_blank'>klik disini</a>.
         </div>
       </DialogContent >
       <DialogActions>
-        <PrimaryButton onClick={handleClose} style={{ marginRight: 15, marginBottom: 10 }}>Tarik</PrimaryButton>
+        <PrimaryButton onClick={tarikHandler} style={{ marginRight: 15, marginBottom: 10 }}>Tarik</PrimaryButton>
       </DialogActions>
     </Dialog >
   )
@@ -295,6 +321,7 @@ const Restoran = () => {
             <div className={classes.summary}>
               <h3 style={{ marginBottom: 20 }}>Ringkasan</h3>
               <div className={classes.summaryTable}>
+                <h4 style={{ marginBottom: 20 }}>Table Pendapatan</h4>
                 <TableContainer component={Paper}>
                   <Table sx={{ minWidth: 500 }} stickyHeader aria-label="a dense table">
                     <TableHead>
@@ -355,6 +382,7 @@ const Restoran = () => {
                 }
               </div>
               <div className={classes.summaryTable} style={{ marginTop: 20 }}>
+                <h4 style={{ marginBottom: 20 }}>Table Pengeluaran</h4>
                 <TableContainer component={Paper}>
                   <Table sx={{ minWidth: 500 }} aria-label="a dense table">
                     <TableHead>
@@ -411,7 +439,12 @@ const Restoran = () => {
           </>
         }
       </Content>
-    </Root>
+      <Snackbar open={success} autoHideDuration={5000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+        <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+          Tarik dana berhasil
+        </Alert>
+      </Snackbar>
+    </Root >
 
   );
 }

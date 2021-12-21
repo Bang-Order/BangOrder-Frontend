@@ -133,7 +133,7 @@ const Akun = () => {
   ]
 
   useEffect(() => {
-    api.get(Cookies.get("RestoId"))
+    api.get(Cookies.get("RestoId"), { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
       .then((res) => {
         setResto(res.data)
         setLoading(false)
@@ -171,7 +171,6 @@ const Akun = () => {
       ...prevState,
       [evt.target.name]: value
     }));
-    console.log(resto);
   }
   const handleImageChange = (evt) => {
     setImage(evt.target.files[0]);
@@ -191,9 +190,10 @@ const Akun = () => {
     if (image) {
       formData.append('image', image);
     }
-    api.post('?_method=PUT', formData, {
+    api.post(Cookies.get("RestoId")+'?_method=PUT', formData, {
       headers: {
         'Content-Type': 'application/form-data; ',
+        Authorization: 'Bearer ' + Cookies.get("BangOrderToken")
       }
     })
       .then(() => { history.push("/") })

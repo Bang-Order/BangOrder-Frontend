@@ -155,7 +155,7 @@ const OrderCard = (props) => {
 								<h4>{item.quantity}x&ensp; {item.name}</h4>
 								<h4>{item.price}</h4>
 							</div>
-							<h5 className={classes.fontStyle}>Catatan : {item.notes}</h5>
+							{item.notes && <h5 className={classes.fontStyle}>Catatan : {item.notes}</h5>}
 							<Divider style={{ marginTop: 10 }} />
 						</div>
 					)}
