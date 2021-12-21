@@ -164,7 +164,6 @@ const Form = (props) => {
       ...prevState,
       [evt.target.name]: value
     }));
-    console.log(data);
   }
   const handleImageChange = (evt) => {
     setImage(evt.target.files[0]);
@@ -200,7 +199,6 @@ const Form = (props) => {
         });
       })
       .catch((err) => {
-        console.log(err.response.data);
         setError(err.response.data);
         setLoading(false);
       })

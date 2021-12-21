@@ -2,8 +2,12 @@ import axios from "axios";
 import Cookies from "js-cookie";
 require('dotenv').config();
 
-export const login = (user) => {
-    Cookies.set("BangOrderToken", user.access_token);
+export const login = (user, remember) => {
+    if (remember){
+        Cookies.set("BangOrderToken", user.access_token);
+    } else {
+        Cookies.set("BangOrderToken", user.access_token,  { expires: 7 });
+    }
     Cookies.set("RestoId", user.id);
     return true;
 };

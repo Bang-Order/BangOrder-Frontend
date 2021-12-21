@@ -90,7 +90,7 @@ const HistoryCard = (props) => {
         <CardContent className={classes.header}>
           <div className={classes.left}>
             <h4 className={classes.meja}>
-              Meja {order.table_id}
+              Meja {order.table_number}
             </h4>
             <h4 className={classes.id}>
               Id Pesanan {order.id}

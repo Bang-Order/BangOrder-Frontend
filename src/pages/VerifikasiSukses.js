@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Paper } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import PrimaryButton from '../components/button/PrimaryButton';
+import { useHistory } from 'react-router-dom';
 
 const useStyle = makeStyles({
   logo: {
@@ -30,6 +31,7 @@ const useStyle = makeStyles({
 
 const VerifikasiSukses = () => {
   const classes = useStyle();
+  const history = useHistory();
 
   return (
     <div>
@@ -41,7 +43,7 @@ const VerifikasiSukses = () => {
           <h2>Verifikasi Akun Berhasil</h2>
           <img className={classes.image} src="/verif-sukses.png" alt="" />
           <p>Verifikasi akun kamu berhasil, silahkan kembali ke halaman Log in untuk masuk. </p>
-          <PrimaryButton style={{ width: '80%', fontSize: '16px', marginTop: 20 }}>Kembali ke Log in</PrimaryButton>
+          <PrimaryButton onClick={history.push("/login")} style={{ width: '80%', fontSize: '16px', marginTop: 20 }}>Kembali ke Log in</PrimaryButton>
         </Paper>
       </div>
     </div >

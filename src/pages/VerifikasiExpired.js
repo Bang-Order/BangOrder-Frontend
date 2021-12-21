@@ -1,8 +1,9 @@
-import * as React from 'react';
+import React, { useState } from "react";
 import { Paper } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import PrimaryButton from '../components/button/PrimaryButton';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import axios from "axios";
 
 const useStyle = makeStyles({
   logo: {
@@ -29,8 +30,23 @@ const useStyle = makeStyles({
 
 })
 
-const VerifikasiExpired = () => {
+const VerifikasiExpired = (props) => {
   const classes = useStyle();
+  const [setError] = useState();
+  const data = useState(props.location.state);
+  const [loading, setLoading] = useState(false);
+
+  const handleResend = () => {
+    setLoading(true);
+    axios.post(process.env.REACT_APP_API_URL + 'auth/email/resend', null, { headers: { Authorization: 'Bearer ' + data[0].access_token } })
+      .then((res) => {
+        setLoading(false)
+      })
+      .catch((err) => {
+        setError(err.response.message);
+        setLoading(false)
+      })
+  }
 
   return (
     <div>
@@ -45,7 +61,7 @@ const VerifikasiExpired = () => {
           </h2>
           <img className={classes.image} src="/verif-exp.png" alt="" />
           <p>Link verifikasi akun kamu telah kadaluarsa, silahkan kirim ulang email.</p>
-          <PrimaryButton style={{ width: '80%', fontSize: '16px', marginTop: 20 }}>Kirim Ulang Email</PrimaryButton>
+          <PrimaryButton loading={loading} onClick={handleResend} style={{ width: '80%', fontSize: '16px', marginTop: 20 }}>Kirim Ulang Email</PrimaryButton>
         </Paper>
       </div>
     </div >

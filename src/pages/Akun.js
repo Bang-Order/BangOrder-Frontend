@@ -4,7 +4,7 @@ import PrimaryButton from '../components/button/PrimaryButton';
 import { makeStyles } from '@mui/styles';
 import InputBase from '@mui/material/InputBase';
 import FormControl from '@mui/material/FormControl';
-import { InputLabel, Button, ListItem, Tooltip, ListItemIcon, Menu, MenuItem } from "@mui/material";
+import { InputLabel, Button, ListItem, Tooltip, ListItemIcon, Menu, MenuItem, Snackbar, Alert } from "@mui/material";
 import { useHistory } from 'react-router';
 import { api } from '../utils/api';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -99,9 +99,10 @@ const Akun = () => {
   const [resto, setResto] = useState();
   const [image, setImage] = useState();
   const history = useHistory();
-  const [open, setOpen] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selectedIndex] = React.useState();
+  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [error, setError] = useState(null);
+  const [selectedIndex] = useState();
   const banks = [
     {
       "id": "BCA",
@@ -139,12 +140,15 @@ const Akun = () => {
         setResto(res.data)
         setLoading(false)
       })
+      .catch((err) => {
+        setError(err.response)
+      })
   }, [])
 
   const getBankName = (id) => {
     for (var i = 0; i < banks.length; i++) {
       if (banks[i].id === id) {
-        return banks[0].name;
+        return banks[i].name;
       }
     }
   }
@@ -191,7 +195,7 @@ const Akun = () => {
     if (image) {
       formData.append('image', image);
     }
-    api.post(Cookies.get("RestoId")+'?_method=PUT', formData, {
+    api.post(Cookies.get("RestoId") + '?_method=PUT', formData, {
       headers: {
         'Content-Type': 'application/form-data; ',
         Authorization: 'Bearer ' + Cookies.get("BangOrderToken")
@@ -199,7 +203,7 @@ const Akun = () => {
     })
       .then(() => { history.push("/") })
       .catch((err) => {
-        console.log(err);
+        setError(err.response.data.errors)
       })
   }
 
@@ -210,6 +214,12 @@ const Akun = () => {
   const handleTooltipOpen = () => {
     setOpen(true);
   }
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setError(null);
+  };
 
   return (
     <Root>
@@ -324,12 +334,13 @@ const Akun = () => {
                           No Telepon
                         </InputLabel>
                         <BootstrapInput
-                          type='number'
+                          type='text'
                           onChange={handleChange}
                           placeholder="Nomor Telepon"
                           id="bootstrap-input"
                           name="telephone_number"
-                          value={Number(resto.telephone_number)}
+                          pattern="[0-9]"
+                          value={resto.telephone_number}
                         />
                       </FormControl>
                     </div>
@@ -409,6 +420,18 @@ const Akun = () => {
                         Simpan
                       </PrimaryButton>
                     </div>
+                    <Snackbar open={error} autoHideDuration={5000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+                      <Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%' }}>
+                        {error && (error.name ||
+                          error.email ||
+                          error.address ||
+                          error.image ||
+                          error.owner_name ||
+                          error.telephone_number ||
+                          error.account_holder_name ||
+                          error.account_number)}
+                      </Alert>
+                    </Snackbar>
                   </div>
                 </div>
               </Frame>

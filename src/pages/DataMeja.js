@@ -78,6 +78,7 @@ const DataMeja = () => {
     const [addDialog, setAddDialog] = useState();
     const [update, setUpdate] = useState();
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         setLoading(true)
@@ -104,6 +105,7 @@ const DataMeja = () => {
     };
 
     const handleClose = () => {
+        setError(false)
         setOpen(false);
     };
 
@@ -113,19 +115,33 @@ const DataMeja = () => {
 
     const saveHandler = () => {
         addDialog ?
-            api.post(Cookies.get("RestoId") + '/tables', newTable)
-                .then(setOpen(false))
-                .then(setUpdate(!update))
-            :
-            api.patch(Cookies.get("RestoId") + '/tables/' + table.id, newTable)
-                .then(setOpen(false))
-                .then(setUpdate(!update))
+            api.post(Cookies.get("RestoId") + '/tables', newTable, { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
+                .then(() => {
+                    setOpen(false)
+                    setUpdate(!update)
+                    setError(false)
+                })
+                .catch(() => {
+                    setError(true)
+                })
+                :
+                api.patch(Cookies.get("RestoId") + '/tables/' + table.id, newTable, { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
+                .then(() => {
+                    setOpen(false)
+                    setUpdate(!update)
+                    setError(false)
+                })
+                .catch(() => {
+                    setError(true)
+                })
     }
 
     const deleteClickHandler = (id) => {
-        api.delete(Cookies.get("RestoId") + '/tables/' + id)
-            .then(setOpen(false))
-            .then(setUpdate(!update))
+        api.delete(Cookies.get("RestoId") + '/tables/' + id, { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
+        .then(() => {
+            setOpen(false)
+            setUpdate(!update)
+        })
     }
 
     const dialog = (
@@ -134,12 +150,14 @@ const DataMeja = () => {
             <DialogContent>
                 <TextField
                     autoFocus
+                    error={error}
+                    placeholder="Nama meja*"
                     margin="dense"
                     id="name"
                     size="small"
                     fullWidth
                     type="text"
-                    defaultValue={table ? table.table_number : ""}
+                    defaultValue={table && table.table_number}
                     onChange={(e) => { newTableHandler(e.target.value) }}
                 />
             </DialogContent>

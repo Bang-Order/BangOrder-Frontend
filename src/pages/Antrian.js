@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { styled } from '@mui/material/styles';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import { makeStyles, withStyles } from '@mui/styles';
 import Cookies from 'js-cookie';
 import firebase from '../utils/firebase';
 import { getDatabase, ref, onValue } from "firebase/database";
@@ -63,6 +64,18 @@ const Antrian = () => {
                     onChange={(event, newValue) => {
                         setValue(newValue);
                     }}
+                    sx={{
+                        color: "black",
+                        '&& .Mui-selected, && .Mui-selected:hover': {
+                            bgcolor: '#FFD755',
+                            color: "black"
+                        },
+                        '&& .MuiBottomNavigationAction-label': {
+                            fontSize: 16,
+                            fontWeight: 'bold',
+                            fontFamily: 'manrope'
+                        }
+                    }}
                 >
                     <BottomNavigationAction value="" label="Semua" />
                     <BottomNavigationAction value="antri" label="Antri" />
@@ -79,7 +92,7 @@ const Antrian = () => {
                 }
                 {error && <p>{error}</p>}
             </Content>
-        </Root>
+        </Root >
     );
 }
 

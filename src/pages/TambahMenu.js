@@ -103,43 +103,47 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const TambahMenu = () => {
 	const classes = useStyles();
-	const [menu, setMenu] = useState({'name': null, 'price': null, 'menu_category_id': null});
+	const [menu, setMenu] = useState({ 'name': null, 'price': null, 'menu_category_id': null });
 	const [image, setImage] = useState();
 	const [allCategory, setAllCategory] = useState();
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [isRecommended, setIsRecommended] = useState();
 	const [error, setError] = useState();
 	const history = useHistory();
-	const [open, setOpen] = React.useState(false);
+	const [saving, setSaving] = useState(false);
+	const [open, setOpen] = useState(false);
 
 	useEffect(() => {
-		api.get(Cookies.get("RestoId")+'/menu-categories', { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
+		api.get(Cookies.get("RestoId") + '/menu-categories', { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
 			.then((res) => {
 				setAllCategory(res.data.data);
 			})
 	}, [error])
 
 	const handleSaveButton = () => {
+		setSaving(true);
 		let formData = new FormData();
-		if (menu.name && menu.price && menu.menu_category_id) {
-			if (image) {
-				formData.append('image', image);
-			}
-			for (var key in menu) {
-				formData.append(key, menu[key]);
-			}
-			api.post(Cookies.get("RestoId")+'/menus/', formData, {
-				headers: {
-					'Content-Type': 'application/form-data; ',
-				}
-			})
-				.catch((err) => {
-					setError(err)
-				})
-			.then(history.push("/list-menu"))
-		} else {
-			setError('Data input kosong atau salah')
+		if (image) {
+			formData.append('image', image);
 		}
+		for (var key in menu) {
+			formData.append(key, menu[key]);
+		}
+		api.post(Cookies.get("RestoId") + '/menus/', formData, {
+			headers: {
+				'Content-Type': 'application/form-data; ',
+				Authorization: 'Bearer ' + Cookies.get("BangOrderToken")
+			}
+		})
+			.then(() => {
+				setSaving(false);
+				history.push("/list-menu");
+			})
+			.catch((err) => {
+				console.log(err.response.data.errors);
+				setError(err.response.data.errors);
+				setSaving(false);
+			})
 	}
 
 	const handleClick = (event) => {
@@ -323,13 +327,15 @@ const TambahMenu = () => {
 									</label>
 								</div>
 								<div className={classes.navButton}>
-									<PrimaryButton width="100px" onClick={handleSaveButton}>Simpan</PrimaryButton>
+									<PrimaryButton loading={saving} width="100px" onClick={handleSaveButton}>Simpan</PrimaryButton>
 								</div>
 							</div>
 						</div>
-						<Snackbar open={error} autoHideDuration={5000} onClose={handleCloseSnackbar} anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}>
+						<Snackbar open={error} autoHideDuration={5000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
 							<Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%' }}>
-								{error}
+								{error && (error.name ||
+									error.price ||
+									error.image)}
 							</Alert>
 						</Snackbar>
 					</Frame>

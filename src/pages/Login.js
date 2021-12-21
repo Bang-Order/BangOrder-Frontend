@@ -49,6 +49,7 @@ const Login2 = () => {
     const [password, setPassword] = React.useState("");
     const [error, setError] = React.useState();
     const [email, setEmail] = React.useState("");
+    const [remember, setRemember] = React.useState(false);
     const [showPassword, setShowPassword] = React.useState(false);
     const [isEmailNull, setIsEmailNull] = React.useState(false);
     const [isPasswordNull, setIsPasswordNull] = React.useState(false);
@@ -58,7 +59,7 @@ const Login2 = () => {
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
     };
-
+    
     const _onSubmit = () => {
         if (email === "") {
             setIsEmailNull(true);
@@ -70,12 +71,11 @@ const Login2 = () => {
                 email: email,
                 password: password
             }).then((res) => {
-                login(res.data.data);
+                login(res.data.data, remember);
                 if (isLogin) {
                     history.push("/order-list");
                 }
             }).catch((err) => {
-                console.log(err.response);
                 if (err.response.status === 403) {
                     history.push({
                         pathname: "/belum-verifikasi",
@@ -91,7 +91,10 @@ const Login2 = () => {
             })
         }
     }
-
+    const handleRemember = (value) => {
+        setRemember(value);
+    }
+    
     return (
         <div className={classes.root}>
             <Container fixed >
@@ -106,14 +109,14 @@ const Login2 = () => {
                     fullWidth
                     error={isEmailNull ? true : false}
                     required={isEmailNull ? true : false}
-                />
+                    />
                 <FormControl
                     fullWidth
                     variant="outlined" margin="normal"
                     error={isPasswordNull ? true : false}
                     required={isPasswordNull ? true : false}
-
-                >
+                    
+                    >
                     <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                     <OutlinedInput
                         id="outlined-password-input"
@@ -135,7 +138,7 @@ const Login2 = () => {
                     />
                 </FormControl>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <FormControlLabel control={<Checkbox />} label="Ingat Saya" />
+                    <FormControlLabel onClick={() => handleRemember(!remember)} control={<Checkbox checked={remember}/>} label="Ingat Saya" />
                     <p><StyledLink to="/lupa-password" >Lupa password?</StyledLink></p>
                 </div>
                 <div>

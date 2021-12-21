@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Sidebar from '../components/sidebar/Sidebar';
 import { makeStyles } from '@mui/styles';
 import { styled } from "@mui/system";
-import { InputLabel, Button, Radio, ListItem, Tooltip, ListItemIcon } from "@mui/material";
+import { InputLabel, Button, Radio, ListItem, Tooltip, ListItemIcon, Snackbar, Alert } from "@mui/material";
 import FormControl from '@mui/material/FormControl';
 import InputBase from '@mui/material/InputBase';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -102,6 +102,7 @@ const EditMenu = (props) => {
   const menuId = props.match.params.menuId;
   const [saving, setSaving] = useState(false);
   const [menu, setMenu] = useState();
+  const [error, setError] = useState();
   const [allCategory, setAllCategory] = useState();
   const [anchorEl, setAnchorEl] = useState(null);
   const [isRecommended, setIsRecommended] = useState();
@@ -111,7 +112,7 @@ const EditMenu = (props) => {
   const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
-    api.get(Cookies.get("RestoId")+'/menus/' + menuId)
+    api.get(Cookies.get("RestoId") + '/menus/' + menuId)
       .then((res) => {
         setMenu(res.data);
         setIsRecommended(res.data.is_recommended);
@@ -122,7 +123,7 @@ const EditMenu = (props) => {
   }, [menuId, isReset])
 
   useEffect(() => {
-    api.get(Cookies.get("RestoId")+'/menu-categories')
+    api.get(Cookies.get("RestoId") + '/menu-categories')
       .then((res) => {
         setAllCategory(res.data.data);
       })
@@ -138,22 +139,26 @@ const EditMenu = (props) => {
     if (image) {
       formData.append('image', image);
     }
-    api.post(Cookies.get("RestoId")+'/menus/' + menuId + '?_method=PUT', formData, {
+    api.post(Cookies.get("RestoId") + '/menus/' + menuId + '?_method=PUT', formData, {
       headers: {
         Authorization: 'Bearer ' + Cookies.get("BangOrderToken"),
         'Content-Type': 'application/form-data; ',
       }
     })
-      .then(setTimeout(() => {
+      .then(() => {
         setSaving(false);
         history.push("/list-menu");
-      }, 500))
+      })
+      .catch((err) => {
+        setError(err.response.data.errors);
+        setSaving(false);
+      })
   }
   const handleReset = () => {
     setIsReset(!isReset);
   }
   const handleDelete = () => {
-    api.delete(Cookies.get("RestoId")+'/menus/' + menuId)
+    api.delete(Cookies.get("RestoId") + '/menus/' + menuId)
       .then(history.push("/list-menu"));
   }
   const handleClick = (event) => {
@@ -162,6 +167,12 @@ const EditMenu = (props) => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setError(null);
   };
 
   const handleChange = (evt) => {
@@ -341,6 +352,13 @@ const EditMenu = (props) => {
                     <SecondaryButton width="100px" onClick={handleDelete}>Hapus</SecondaryButton>
                     <PrimaryButton loading={saving} width="100px" onClick={handleSaveButton}>Simpan</PrimaryButton>
                   </div>
+                  <Snackbar open={error} autoHideDuration={5000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+                    <Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%' }}>
+                      {error && (error.name ||
+                        error.price ||
+                        error.image)}
+                    </Alert>
+                  </Snackbar>
                 </div>
               </div>
             </Frame>

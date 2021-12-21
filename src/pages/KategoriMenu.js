@@ -93,6 +93,7 @@ const KategoriMenu = () => {
   const [category, setCategory] = useState();
   const [update, setUpdate] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -118,6 +119,7 @@ const KategoriMenu = () => {
 
   const handleClose = () => {
     setOpen(false);
+    setError(false);
     setCategory();
   };
 
@@ -128,18 +130,36 @@ const KategoriMenu = () => {
   const saveHandler = () => {
     addDialog ?
       api.post(Cookies.get("RestoId") + '/menu-categories', newCategory)
-        .then(setOpen(false))
-        .then(setUpdate(!update))
+        .then(() => {
+          setOpen(false)
+          setUpdate(!update)
+          setError(false)
+        })
+        .catch(() => {
+          setError(true)
+        })
       :
       api.patch(Cookies.get("RestoId") + '/menu-categories/' + category.id, newCategory)
-        .then(setOpen(false))
-        .then(setUpdate(!update))
+        .then(() => {
+          setOpen(false)
+          setUpdate(!update)
+          setError(false)
+        })
+        .catch(() => {
+          setError(true)
+        })
   }
 
   const deleteHandler = (id) => {
     api.delete(Cookies.get("RestoId") + '/menu-categories/' + id)
-      .then(setOpen(false))
-      .then(setUpdate(!update))
+      .then(() => {
+        setOpen(false)
+        setUpdate(!update)
+        setError(false)
+      })
+      .catch(() => {
+        setError(true)
+      })
   }
   const dialog = (
     <Dialog open={open} onClose={handleClose}>
@@ -147,6 +167,8 @@ const KategoriMenu = () => {
       <DialogContent>
         <TextField
           autoFocus
+          error={error}
+          placeholder='Nama kategori*'
           margin="dense"
           id="name"
           size="small"
