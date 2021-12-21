@@ -400,13 +400,10 @@ const Restoran = () => {
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                           >
                             <StyledTableCell component="th" scope="row">
-                              <h4 className={classes.fontStyle}>{row.date}</h4>
+                              <h4 className={classes.fontStyle}>{row.time}</h4>
                             </StyledTableCell >
                             <StyledTableCell align="center">
-                              <h4 className={classes.fontStyle}>{row.total_order}</h4>
-                            </StyledTableCell >
-                            <StyledTableCell align="center">
-                              <h4 className={classes.fontStyle}>{row.total_income.toLocaleString(['id'])}</h4>
+                              <h4 className={classes.fontStyle}>{row.amount.toLocaleString(['id'])}</h4>
                             </StyledTableCell >
                           </StyledTableRow>
                         ))
