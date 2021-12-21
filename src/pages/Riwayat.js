@@ -41,9 +41,9 @@ const Riwayat = () => {
     const classes = useStyles();
     const [orders, setOrders] = useState();
     const [update, setUpdate] = useState(false);
-    const [date, setDate] = useState(["",""]);
+    const [date, setDate] = useState(["", ""]);
     useEffect(() => {
-        api.get(Cookies.get("RestoId")+"/orders/history?start_date="+date[0]+"&end_date="+date[1], {headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") }})
+        api.get(Cookies.get("RestoId") + "/orders/history?start_date=" + date[0] + "&end_date=" + date[1], { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
             .then((res) => {
                 setOrders(res.data.data);
                 console.log(orders);
@@ -54,10 +54,10 @@ const Riwayat = () => {
     }
     const handleDate = (value) => {
         setValue(value)
-        if(value[0]&&value[1]){
+        if (value[0] && value[1]) {
             setDate([
-                value[0].getFullYear()+"-"+(value[0].getMonth()+1)+"-"+value[0].getDate(),
-                value[1].getFullYear()+"-"+(value[1].getMonth()+1)+"-"+value[1].getDate(),
+                value[0].getFullYear() + "-" + (value[0].getMonth() + 1) + "-" + value[0].getDate(),
+                value[1].getFullYear() + "-" + (value[1].getMonth() + 1) + "-" + value[1].getDate(),
             ])
         }
     }
@@ -89,9 +89,9 @@ const Riwayat = () => {
                 {orders && orders.length !== 0 ? orders.map(order =>
                     <HistoryCard key={order.id} order={order} handleUpdate={handleUpdate} />
                 )
-                :
-                <h4 style={{marginTop: 10}}>Riwayat kosong</h4>
-            }
+                    :
+                    <h4 style={{ marginTop: 10 }}>Belum ada riwayat pesanan</h4>
+                }
             </Content>
         </Root>
     );

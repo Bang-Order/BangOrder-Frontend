@@ -16,7 +16,9 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 const Root = styled('div')(() => ({
   backgroundColor: '#f1f1f1',
   minHeight: '100vh',
-  paddingBottom: 20
+  paddingBottom: 20,
+  paddingTop: 20,
+
 }))
 
 const useStyles = makeStyles(() => ({
@@ -84,9 +86,8 @@ const Frame = styled('div')(({ theme }) => ({
   backgroundColor: "#ffffff",
   marginLeft: 280,
   marginRight: 20,
-  marginTop: 90,
+  marginTop: 65,
   paddingBottom: 20,
-  borderRadius: 7,
   [theme.breakpoints.down('md')]: {
     marginLeft: 20,
   },
@@ -246,6 +247,7 @@ const Akun = () => {
                           placeholder="email"
                           id="bootstrap-input"
                           name="email"
+                          disabled
                         />
                       </FormControl>
                     </div>
@@ -333,10 +335,8 @@ const Akun = () => {
                     </div>
                   </div>
                 </div>
-              </Frame>
-              <Frame style={{ marginTop: 20 }}>
                 <div className={classes.content}>
-                  <div style={{ width: '100%' }}>
+                  <div style={{ width: '100%', marginTop: 30 }}>
                     <h2>Data Rekening Bank</h2>
                     <div className={classes.item}>
                       <FormControl variant="standard">
