@@ -38,7 +38,6 @@ const Content = styled('div')(({ theme }) => ({
     marginRight: 20,
     marginTop: 65,
     padding: 25,
-    borderRadius: 7,
     [theme.breakpoints.down('md')]: {
         marginLeft: 20,
     },
@@ -83,14 +82,14 @@ const DataMeja = () => {
     useEffect(() => {
         setLoading(true)
         setTimeout(() => {
-            api.get(Cookies.get("RestoId")+"/tables", { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
-            .then((res) => {
-                setTables(res.data.data);
-                setLoading(false)
-            })
-            .catch((err) => {
-                console.log(err.response);
-            })
+            api.get(Cookies.get("RestoId") + "/tables", { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
+                .then((res) => {
+                    setTables(res.data.data);
+                    setLoading(false)
+                })
+                .catch((err) => {
+                    console.log(err.response);
+                })
         }, 300);
     }, [update])
 

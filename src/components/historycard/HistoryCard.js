@@ -106,7 +106,7 @@ const HistoryCard = (props) => {
           orderItem.map(item =>
             <div key={item.name} className={classes.content}>
               <div className={classes.item}>
-                <h4>{item.quantity}x {item.name}</h4>
+                <h4>{item.quantity}x&ensp; {item.name}</h4>
                 <h4>{item.price}</h4>
               </div>
               <h5 className={classes.fontStyle}>Catatan : {item.notes}</h5>

@@ -227,7 +227,7 @@ const Restoran = () => {
           <h4>{resto && resto.account_number}</h4>
         </div>
         <div className={classes.note}>
-          Setiap melakukan transaksi Tarik Dana, saldo akan dipotong sebesar 5000.
+          Setiap melakukan transaksi Tarik Dana, nominal tarik minimal sebesar 10.000 dan saldo akan dipotong sebesar 5.500.
           Waktu dana akan sampai ke pengguna bergantung pada waktu pemrosesan bank.
           Informasi selengkapnya silahkan &nbsp;
           <a href='https://rebrand.ly/Limit-dan-Waktu' rel="noreferrer" target='_blank'>klik disini</a>.
@@ -328,7 +328,7 @@ const Restoran = () => {
                           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                           <StyledTableCell component="th" scope="row">
-                            <h4>Data kosong</h4>
+                            <h4 className={classes.fontStyle}>Belum ada data</h4>
                           </StyledTableCell >
                           <StyledTableCell align="center">
                           </StyledTableCell >
@@ -387,7 +387,7 @@ const Restoran = () => {
                           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                           <StyledTableCell component="th" scope="row">
-                            <h4>Data kosong</h4>
+                            <h4 className={classes.fontStyle}>Belum ada data</h4>
                           </StyledTableCell >
                           <StyledTableCell align="center">
                           </StyledTableCell >

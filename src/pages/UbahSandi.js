@@ -13,7 +13,8 @@ require('dotenv').config();
 const Root = styled('div')(() => ({
   backgroundColor: '#f1f1f1',
   minHeight: '100vh',
-  paddingBottom: 20
+  paddingBottom: 20,
+  paddingTop: 20,
 }))
 
 const useStyles = makeStyles(() => ({
@@ -54,12 +55,11 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 }));
 
 const Frame = styled('div')(({ theme }) => ({
-  backgroundColor: "#ffffff",
+  backgroundColor: "#fff",
   marginLeft: 280,
   marginRight: 20,
-  marginTop: 90,
+  marginTop: 65,
   paddingBottom: 20,
-  borderRadius: 7,
   [theme.breakpoints.down('md')]: {
     marginLeft: 20,
   },
@@ -109,7 +109,7 @@ const UbahSandi = () => {
                     id="bootstrap-input"
                     name="old_password"
                     onChange={handleChange}
-                    />
+                  />
                   {/* <StyledLink to="/lupa-password" >Lupa Password</StyledLink> */}
                 </FormControl>
 
@@ -125,7 +125,7 @@ const UbahSandi = () => {
                     id="bootstrap-input"
                     name="new_password"
                     onChange={handleChange}
-                    />
+                  />
                 </FormControl>
               </div>
               <div className={classes.item}>
