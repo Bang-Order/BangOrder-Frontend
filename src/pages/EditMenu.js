@@ -34,6 +34,8 @@ const useStyles = makeStyles(() => ({
   },
   image: {
     width: "100%",
+    minWidth: "400px",
+    marginTop: 20,
     height: 'auto',
   },
   left: {
@@ -151,7 +153,7 @@ const EditMenu = (props) => {
     setIsReset(!isReset);
   }
   const handleDelete = () => {
-    api.delete('/menus/' + menuId)
+    api.delete(Cookies.get("RestoId")+'/menus/' + menuId)
       .then(history.push("/list-menu"));
   }
   const handleClick = (event) => {

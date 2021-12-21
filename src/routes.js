@@ -89,6 +89,7 @@ export const APP_ROUTE = [
         exact: true,
         component: EditMenu,
         private: true,
+        index: 5
     },
     {
         name: "Tambah Menu",
@@ -96,6 +97,7 @@ export const APP_ROUTE = [
         exact: true,
         component: TambahMenu,
         private: true,
+        index: 5
     },
     {
         name: "Akun",
