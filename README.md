@@ -1,5 +1,5 @@
 # Getting Started with BangOrder Frontend
-link: bangorder.me
+link: bangorder.me </br>
 email: resto_abc@gmail.com
 pass: 12345678
 mobileApp: BangOrder (https://play.google.com/store/apps/details?id=com.bangorder.mobile)
