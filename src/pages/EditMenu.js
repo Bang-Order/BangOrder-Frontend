@@ -70,7 +70,6 @@ const Frame = styled('div')(({ theme }) => ({
   marginRight: 20,
   marginTop: 90,
   paddingBottom: 20,
-  borderRadius: 7,
   [theme.breakpoints.down('md')]: {
     marginLeft: 20,
   },

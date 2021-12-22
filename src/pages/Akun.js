@@ -28,7 +28,11 @@ const useStyles = makeStyles(() => ({
     textAlign: 'left',
     marginLeft: 50,
     marginRight: 25,
-    paddingTop: 20,
+    padding: 20,
+    marginTop: 20,
+    marginBottom: 30,
+    border: '2px solid #f1f1f1'
+
   },
   item: {
     marginTop: 20,
@@ -58,7 +62,9 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     justifyContent: "flex-end",
     width: '100%',
-    marginTop: 20
+    marginTop: 20,
+    marginBottom: 10,
+    paddingRight: 25,
   }
 }));
 
@@ -88,6 +94,7 @@ const Frame = styled('div')(({ theme }) => ({
   marginRight: 20,
   marginTop: 65,
   paddingBottom: 20,
+  paddingTop: 20,
   [theme.breakpoints.down('md')]: {
     marginLeft: 20,
   },
@@ -347,7 +354,7 @@ const Akun = () => {
                   </div>
                 </div>
                 <div className={classes.content}>
-                  <div style={{ width: '100%', marginTop: 30 }}>
+                  <div style={{ width: '100%' }}>
                     <h2>Data Rekening Bank</h2>
                     <div className={classes.item}>
                       <FormControl variant="standard">
@@ -415,11 +422,7 @@ const Akun = () => {
                         />
                       </FormControl>
                     </div>
-                    <div className={classes.navButton}>
-                      <PrimaryButton width="100px" onClick={handleSaveButton}>
-                        Simpan
-                      </PrimaryButton>
-                    </div>
+
                     <Snackbar open={error} autoHideDuration={5000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
                       <Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%' }}>
                         {error && (error.name ||
@@ -433,6 +436,11 @@ const Akun = () => {
                       </Alert>
                     </Snackbar>
                   </div>
+                </div>
+                <div className={classes.navButton}>
+                  <PrimaryButton width="100px" onClick={handleSaveButton}>
+                    Simpan
+                  </PrimaryButton>
                 </div>
               </Frame>
             </>

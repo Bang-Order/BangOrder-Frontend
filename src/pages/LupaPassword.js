@@ -29,7 +29,7 @@ const useStyle = makeStyles({
   paperStyle: {
     padding: 20,
     height: 'auto',
-    width: '50%',
+    width: '30%',
     margin: 'auto',
   }
 
