@@ -36,17 +36,19 @@ const Antrian = () => {
         const orderRef = ref(db, "orders/" + Cookies.get("RestoId"))
         onValue(orderRef, (snapshot) => {
             let data = snapshot.val();
-            data = Object.values(data);
-            if (value) {
-                data = data.filter((el) => {
-                    return el.order_status === value;
-                })
-            } else {
-                data = data.filter((el) => {
-                    return el.order_status === "antri" || el.order_status === "dimasak"
-                })
+            if (data) {
+                data = Object.values(data);
+                if (value) {
+                    data = data.filter((el) => {
+                        return el.order_status === value;
+                    })
+                } else {
+                    data = data.filter((el) => {
+                        return el.order_status === "antri" || el.order_status === "dimasak"
+                    })
+                }
+                setOrders(Object.values(data));
             }
-            setOrders(Object.values(data));
         });
         setLoading(false);
     }, [value, update])

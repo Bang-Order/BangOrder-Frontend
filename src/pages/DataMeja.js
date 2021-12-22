@@ -124,8 +124,8 @@ const DataMeja = () => {
                 .catch(() => {
                     setError(true)
                 })
-                :
-                api.patch(Cookies.get("RestoId") + '/tables/' + table.id, newTable, { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
+            :
+            api.patch(Cookies.get("RestoId") + '/tables/' + table.id, newTable, { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
                 .then(() => {
                     setOpen(false)
                     setUpdate(!update)
@@ -138,10 +138,10 @@ const DataMeja = () => {
 
     const deleteClickHandler = (id) => {
         api.delete(Cookies.get("RestoId") + '/tables/' + id, { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
-        .then(() => {
-            setOpen(false)
-            setUpdate(!update)
-        })
+            .then(() => {
+                setOpen(false)
+                setUpdate(!update)
+            })
     }
 
     const dialog = (
@@ -217,7 +217,7 @@ const DataMeja = () => {
                                         </StyledTableRow>
                                     </>
                                     :
-                                    tables && tables.map((table) => (
+                                    tables.length !== 0 ? tables.map((table) => (
                                         <StyledTableRow key={table.id}>
                                             <StyledTableCell component="th" scope="row"><h4 className={classes.fontStyle}>{table.table_number}</h4></StyledTableCell>
                                             <StyledTableCell >
@@ -231,6 +231,17 @@ const DataMeja = () => {
                                             </StyledTableCell>
                                         </StyledTableRow>
                                     ))
+                                        :
+
+                                        <StyledTableRow
+                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
+                                            <StyledTableCell component="th" scope="row">
+                                                <h4>Belum ada data meja</h4>
+                                            </StyledTableCell >
+                                            <StyledTableCell sx={{ width: '20%' }} align="center">
+                                            </StyledTableCell >
+                                        </StyledTableRow>
                                 }
                             </TableBody>
                         </Table>

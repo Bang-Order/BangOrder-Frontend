@@ -32,6 +32,9 @@ const useStyle = makeStyles({
 const VerifikasiSukses = () => {
   const classes = useStyle();
   const history = useHistory();
+  const clickHandler = () => {
+    history.push("/login")
+  }
 
   return (
     <div>
@@ -43,7 +46,7 @@ const VerifikasiSukses = () => {
           <h2>Verifikasi Akun Berhasil</h2>
           <img className={classes.image} src="/verif-sukses.png" alt="" />
           <p>Verifikasi akun kamu berhasil, silahkan kembali ke halaman Log in untuk masuk. </p>
-          <PrimaryButton onClick={history.push("/login")} style={{ width: '80%', fontSize: '16px', marginTop: 20 }}>Kembali ke Log in</PrimaryButton>
+          <PrimaryButton onClick={clickHandler} style={{ width: '80%', fontSize: '16px', marginTop: 20 }}>Kembali ke Log in</PrimaryButton>
         </Paper>
       </div>
     </div >
