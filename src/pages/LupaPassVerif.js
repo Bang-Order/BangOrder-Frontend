@@ -14,14 +14,14 @@ const useStyle = makeStyles({
     boxShadow: 3,
   },
   image: {
-    width: '20%',
+    width: '50%',
     height: 'auto',
-    marginTop: '20',
+    marginTop: 20,
   },
   paperStyle: {
     padding: 20,
     height: 'auto',
-    width: '50%',
+    width: '30%',
     margin: 'auto',
   }
 
@@ -63,8 +63,9 @@ const LupaPassword = (props) => {
             </Button>
             Reset Kata Sandi
           </h2>
-          <img className={classes.image} src="/Email1.png" alt="" />
+          <img className={classes.image} src="/email.png" alt="" />
           <p>{'Email verifikasi telah dikirimkan ke ' + censorEmail(email)}</p>
+          <p>Mohon verifikasi</p>
         </Paper>
       </div>
     </div >

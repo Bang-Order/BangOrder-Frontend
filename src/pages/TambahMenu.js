@@ -69,9 +69,8 @@ const Frame = styled('div')(({ theme }) => ({
 	backgroundColor: "#ffffff",
 	marginLeft: 280,
 	marginRight: 20,
-	marginTop: 90,
+	marginTop: 65,
 	paddingBottom: 20,
-	borderRadius: 7,
 	[theme.breakpoints.down('md')]: {
 		marginLeft: 20,
 	},
@@ -96,6 +95,7 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 const Root = styled('div')(() => ({
 	backgroundColor: '#f1f1f1',
 	height: '100vh',
+	paddingTop: 20,
 }))
 const Alert = React.forwardRef(function Alert(props, ref) {
 	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
