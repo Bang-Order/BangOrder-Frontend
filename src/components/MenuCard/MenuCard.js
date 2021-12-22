@@ -1,5 +1,4 @@
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Card, CardActionArea } from '@mui/material';
 import { makeStyles } from '@mui/styles';

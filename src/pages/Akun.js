@@ -100,7 +100,7 @@ const Frame = styled('div')(({ theme }) => ({
   },
 }));
 
-const Akun = () => {
+const Akun = (props) => {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
   const [resto, setResto] = useState();
@@ -110,6 +110,7 @@ const Akun = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [error, setError] = useState(null);
   const [selectedIndex] = useState();
+	const handleUpdateSidebar = props.handleUpdateSidebar;
   const banks = [
     {
       "id": "BCA",
@@ -208,9 +209,14 @@ const Akun = () => {
         Authorization: 'Bearer ' + Cookies.get("BangOrderToken")
       }
     })
-      .then(() => { history.push("/") })
+      .then(() => { 
+        history.push("/");
+        handleUpdateSidebar();
+      })
       .catch((err) => {
-        setError(err.response.data.errors)
+        if(err.response){
+          setError(err.response.data.errors)
+        }
       })
   }
 

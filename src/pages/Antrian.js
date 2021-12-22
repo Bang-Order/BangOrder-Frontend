@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { styled } from '@mui/material/styles';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import { makeStyles, withStyles } from '@mui/styles';
 import Cookies from 'js-cookie';
 import firebase from '../utils/firebase';
 import { getDatabase, ref, onValue } from "firebase/database";
@@ -36,6 +35,7 @@ const Antrian = () => {
         const orderRef = ref(db, "orders/" + Cookies.get("RestoId"))
         onValue(orderRef, (snapshot) => {
             let data = snapshot.val();
+            console.log(data);
             if (data) {
                 data = Object.values(data);
                 if (value) {
@@ -48,6 +48,9 @@ const Antrian = () => {
                     })
                 }
                 setOrders(Object.values(data));
+                console.log(orders);
+            } else {
+                setOrders("");
             }
         });
         setLoading(false);

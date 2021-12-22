@@ -26,7 +26,6 @@ export const isLogin = () => {
             return false
         })
         
-        auth.then((res) => {console.log(res)})
         if (auth.then((res) => {return res})){
             return true;
         } else {

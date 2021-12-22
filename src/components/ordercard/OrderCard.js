@@ -108,7 +108,7 @@ const OrderCard = (props) => {
 			}, { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } });
 		setTimeout(() => {
 			handleUpdate();
-		}, 300);
+		}, 500);
 	}
 	return (
 		<Card className={classes.root}>

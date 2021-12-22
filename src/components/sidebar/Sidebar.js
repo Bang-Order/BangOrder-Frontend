@@ -49,6 +49,7 @@ const Sidebar = (props) => {
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [resto, setResto] = useState();
+    const [loading, setLoading] = useState(false);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -64,12 +65,15 @@ const Sidebar = (props) => {
         history.replace("/login");
     };
     useEffect(() => {
-        api.get(Cookies.get("RestoId"), { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
-            .then((res) => {
-                console.log(res.data);
-                setResto(res.data)
-            })
-    }, [])
+        setLoading(true);
+        setTimeout(() => {
+            api.get(Cookies.get("RestoId"), { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
+                .then((res) => {
+                    setResto(res.data);
+                    setLoading(false);
+                })
+        }, 1000);
+    }, [props.update])
 
     const CustomListItem = withStyles({
         root: {
@@ -157,7 +161,7 @@ const Sidebar = (props) => {
                     </IconButton >
                     <h3>{props.name}</h3>
                     <IconButton sx={{ position: "absolute", right: '20px', ml: 2 }} onClick={handleClick} size="medium">
-                        <Avatar sx={{ width: 50, height: 50 }} src={resto && resto.image && resto.image}>{resto && resto.name.charAt(0)}</Avatar>
+                        <Avatar sx={{ width: 50, height: 50 }} src={!loading && resto && resto.image}></Avatar>
                     </IconButton>
                     <Menu
                         anchorEl={anchorEl}

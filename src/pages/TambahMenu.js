@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from '../components/sidebar/Sidebar';
 import { makeStyles } from '@mui/styles';
 import { styled } from "@mui/system";
 import { InputLabel, Button, Radio, ListItem, Tooltip, ListItemIcon } from "@mui/material";
