@@ -209,7 +209,7 @@ const TambahMenu = () => {
 							<div className={classes.left}>
 								<div className={classes.item}>
 									<FormControl variant="standard">
-										<InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
+										<InputLabel required shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
 											Nama Menu
 										</InputLabel>
 										<BootstrapInput
@@ -222,7 +222,7 @@ const TambahMenu = () => {
 								</div>
 								<div className={classes.item}>
 									<FormControl variant="standard" font-size="24px">
-										<InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
+										<InputLabel required shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
 											Harga Menu
 										</InputLabel>
 										<BootstrapInput
