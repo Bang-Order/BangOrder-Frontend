@@ -211,7 +211,7 @@ const Restoran = () => {
             title: "Pendapatan",
           },
           data: [{
-            type: "line",
+            type: "column",
             xValueFormatString: "DD MMM",
             dataPoints: dataPoints
           }]
@@ -345,7 +345,7 @@ const Restoran = () => {
                             <StyledTableCell align="center">
                               <h4 className={classes.fontStyle}>{row.total_order}</h4>
                             </StyledTableCell >
-                            <StyledTableCell align="center">
+                            <StyledTableCell align="right" >
                               <h4 className={classes.fontStyle}>{row.total_income.toLocaleString(['id'])}</h4>
                             </StyledTableCell >
                           </StyledTableRow>
@@ -373,7 +373,7 @@ const Restoran = () => {
                   <TablePagination
                     rowsPerPageOptions={[5, 10, 25, 100]}
                     component="div"
-                    count={data.length}
+                    count={data.income_data.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}
@@ -402,7 +402,7 @@ const Restoran = () => {
                             <StyledTableCell component="th" scope="row">
                               <h4 className={classes.fontStyle}>{row.time}</h4>
                             </StyledTableCell >
-                            <StyledTableCell align="center">
+                            <StyledTableCell align="right">
                               <h4 className={classes.fontStyle}>{row.amount.toLocaleString(['id'])}</h4>
                             </StyledTableCell >
                           </StyledTableRow>
@@ -421,11 +421,11 @@ const Restoran = () => {
                     </TableBody>
                   </Table>
                 </TableContainer>
-                {data.income_data.length !== 0 &&
+                {data.withdraw_data.length !== 0 &&
                   <TablePagination
                     rowsPerPageOptions={[5, 10, 25, 100]}
                     component="div"
-                    count={data.length}
+                    count={data.withdraw_data.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}
