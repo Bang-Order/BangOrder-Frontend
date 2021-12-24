@@ -1,5 +1,7 @@
 # Getting Started with BangOrder Frontend
-link: bangorder.me
+link: bangorder.me </br>
+resto_abc@gmail.com (12345678) </br>
+mobileApp: BangOrder (https://play.google.com/store/apps/details?id=com.bangorder.mobile)
 
 # How to Install
 
