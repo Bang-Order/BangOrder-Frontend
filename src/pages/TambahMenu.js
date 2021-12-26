@@ -102,7 +102,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const TambahMenu = () => {
 	const classes = useStyles();
-	const [menu, setMenu] = useState({ 'name': null, 'price': null, 'menu_category_id': null });
+	const [menu, setMenu] = useState({ 'name': "", 'price': "", 'menu_category_id': "" });
 	const [image, setImage] = useState();
 	const [allCategory, setAllCategory] = useState();
 	const [anchorEl, setAnchorEl] = useState(null);
@@ -139,8 +139,8 @@ const TambahMenu = () => {
 				history.push("/list-menu");
 			})
 			.catch((err) => {
-				console.log(err.response.data.errors);
-				setError(err.response.data.errors);
+				console.log(err.response.data.message);
+				setError(err.response.data);
 				setSaving(false);
 			})
 	}
@@ -209,7 +209,7 @@ const TambahMenu = () => {
 							<div className={classes.left}>
 								<div className={classes.item}>
 									<FormControl variant="standard">
-										<InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
+										<InputLabel required shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
 											Nama Menu
 										</InputLabel>
 										<BootstrapInput
@@ -217,12 +217,13 @@ const TambahMenu = () => {
 											placeholder="Nama menu"
 											id="bootstrap-input"
 											name="name"
+											required
 										/>
 									</FormControl>
 								</div>
 								<div className={classes.item}>
 									<FormControl variant="standard" font-size="24px">
-										<InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
+										<InputLabel required shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
 											Harga Menu
 										</InputLabel>
 										<BootstrapInput
@@ -230,12 +231,13 @@ const TambahMenu = () => {
 											placeholder="Harga menu"
 											id="bootstrap-input"
 											name="price"
+											required
 										/>
 									</FormControl>
 								</div>
 								<div className={classes.item}>
 									<FormControl variant="standard" font-size="24px">
-										<InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
+										<InputLabel required shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
 											Kategori Menu
 										</InputLabel>
 										<Button style={{ width: 250, marginTop: 30 }} className='dropdown' onClick={handleClick}>
@@ -332,9 +334,10 @@ const TambahMenu = () => {
 						</div>
 						<Snackbar open={error} autoHideDuration={5000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
 							<Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%' }}>
-								{error && (error.name ||
-									error.price ||
-									error.image)}
+								{error && (error.errors ? (error.errors.name ||
+									error.errors.price ||
+									error.errors.image)
+									: error.message)}
 							</Alert>
 						</Snackbar>
 					</Frame>

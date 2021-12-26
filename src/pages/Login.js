@@ -13,6 +13,7 @@ import {
     InputAdornment,
     TextField,
     Container,
+    Divider,
 } from '@mui/material';
 import { isLogin, login } from "../utils/Auth";
 import { Link, useHistory } from "react-router-dom";
@@ -45,7 +46,7 @@ const StyledLink = styled(Link)({
     fontWeight: 'bold',
 })
 
-const Login2 = () => {
+const Login = () => {
     const [password, setPassword] = React.useState("");
     const [error, setError] = React.useState();
     const [email, setEmail] = React.useState("");
@@ -55,18 +56,19 @@ const Login2 = () => {
     const [isPasswordNull, setIsPasswordNull] = React.useState(false);
     const history = useHistory();
     const classes = useStyle();
-    const [Loading, setLoading] = React.useState(false);
+    const [loadingButton1, setLoadingButton1] = React.useState(false);
+    const [loadingButton2, setLoadingButton2] = React.useState(false);
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
     };
-    
+
     const _onSubmit = () => {
         if (email === "") {
             setIsEmailNull(true);
         } else if (password === "") {
             setIsPasswordNull(true);
         } else {
-            setLoading(true);
+            setLoadingButton1(true);
             axios.post(process.env.REACT_APP_API_URL + 'auth/login', {
                 email: email,
                 password: password
@@ -87,14 +89,30 @@ const Login2 = () => {
                     });
                 }
                 setError(err.response.data.message);
-                setLoading(false);
+                setLoadingButton1(false);
             })
         }
+    }
+
+    const onDemoLogin = () => {
+        setLoadingButton2(true);
+        axios.post(process.env.REACT_APP_API_URL + 'auth/login', {
+            email: "resto_abc@gmail.com",
+            password: "12345678"
+        }).then((res) => {
+            login(res.data.data, remember);
+            if (isLogin) {
+                history.push("/order-list");
+            }
+        }).catch((err) => {
+            setError(err.response.data.message);
+            setLoadingButton2(false);
+        })
     }
     const handleRemember = (value) => {
         setRemember(value);
     }
-    
+
     return (
         <div className={classes.root}>
             <Container fixed >
@@ -109,14 +127,14 @@ const Login2 = () => {
                     fullWidth
                     error={isEmailNull ? true : false}
                     required={isEmailNull ? true : false}
-                    />
+                />
                 <FormControl
                     fullWidth
                     variant="outlined" margin="normal"
                     error={isPasswordNull ? true : false}
                     required={isPasswordNull ? true : false}
-                    
-                    >
+
+                >
                     <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                     <OutlinedInput
                         id="outlined-password-input"
@@ -138,11 +156,13 @@ const Login2 = () => {
                     />
                 </FormControl>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <FormControlLabel onClick={() => handleRemember(!remember)} control={<Checkbox checked={remember}/>} label="Ingat Saya" />
+                    <FormControlLabel onClick={() => handleRemember(!remember)} control={<Checkbox checked={remember} />} label="Ingat Saya" />
                     <p><StyledLink to="/lupa-password" >Lupa password?</StyledLink></p>
                 </div>
                 <div>
-                    <PrimaryButton onClick={_onSubmit} loading={Loading} width='100%'>Masuk</PrimaryButton>
+                    <PrimaryButton onClick={_onSubmit} loading={loadingButton1} width='100%'>Masuk</PrimaryButton>
+                    <Divider sx={{ marginY: "10px" }}>Atau</Divider>
+                    <PrimaryButton onClick={onDemoLogin} loading={loadingButton2} width='100%'>Masuk dengan akun demo</PrimaryButton>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                     <p >Belum punya akun?</p>
@@ -153,4 +173,4 @@ const Login2 = () => {
     );
 }
 
-export default Login2;
+export default Login;

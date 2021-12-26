@@ -149,7 +149,7 @@ const EditMenu = (props) => {
         history.push("/list-menu");
       })
       .catch((err) => {
-        setError(err.response.data.errors);
+        setError(err.response.data);
         setSaving(false);
       })
   }
@@ -226,7 +226,7 @@ const EditMenu = (props) => {
                 <div className={classes.left}>
                   <div className={classes.item}>
                     <FormControl variant="standard">
-                      <InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
+                      <InputLabel required shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
                         Nama Menu
                       </InputLabel>
                       <BootstrapInput
@@ -235,12 +235,13 @@ const EditMenu = (props) => {
                         placeholder="Nama menu"
                         id="bootstrap-input"
                         name="name"
+                        required
                       />
                     </FormControl>
                   </div>
                   <div className={classes.item}>
                     <FormControl variant="standard" font-size="24px">
-                      <InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
+                      <InputLabel required shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
                         Harga Menu
                       </InputLabel>
                       <BootstrapInput
@@ -254,7 +255,7 @@ const EditMenu = (props) => {
                   </div>
                   <div className={classes.item}>
                     <FormControl variant="standard" font-size="24px">
-                      <InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
+                      <InputLabel required shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
                         Kategori Menu
                       </InputLabel>
                       <Button style={{ width: 250, marginTop: 30 }} className='dropdown' onClick={handleClick}>
@@ -353,9 +354,10 @@ const EditMenu = (props) => {
                   </div>
                   <Snackbar open={error} autoHideDuration={5000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
                     <Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%' }}>
-                      {error && (error.name ||
-                        error.price ||
-                        error.image)}
+                      {error && (error.errors ? (error.errors.name ||
+                        error.errors.price ||
+                        error.errors.image)
+                        : error.message)}
                     </Alert>
                   </Snackbar>
                 </div>
