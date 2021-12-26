@@ -19,7 +19,6 @@ import { isLogin, login } from "../utils/Auth";
 import { Link, useHistory } from "react-router-dom";
 import axios from 'axios';
 import PrimaryButton from '../components/button/PrimaryButton';
-import SecondaryButton from '../components/button/SecondaryButton';
 
 const useStyle = makeStyles({
     root: {
@@ -47,7 +46,7 @@ const StyledLink = styled(Link)({
     fontWeight: 'bold',
 })
 
-const Login2 = () => {
+const Login = () => {
     const [password, setPassword] = React.useState("");
     const [error, setError] = React.useState();
     const [email, setEmail] = React.useState("");
@@ -174,4 +173,4 @@ const Login2 = () => {
     );
 }
 
-export default Login2;
+export default Login;

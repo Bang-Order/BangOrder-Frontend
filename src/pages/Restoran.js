@@ -190,7 +190,11 @@ const Restoran = () => {
     api.get(Cookies.get("RestoId") + "/dashboard", { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
       .then((res) => {
         setData(res.data)
-        for (var i = 0; i < res.data.income_data.length; i++) {
+        var length = res.data.income_data.length;
+        if (length > 7) {
+          length = 7;
+        }
+        for (var i = 0; i < length; i++) {
           const date = new Date();
           let tanggal = res.data.income_data[i].date.split("-")
           date.setDate(tanggal[0])
@@ -233,6 +237,7 @@ const Restoran = () => {
             autoFocus
             name="rupiah-nominal"
             type="number"
+            defaultValue="10000"
             onChange={(e) => { handleNominal(e.target.value) }}
           />
         </FormControl>
@@ -345,7 +350,7 @@ const Restoran = () => {
                             <StyledTableCell align="center">
                               <h4 className={classes.fontStyle}>{row.total_order}</h4>
                             </StyledTableCell >
-                            <StyledTableCell align="right" >
+                            <StyledTableCell align="right" sx={{ marginRight: "50px" }}>
                               <h4 className={classes.fontStyle}>{row.total_income.toLocaleString(['id'])}</h4>
                             </StyledTableCell >
                           </StyledTableRow>

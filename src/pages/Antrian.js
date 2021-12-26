@@ -35,7 +35,6 @@ const Antrian = () => {
         const orderRef = ref(db, "orders/" + Cookies.get("RestoId"))
         onValue(orderRef, (snapshot) => {
             let data = snapshot.val();
-            console.log(data);
             if (data) {
                 data = Object.values(data);
                 if (value) {
@@ -48,7 +47,6 @@ const Antrian = () => {
                     })
                 }
                 setOrders(Object.values(data));
-                console.log(orders);
             } else {
                 setOrders("");
             }
