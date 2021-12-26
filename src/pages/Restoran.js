@@ -350,8 +350,8 @@ const Restoran = () => {
                             <StyledTableCell align="center">
                               <h4 className={classes.fontStyle}>{row.total_order}</h4>
                             </StyledTableCell >
-                            <StyledTableCell align="right" sx={{ marginRight: "50px" }}>
-                              <h4 className={classes.fontStyle}>{row.total_income.toLocaleString(['id'])}</h4>
+                            <StyledTableCell align="right">
+                              <h4 style={{ marginRight: 50 }} className={classes.fontStyle}>{row.total_income.toLocaleString(['id'])}</h4>
                             </StyledTableCell >
                           </StyledTableRow>
                         ))
