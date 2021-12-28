@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Button, InputAdornment, IconButton, TextField, Menu, MenuItem } from "@mui/material";
+import { InputAdornment, IconButton, TextField, MenuItem, Select, Grid } from "@mui/material";
 import { makeStyles } from '@mui/styles';
 import Skeleton from '@mui/material/Skeleton';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import SearchIcon from '@mui/icons-material/Search';
 import './listmenu.css';
 import MenuCard from '../MenuCard/MenuCard';
@@ -34,9 +33,8 @@ const useStyles = makeStyles(() => ({
   },
   right: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     height: 39,
-    width: "30%",
   },
   container: {
     width: "25%",
@@ -45,7 +43,6 @@ const useStyles = makeStyles(() => ({
 
 const ListMenu = () => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState("");
   const [searchKey, setSearchKey] = useState("");
@@ -65,6 +62,7 @@ const ListMenu = () => {
   }, [statusFilter])
 
   useDidMountEffect(() => {
+    setStatusFilter("");
     const searchMenu = () => {
       setLoading(true);
       api.get(Cookies.get("RestoId") + '/menus?search=' + searchKey)
@@ -82,91 +80,84 @@ const ListMenu = () => {
     };
   }, [searchKey]);
 
-  const handleStatusClick = (status) => {
-    setStatusFilter(status)
-    setAnchorEl(null);
-    api.get(Cookies.get("RestoId") + '/menus?filter=' + statusFilter)
-      .then((res) => {
-        setMenus(res.data.data);
-      })
-      .catch(err => {
-        console.log(err.response);
-      })
-  }
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleChange = (event) => {
+    setStatusFilter(event.target.value);
   };
 
   return (
     <div>
       <div className={classes.header}>
-        <div className={classes.left}>
-          <TextField onChange={(e) => setSearchKey(e.target.value)} className="search" size="small" type="text" placeholder="Cari Menu"
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton edge="end"><SearchIcon /></IconButton>
-                </InputAdornment>
-              )
-            }}
-          />
-        </div>
-        <div className={classes.right}>
-          <Link to={"/tambah-menu"}>
-            <PrimaryButton width='150px'>Tambah Menu</PrimaryButton>
-          </Link>
-          <Button style={{ fontSize: '16px', borderRadius: 7, height: 'auto' }} onClick={handleClick} className="dropdown">
-            {statusFilter ? statusFilter : "All Menu"}
-            <ArrowDropDownIcon />
-          </Button>
-          <Menu
-            id="filter-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-            PaperProps={{
-              style: {
-                width: '150px',
-                backgroundColor: "white",
-              },
-            }}
-          >
-            <MenuItem onClick={() => handleStatusClick("")}>All Menu</MenuItem>
-            <MenuItem onClick={() => handleStatusClick("recommendation")}>Recommendation</MenuItem>
-            <MenuItem onClick={() => handleStatusClick("available")}>Available</MenuItem>
-            <MenuItem onClick={() => handleStatusClick("unavailable")}>Unavailable</MenuItem>
-          </Menu>
-        </div>
+        <Grid container spacing={4}>
+          <Grid item sm={6} xs={4}>
+            <TextField onChange={(e) => setSearchKey(e.target.value)} className="search" size="small" type="text" placeholder="Cari Menu"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton edge="end"><SearchIcon /></IconButton>
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Grid>
+          <Grid item sm={6} xs={8}>
+            <div className={classes.right}>
+              <Link to={"/tambah-menu"}>
+                <PrimaryButton width='150px'>Tambah Menu</PrimaryButton>
+              </Link>
+              <Select
+                value={statusFilter}
+                onChange={handleChange}
+                displayEmpty
+                sx={{ width: '150px' }}
+              >
+                <MenuItem value="">Semua Menu</MenuItem>
+                <MenuItem value="recommendation">Rekomendasi</MenuItem>
+                <MenuItem value="available">Tersedia</MenuItem>
+                <MenuItem value="unavailable">Habis</MenuItem>
+              </Select>
+            </div>
+          </Grid>
+        </Grid>
       </div>
       <div className={classes.content}>
 
         {loading ?
-          <>
-            <div className={classes.container}>
-              <Skeleton sx={{ width: "90%", height: 300 }} animation="wave" variant="rectangular" />
-            </div>
-            <div className={classes.container}>
-              <Skeleton sx={{ width: "90%", height: 300 }} animation="wave" variant="rectangular" />
-            </div>
-            <div className={classes.container}>
-              <Skeleton sx={{ width: "90%", height: 300 }} animation="wave" variant="rectangular" />
-            </div>
-            <div className={classes.container}>
-              <Skeleton sx={{ width: "90%", height: 300 }} animation="wave" variant="rectangular" />
-            </div>
-          </>
+          <Grid container spacing={2}>
+            <Grid item lg={3} sm={4} xs={12}>
+              <Skeleton sx={{ height: 300 }} animation="wave" variant="rectangular" />
+            </Grid>
+            <Grid item lg={3} sm={4} xs={12}>
+              <Skeleton sx={{ height: 300 }} animation="wave" variant="rectangular" />
+            </Grid>
+            <Grid item lg={3} sm={4} xs={12}>
+              <Skeleton sx={{ height: 300 }} animation="wave" variant="rectangular" />
+            </Grid>
+            <Grid item lg={3} sm={4} xs={12}>
+              <Skeleton sx={{ height: 300 }} animation="wave" variant="rectangular" />
+            </Grid>
+            <Grid item lg={3} sm={4} xs={12}>
+              <Skeleton sx={{ height: 300 }} animation="wave" variant="rectangular" />
+            </Grid>
+            <Grid item lg={3} sm={4} xs={12}>
+              <Skeleton sx={{ height: 300 }} animation="wave" variant="rectangular" />
+            </Grid>
+            <Grid item lg={3} sm={4} xs={12}>
+              <Skeleton sx={{ height: 300 }} animation="wave" variant="rectangular" />
+            </Grid>
+            <Grid item lg={3} sm={4} xs={12}>
+              <Skeleton sx={{ height: 300 }} animation="wave" variant="rectangular" />
+            </Grid>
+          </Grid>
           :
-          menus && menus.map(menu =>
-            <Link to={"/edit-menu/" + menu.id} className={classes.container}>
-              <MenuCard key={menu.id} menu={menu} />
-            </Link>
-          )
+          <Grid container spacing={2}>
+            {menus && menus.map(menu =>
+              <Grid item lg={3} sm={4} xs={12}>
+                <Link to={"/edit-menu/" + menu.id}>
+                  <MenuCard key={menu.id} menu={menu} />
+                </Link>
+              </Grid>
+            )}
+          </Grid>
         }
       </div>
     </div >
