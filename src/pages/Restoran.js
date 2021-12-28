@@ -326,7 +326,7 @@ const Restoran = () => {
             <div className={classes.summary}>
               <h3 style={{ marginBottom: 20 }}>Ringkasan</h3>
               <div className={classes.summaryTable}>
-                <h4 style={{ marginBottom: 20 }}>Table Pendapatan</h4>
+                <h4 style={{ marginBottom: 20 }}>Tabel Pendapatan</h4>
                 <TableContainer component={Paper}>
                   <Table sx={{ minWidth: 500 }} stickyHeader aria-label="a dense table">
                     <TableHead>
@@ -387,7 +387,7 @@ const Restoran = () => {
                 }
               </div>
               <div className={classes.summaryTable} style={{ marginTop: 20 }}>
-                <h4 style={{ marginBottom: 20 }}>Table Pengeluaran</h4>
+                <h4 style={{ marginBottom: 20 }}>Tabel Pengeluaran</h4>
                 <TableContainer component={Paper}>
                   <Table sx={{ minWidth: 500 }} aria-label="a dense table">
                     <TableHead>
