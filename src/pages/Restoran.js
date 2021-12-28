@@ -308,13 +308,13 @@ const Restoran = () => {
               </div>
               <div className={classes.overview}>
                 <div className={classes.order}>
-                  <h4 className={classes.fontStyle}>Pesanan hari ini</h4>
-                  <h3>{data.today_data.total_order}</h3>
+                  <h4 className={classes.fontStyle}>Pesanan bulan ini</h4>
+                  <h3>{data.this_month_data.total_order}</h3>
                 </div>
                 <Divider orientation="vertical" flexItem />
                 <div className={classes.income}>
-                  <h4 className={classes.fontStyle}>Pendapatan hari ini</h4>
-                  <h3> {data.today_data.total_income.toLocaleString(['id'])}</h3>
+                  <h4 className={classes.fontStyle}>Pendapatan bulan ini</h4>
+                  <h3> {data.this_month_data.total_income.toLocaleString(['id'])}</h3>
                 </div>
                 <Divider orientation="vertical" flexItem />
                 <div className={classes.saldo}>
