@@ -121,7 +121,7 @@ const ListMenu = () => {
             <PrimaryButton width='150px'>Tambah Menu</PrimaryButton>
           </Link>
           <Button style={{ fontSize: '16px', borderRadius: 7, height: 'auto' }} onClick={handleClick} className="dropdown">
-            {statusFilter ? statusFilter : "All Menu"}
+            {statusFilter ? statusFilter : "Semua Menu"}
             <ArrowDropDownIcon />
           </Button>
           <Menu
@@ -137,10 +137,10 @@ const ListMenu = () => {
               },
             }}
           >
-            <MenuItem onClick={() => handleStatusClick("")}>All Menu</MenuItem>
-            <MenuItem onClick={() => handleStatusClick("recommendation")}>Recommendation</MenuItem>
-            <MenuItem onClick={() => handleStatusClick("available")}>Available</MenuItem>
-            <MenuItem onClick={() => handleStatusClick("unavailable")}>Unavailable</MenuItem>
+            <MenuItem onClick={() => handleStatusClick("")}>Semua Menu</MenuItem>
+            <MenuItem onClick={() => handleStatusClick("recommendation")}>Rekomendasi</MenuItem>
+            <MenuItem onClick={() => handleStatusClick("available")}>Tersedia</MenuItem>
+            <MenuItem onClick={() => handleStatusClick("unavailable")}>Habis</MenuItem>
           </Menu>
         </div>
       </div>
