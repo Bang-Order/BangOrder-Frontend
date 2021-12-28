@@ -7,6 +7,8 @@ import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Cookies from 'js-cookie';
 import firebase from '../utils/firebase';
 import { getDatabase, ref, onValue } from "firebase/database";
+import { Alert, AlertTitle, Snackbar } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const Content = styled('div')(({ theme }) => ({
     marginLeft: 280,
@@ -30,6 +32,19 @@ const Antrian = () => {
     const [error] = useState(null);
     const [loading, setLoading] = useState(true);
     const [update, setUpdate] = useState(false);
+    const [open, setOpen] = React.useState(false);
+
+    const handleClick = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
     useEffect(() => {
         const db = getDatabase(firebase);
         const orderRef = ref(db, "orders/" + Cookies.get("RestoId"))
@@ -88,12 +103,17 @@ const Antrian = () => {
                     <p>loading...</p>
                     :
                     orders && orders.length !== 0 ? orders.map(order =>
-                        <OrderCard key={order.id} order={order} handleUpdate={handleUpdate} />
+                        <OrderCard key={order.id} order={order} handleUpdate={handleUpdate} handleClick={handleClick}/>
                     ) : (
                         <h4 style={{ marginTop: 10 }}>Belum ada pesanan masuk</h4>
                     )
                 }
                 {error && <p>{error}</p>}
+                <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} open={open} autoHideDuration={6000} onClose={handleClose}>
+                    <Alert>
+                        Pesanan selesai — Lihat <Link to="/riwayat">Riwayat</Link>
+                    </Alert>
+                </Snackbar>
             </Content>
         </Root >
     );

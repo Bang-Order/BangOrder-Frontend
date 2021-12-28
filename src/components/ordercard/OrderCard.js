@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@mui/styles';
-import { Button, Card, CardContent, Menu, MenuItem } from '@mui/material';
+import { Button, Card, CardContent, Menu, MenuItem, Select } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import './cardlist.css';
 import PrimaryButton from '../button/PrimaryButton';
@@ -90,20 +90,13 @@ const OrderCard = (props) => {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [status, setStatus] = React.useState(order.order_status);
 	const handleUpdate = props.handleUpdate;
-	const handleClick = (event) => {
-		setAnchorEl(event.currentTarget);
-	};
+	const handleClick = props.handleClick;
 
-	const handleClose = () => {
-		setAnchorEl(null);
-	};
-
-	const handleStatus = (status) => {
-		handleClose();
-		setStatus(status);
+	const handleStatus = (evt) => {
+		setStatus(evt.target.value);
 		api
 			.patch(Cookies.get("RestoId") + '/orders/' + order.id, {
-				"order_status": status,
+				"order_status": evt.target.value,
 				"payment_status": "success"
 			}, { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } });
 		setTimeout(() => {
@@ -127,25 +120,16 @@ const OrderCard = (props) => {
 							Status:
 						</h4>
 						&ensp;
-						<Button style={{ fontSize: '16px', borderColor: '#ffc300', borderRadius: 7 }} width="150px" onClick={handleClick} className="dropdown">
-							{status}
-						</Button>
-						<Menu
-							id="simple-menu"
-							anchorEl={anchorEl}
-							keepMounted
-							open={Boolean(anchorEl)}
-							onClose={handleClose}
-							PaperProps={{
-								style: {
-									width: '150px',
-								},
-							}}
+						<Select
+							value={status}
+							onChange={handleStatus}
+							displayEmpty
+							sx={{ width: '150px', height: "50px"}}
 						>
-							<MenuItem onClick={() => handleStatus('antri')}>Antri</MenuItem>
-							<MenuItem onClick={() => handleStatus('dimasak')}>Dimasak</MenuItem>
-						</Menu>
-						<PrimaryButton width='150px' onClick={() => handleStatus('selesai')}>Selesai</PrimaryButton>
+							<MenuItem value="antri">Antri</MenuItem>
+							<MenuItem value="dimasak">Dimasak</MenuItem>
+						</Select>
+						<PrimaryButton width='150px' value="selesai" onClick={handleStatus, handleClick}>Selesai</PrimaryButton>
 					</div>
 				</CardContent>
 				{orderItem &&

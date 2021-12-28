@@ -2,15 +2,14 @@ import React, { useState, useEffect } from "react";
 import Sidebar from '../components/sidebar/Sidebar';
 import { makeStyles } from '@mui/styles';
 import { styled } from "@mui/system";
-import { InputLabel, Button, Radio, ListItem, Tooltip, ListItemIcon, Snackbar, Alert } from "@mui/material";
+import { InputLabel, Button, Radio, ListItem, Tooltip, ListItemIcon, Snackbar, Alert , Select } from "@mui/material";
 import FormControl from '@mui/material/FormControl';
 import InputBase from '@mui/material/InputBase';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { useHistory } from "react-router-dom";
-import { Menu, MenuItem } from "@mui/material";
+import { MenuItem } from "@mui/material";
 import PrimaryButton from "../components/button/PrimaryButton";
 import SecondaryButton from "../components/button/SecondaryButton";
 import { api } from "../utils/api";
@@ -103,7 +102,6 @@ const EditMenu = (props) => {
   const [menu, setMenu] = useState();
   const [error, setError] = useState();
   const [allCategory, setAllCategory] = useState();
-  const [anchorEl, setAnchorEl] = useState(null);
   const [isRecommended, setIsRecommended] = useState();
   const [isReset, setIsReset] = useState(false);
   const history = useHistory();
@@ -160,13 +158,6 @@ const EditMenu = (props) => {
     api.delete(Cookies.get("RestoId") + '/menus/' + menuId)
       .then(history.push("/list-menu"));
   }
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
   const handleCloseSnackbar = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -182,13 +173,11 @@ const EditMenu = (props) => {
     }));
   }
 
-  const handleCategoryChange = (id, name) => {
+  const handleCategoryChange = (evt) => {
     setMenu(prevState => ({
       ...prevState,
-      menu_category_id: id,
-      menu_category: name
+      menu_category_id: evt.target.value,
     }));
-    setAnchorEl(null);
   }
 
   const handleRecommendationChange = (value) => {
@@ -254,31 +243,20 @@ const EditMenu = (props) => {
                     </FormControl>
                   </div>
                   <div className={classes.item}>
-                    <FormControl variant="standard" font-size="24px">
-                      <InputLabel required shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
+                    <FormControl font-size="24px">
+                      <InputLabel required shrink htmlFor="Select" style={{ fontSize: "24px" }}>
                         Kategori Menu
                       </InputLabel>
-                      <Button style={{ width: 250, marginTop: 30 }} className='dropdown' onClick={handleClick}>
-                        {menu.menu_category}
-                        <ArrowDropDownIcon />
-                      </Button>
-                      <Menu
-                        id="filter-menu"
-                        anchorEl={anchorEl}
-                        keepMounted
-                        open={Boolean(anchorEl)}
-                        onClose={handleClose}
-                        PaperProps={{
-                          style: {
-                            width: '250px',
-                            backgroundColor: "white",
-                          },
-                        }}
+                      <Select
+                        value={menu.menu_category_id || menu.category_id}
+                        onChange={handleCategoryChange}
+                        displayEmpty
+                        sx={{ width: '150px', marginTop: "20px" }}
                       >
                         {allCategory && allCategory.map(category =>
-                          <MenuItem key={category.id} onClick={() => handleCategoryChange(category.id, category.name)} >{category.name}</MenuItem>
+                          <MenuItem value={category.id}>{category.name}</MenuItem>
                         )}
-                      </Menu>
+                      </Select>
                     </FormControl>
                   </div>
                   <div className={classes.item}>

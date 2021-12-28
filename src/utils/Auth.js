@@ -5,10 +5,11 @@ require('dotenv').config();
 export const login = (user, remember) => {
     if (remember){
         Cookies.set("BangOrderToken", user.access_token);
+        Cookies.set("RestoId", user.id);
     } else {
         Cookies.set("BangOrderToken", user.access_token,  { expires: 7 });
+        Cookies.set("RestoId", user.id,  { expires: 7 });
     }
-    Cookies.set("RestoId", user.id);
     return true;
 };
 

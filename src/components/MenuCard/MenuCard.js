@@ -21,7 +21,7 @@ const MenuCard = (param) => {
     const classes = useStyles();
 
     return (
-        <Card sx={{ width: '90%', marginTop: 1 }}>
+        <Card>
             <CardActionArea>
                 <div className={classes.imgContainer}>
                     <img

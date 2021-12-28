@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from '@mui/styles';
 import { styled } from "@mui/system";
-import { InputLabel, Button, Radio, ListItem, Tooltip, ListItemIcon } from "@mui/material";
+import { InputLabel, Button, Radio, ListItem, Tooltip, ListItemIcon, Select } from "@mui/material";
 import FormControl from '@mui/material/FormControl';
 import InputBase from '@mui/material/InputBase';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { useHistory } from "react-router-dom";
-import { Menu, MenuItem } from "@mui/material";
+import { MenuItem } from "@mui/material";
 import PrimaryButton from "../components/button/PrimaryButton";
 import { api } from "../utils/api";
 import Cookies from "js-cookie";
@@ -105,7 +104,6 @@ const TambahMenu = () => {
 	const [menu, setMenu] = useState({ 'name': "", 'price': "", 'menu_category_id': "" });
 	const [image, setImage] = useState();
 	const [allCategory, setAllCategory] = useState();
-	const [anchorEl, setAnchorEl] = useState(null);
 	const [isRecommended, setIsRecommended] = useState();
 	const [error, setError] = useState();
 	const history = useHistory();
@@ -145,14 +143,6 @@ const TambahMenu = () => {
 			})
 	}
 
-	const handleClick = (event) => {
-		setAnchorEl(event.currentTarget);
-	};
-
-	const handleClose = () => {
-		setAnchorEl(null);
-	};
-
 	const handleChange = (evt) => {
 		const value = evt.target.value;
 		setMenu(prevState => ({
@@ -161,13 +151,11 @@ const TambahMenu = () => {
 		}));
 	}
 
-	const handleCategoryChange = (id, name) => {
+	const handleCategoryChange = (evt) => {
 		setMenu(prevState => ({
 			...prevState,
-			menu_category_id: id,
-			menu_category: name
+			menu_category_id: evt.target.value,
 		}));
-		setAnchorEl(null);
 	}
 
 	const handleRecommendationChange = (value) => {
@@ -236,112 +224,102 @@ const TambahMenu = () => {
 									</FormControl>
 								</div>
 								<div className={classes.item}>
-									<FormControl variant="standard" font-size="24px">
+									<FormControl font-size="24px">
 										<InputLabel required shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
 											Kategori Menu
 										</InputLabel>
-										<Button style={{ width: 250, marginTop: 30 }} className='dropdown' onClick={handleClick}>
-											{menu && menu.menu_category ? menu.menu_category : "--pilih kategori menu--"}
-											<ArrowDropDownIcon />
-										</Button>
-										<Menu
-											id="filter-menu"
-											anchorEl={anchorEl}
-											keepMounted
-											open={Boolean(anchorEl)}
-											onClose={handleClose}
-											PaperProps={{
-												style: {
-													width: '250px',
-													backgroundColor: "white",
-												},
-											}}
+										<Select
+											value={menu.menu_category_id}
+											onChange={handleCategoryChange}
+											displayEmpty
+											sx={{ width: '200px', marginTop: "20px" }}
 										>
+											<MenuItem value="">Pilih Kategori Menu</MenuItem>
 											{allCategory && allCategory.map(category =>
-												<MenuItem key={category.id} onClick={() => handleCategoryChange(category.id, category.name)} >{category.name}</MenuItem>
+												<MenuItem value={category.id}>{category.name}</MenuItem>
 											)}
-										</Menu>
-									</FormControl>
-								</div>
-								<div className={classes.item}>
-									<FormControl variant="standard" font-size="24px">
-										<InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
-											Deskripsi Menu
-										</InputLabel>
-										<BootstrapInput
-											onChange={handleChange}
-											placeholder="Deskripsi Menu"
-											id="bootstrap-input"
-											multiline
-											minRows={3}
-											style={{ width: '330px' }}
-											name="description"
-										/>
-									</FormControl>
-								</div>
-								<div className={classes.item}>
-									<h4>Status Makanan</h4>
-									<RadioGroup onChange={handleChange} name="is_available">
-										<FormControlLabel value="1" control={<Radio size="small" style={{ color: '#FFC300' }} />} label="Tersedia" />
-										<FormControlLabel value="0" control={<Radio size="small" style={{ color: '#FFC300' }} />} label="Habis" />
-									</RadioGroup>
-								</div>
-								<div>
-									<FormControlLabel
-										value="start"
-										sx={{ ml: 0 }}
-										onClick={() => handleRecommendationChange(isRecommended === 1 ? 0 : 1)}
-										control={<Checkbox checked={isRecommended === 1} style={{ color: "#ffc300" }} />}
-										label={<h4>Rekomendasi</h4>}
-										labelPlacement="start"
-									/>
-								</div>
+										</Select>
+								</FormControl>
 							</div>
-							<div className={classes.right}>
-								<div>
-									<img className={classes.image} src={image ? URL.createObjectURL(image) : 'thumbnail.svg'} alt="" variant="outlined" />
-									<label htmlFor="contained-button-file">
-										<Input onChange={handleImageChange} accept="image/*" id="contained-button-file" multiple type="file" name="image" />
-										<ListItem>
-											<PrimaryButton width="100%" component="span">
-												Upload
-											</PrimaryButton>
-											<ClickAwayListener onClickAway={handleTooltipClose}>
-												<Tooltip
-													PopperProps={{
-														disablePortal: true,
-													}}
-													onClose={handleTooltipClose}
-													open={open}
-													disableFocusListener
-													disableHoverListener
-													disableTouchListener
-													title="Gunakan foto berekstensi jpg/png dengan rasio 1:1 (MAX 1 MB)">
-													<ListItemIcon>
-														<Button>
-															<InfoOutlinedIcon style={{ marginLeft: 20 }} onClick={handleTooltipOpen} />
-														</Button>
-													</ListItemIcon>
-												</Tooltip>
-											</ClickAwayListener>
-										</ListItem>
-									</label>
-								</div>
-								<div className={classes.navButton}>
-									<PrimaryButton loading={saving} width="100px" onClick={handleSaveButton}>Simpan</PrimaryButton>
-								</div>
+							<div className={classes.item}>
+								<FormControl variant="standard" font-size="24px">
+									<InputLabel shrink htmlFor="bootstrap-input" style={{ fontSize: "24px" }}>
+										Deskripsi Menu
+									</InputLabel>
+									<BootstrapInput
+										onChange={handleChange}
+										placeholder="Deskripsi Menu"
+										id="bootstrap-input"
+										multiline
+										minRows={3}
+										style={{ width: '330px' }}
+										name="description"
+									/>
+								</FormControl>
+							</div>
+							<div className={classes.item}>
+								<h4>Status Makanan</h4>
+								<RadioGroup onChange={handleChange} name="is_available">
+									<FormControlLabel value="1" control={<Radio size="small" style={{ color: '#FFC300' }} />} label="Tersedia" />
+									<FormControlLabel value="0" control={<Radio size="small" style={{ color: '#FFC300' }} />} label="Habis" />
+								</RadioGroup>
+							</div>
+							<div>
+								<FormControlLabel
+									value="start"
+									sx={{ ml: 0 }}
+									onClick={() => handleRecommendationChange(isRecommended === 1 ? 0 : 1)}
+									control={<Checkbox checked={isRecommended === 1} style={{ color: "#ffc300" }} />}
+									label={<h4>Rekomendasi</h4>}
+									labelPlacement="start"
+								/>
 							</div>
 						</div>
-						<Snackbar open={error} autoHideDuration={5000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
-							<Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%' }}>
-								{error && (error.errors ? (error.errors.name ||
-									error.errors.price ||
-									error.errors.image)
-									: error.message)}
-							</Alert>
-						</Snackbar>
-					</Frame>
+						<div className={classes.right}>
+							<div>
+								<img className={classes.image} src={image ? URL.createObjectURL(image) : 'thumbnail.svg'} alt="" variant="outlined" />
+								<label htmlFor="contained-button-file">
+									<Input onChange={handleImageChange} accept="image/*" id="contained-button-file" multiple type="file" name="image" />
+									<ListItem>
+										<PrimaryButton width="100%" component="span">
+											Upload
+										</PrimaryButton>
+										<ClickAwayListener onClickAway={handleTooltipClose}>
+											<Tooltip
+												PopperProps={{
+													disablePortal: true,
+												}}
+												onClose={handleTooltipClose}
+												open={open}
+												disableFocusListener
+												disableHoverListener
+												disableTouchListener
+												title="Gunakan foto berekstensi jpg/png dengan rasio 1:1 (MAX 1 MB)">
+												<ListItemIcon>
+													<Button>
+														<InfoOutlinedIcon style={{ marginLeft: 20 }} onClick={handleTooltipOpen} />
+													</Button>
+												</ListItemIcon>
+											</Tooltip>
+										</ClickAwayListener>
+									</ListItem>
+								</label>
+							</div>
+							<div className={classes.navButton}>
+								<PrimaryButton loading={saving} width="100px" onClick={handleSaveButton}>Simpan</PrimaryButton>
+							</div>
+						</div>
 				</div>
+				<Snackbar open={error} autoHideDuration={5000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+					<Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%' }}>
+						{error && (error.errors ? (error.errors.name ||
+							error.errors.price ||
+							error.errors.image)
+							: error.message)}
+					</Alert>
+				</Snackbar>
+			</Frame>
+		</div>
 			</div >
 		</Root >
 
