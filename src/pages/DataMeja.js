@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { styled } from '@mui/material/styles';
 import PrimaryButton from "../components/button/PrimaryButton";
 import DeleteButton from '../components/button/DeleteButton';
-import TertiaryButton from '../components/button/TertiaryButton';
 import { makeStyles } from '@mui/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -194,7 +193,7 @@ const DataMeja = () => {
                                         <StyledTableRow>
                                             <TableCell colSpan={3}>
                                                 <Skeleton animation="wave" variant="h4" width="100%">
-                                                    <TertiaryButton>Edit</TertiaryButton>
+                                                    <PrimaryButton>Edit</PrimaryButton>
                                                     <DeleteButton>Hapus</DeleteButton>
                                                 </Skeleton>
                                             </TableCell>
@@ -202,7 +201,7 @@ const DataMeja = () => {
                                         <StyledTableRow>
                                             <TableCell colSpan={3}>
                                                 <Skeleton animation="wave" variant="h4" width="100%">
-                                                    <TertiaryButton>Edit</TertiaryButton>
+                                                    <PrimaryButton>Edit</PrimaryButton>
                                                     <DeleteButton>Hapus</DeleteButton>
                                                 </Skeleton>
                                             </TableCell>
@@ -210,7 +209,7 @@ const DataMeja = () => {
                                         <StyledTableRow>
                                             <TableCell colSpan={3}>
                                                 <Skeleton animation="wave" variant="h4" width="100%">
-                                                    <TertiaryButton>Edit</TertiaryButton>
+                                                    <PrimaryButton>Edit</PrimaryButton>
                                                     <DeleteButton>Hapus</DeleteButton>
                                                 </Skeleton>
                                             </TableCell>
@@ -225,7 +224,7 @@ const DataMeja = () => {
                                             </StyledTableCell>
                                             <StyledTableCell>
                                                 <div className={classes.actionButton}>
-                                                    <TertiaryButton onClick={() => editClickHandler(table)}>Edit</TertiaryButton>
+                                                    <PrimaryButton onClick={() => editClickHandler(table)}>Edit</PrimaryButton>
                                                     <DeleteButton onClick={() => deleteClickHandler(table.id)}>Hapus</DeleteButton>
                                                 </div>
                                             </StyledTableCell>

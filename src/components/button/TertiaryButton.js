@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import { styled } from "@mui/system";
 
-const SecondaryButton = (props) => {
+const TertiaryButton = (props) => {
   const BootstrapButton = styled(Button)({
     backgroundColor: '#ffc300',
     borderWidth: 1,
@@ -25,4 +25,4 @@ const SecondaryButton = (props) => {
   );
 }
 
-export default SecondaryButton;
+export default TertiaryButton;
