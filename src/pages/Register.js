@@ -10,28 +10,22 @@ import {
     OutlinedInput,
     InputLabel,
     FormControl,
-    Alert
+    Alert,
+    Paper,
+    Button,
+    Grid,
+    Box
 } from '@mui/material';
 import { Link, useHistory } from "react-router-dom";
 import PrimaryButton from '../components/button/PrimaryButton'
 import axios from 'axios';
 
 const useStyle = makeStyles({
-    root: {
-        position: 'absolute',
-        // backgroundColor: 'black',
-        top: 50,
-        left: '50%',
-        width: '80%',
-        minWidth: 300,
-        maxWidth: 500,
-        display: 'flex',
-        alignContent: 'center',
-        transform: 'translate(-50%)'
-    },
-    image: {
-        width: '70%',
+    paperStyle: {
+        padding: 20,
         height: 'auto',
+        width: '80%',
+        margin: 'auto',
     }
 })
 const StyledLink = styled(Link)({
@@ -85,83 +79,95 @@ const Register = () => {
     }
 
     return (
-        <div className={classes.root}>
-            <Container>
-                <img className={classes.image} src="/logo-horizontal.png" alt="" />
-                <h4>Contactless Food Ordering with QR Code</h4>
-                {error && <Alert sx={{ marginTop: "30px" }} severity="error">{error.errors.email || error.errors.password || error.errors.confirm_password}</Alert>}
-                <TextField
-                    label="Email"
-                    id="outlined-size-small"
-                    margin="normal"
-                    onChange={(e) => setEmail(e.target.value)}
-                    fullWidth
-                    error={isEmailNull ? true : false}
-                    required={isEmailNull ? true : false}
-                />
-
-                <FormControl
-                    fullWidth
-                    variant="outlined" margin="normal"
-                    error={isPasswordNull ? true : false}
-                    required={isPasswordNull ? true : false}
-
-                >
-                    <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-                    <OutlinedInput
-                        id="outlined-password-input"
-                        label="Password"
-                        type={!showPassword ? "password" : "text"}
-                        onChange={(e) => setPassword(e.target.value)}
-                        autoComplete="off"
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    edge="end"
-                                >
-                                    {!showPassword ? <FaEyeSlash /> : <FaEye />}
-                                </IconButton>
-                            </InputAdornment>
-                        }
-                    />
-                </FormControl>
-                <FormControl
-                    fullWidth
-                    variant="outlined" margin="normal"
-                    error={isConfirmPasswordNull ? true : false}
-                    required={isConfirmPasswordNull ? true : false}
-
-                >
-                    <InputLabel htmlFor="outlined-adornment-password">Konfirmasi Password</InputLabel>
-                    <OutlinedInput
-                        id="outlined-password-input"
-                        label="Konfirmasi Password"
-                        type={!showPassword ? "password" : "text"}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        autoComplete="off"
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    edge="end"
-                                >
-                                    {!showPassword ? <FaEyeSlash /> : <FaEye />}
-                                </IconButton>
-                            </InputAdornment>
-                        }
-                    />
-                </FormControl>
-                <div>
-                    <PrimaryButton onClick={_onSubmit} width="100%">Daftar</PrimaryButton>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                    <p >Sudah punya akun?</p>
-                    <p><StyledLink to="/login" >Masuk</StyledLink></p>
-                </div>
-            </Container>
+        <div>
+            <Grid container spacing={0}
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                sx={{ height: "100vh" }}>
+                <Grid item sm={6} component={Box} display={{ xs: "none", xl: "flex" }}>
+                    <img style={{ height: '100vh', width: 'auto', padding: 0 }} src="/tabletent1.png" alt="" />
+                    <div style={{ position: "absolute", marginLeft: 10, bottom: 10 }}>
+                        <a href='https://play.google.com/store/apps/details?id=com.bangorder.mobile' rel="noreferrer" target='_blank'>
+                            <img style={{ height: '8vh', width: 'auto' }} src='/playstore.png' alt='' />
+                        </a>
+                    </div>
+                </Grid>
+                <Grid item xl={6} xs={12}>
+                    <Paper elevation={3} className={classes.paperStyle}>
+                        <h2 style={{ float: 'left' }}>Daftar</h2>
+                        {error && <Alert sx={{ marginTop: "30px" }} severity="error">{error.errors.email || error.errors.password || error.errors.confirm_password}</Alert>}
+                        <TextField
+                            label="Email"
+                            id="outlined-size-small"
+                            margin="normal"
+                            onChange={(e) => setEmail(e.target.value)}
+                            fullWidth
+                            error={isEmailNull ? true : false}
+                            required={isEmailNull ? true : false}
+                        />
+                        <FormControl
+                            fullWidth
+                            variant="outlined" margin="normal"
+                            error={isPasswordNull ? true : false}
+                            required={isPasswordNull ? true : false}
+                        >
+                            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                            <OutlinedInput
+                                id="outlined-password-input"
+                                label="Password"
+                                type={!showPassword ? "password" : "text"}
+                                onChange={(e) => setPassword(e.target.value)}
+                                autoComplete="off"
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            edge="end"
+                                        >
+                                            {!showPassword ? <FaEyeSlash /> : <FaEye />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                            />
+                        </FormControl>
+                        <FormControl
+                            fullWidth
+                            variant="outlined" margin="normal"
+                            error={isConfirmPasswordNull ? true : false}
+                            required={isConfirmPasswordNull ? true : false}
+                        >
+                            <InputLabel htmlFor="outlined-adornment-password">Konfirmasi Password</InputLabel>
+                            <OutlinedInput
+                                id="outlined-password-input"
+                                label="Konfirmasi Password"
+                                type={!showPassword ? "password" : "text"}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                autoComplete="off"
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            edge="end"
+                                        >
+                                            {!showPassword ? <FaEyeSlash /> : <FaEye />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                            />
+                        </FormControl>
+                        <div>
+                            <PrimaryButton onClick={_onSubmit} width="100%" style={{ marginTop: 20 }}>Daftar</PrimaryButton>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                            <p >Sudah punya akun? &nbsp;</p>
+                            <p><StyledLink to="/login" >Masuk</StyledLink></p>
+                        </div>
+                    </Paper>
+                </Grid>
+            </Grid>
         </div>
     );
 }

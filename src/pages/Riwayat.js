@@ -1,6 +1,6 @@
 import { styled } from '@mui/system';
 import React, { useEffect, useState } from 'react';
-import { InputBase } from '@mui/material';
+import { InputBase, Pagination, Stack } from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateRangePicker from '@mui/lab/DateRangePicker';
@@ -63,37 +63,42 @@ const Riwayat = () => {
     }
 
     return (
-        <Root>
-            <Content>
-                <div style={{ backgroundColor: '#fff', paddingTop: 10, paddingBottom: 10 }}>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DateRangePicker
-                            disableFuture
-                            allowSameDateSelection="true"
-                            disableCloseOnSelect="false"
-                            value={value}
-                            onChange={(newValue) => {
-                                handleDate(newValue);
-                            }}
-                            renderInput={(startProps, endProps) => (
-                                <>
-                                    <Box sx={{ mx: 2 }}> Dari </Box>
-                                    <InputBase className={classes.inputBase} {...startProps} />
-                                    <Box sx={{ mx: 2 }}> Sampai </Box>
-                                    <InputBase className={classes.inputBase} {...endProps} />
-                                </>
-                            )}
-                        />
-                    </LocalizationProvider>
-                </div>
-                {orders && orders.length !== 0 ? orders.map(order =>
-                    <HistoryCard key={order.id} order={order} handleUpdate={handleUpdate} />
-                )
-                    :
-                    <h4 style={{ marginTop: 10 }}>Belum ada riwayat pesanan</h4>
-                }
-            </Content>
-        </Root>
+        <div>
+            <Root>
+                <Content>
+                    <div style={{ backgroundColor: '#fff', paddingTop: 10, paddingBottom: 10 }}>
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <DateRangePicker
+                                disableFuture
+                                allowSameDateSelection="true"
+                                disableCloseOnSelect="false"
+                                value={value}
+                                onChange={(newValue) => {
+                                    handleDate(newValue);
+                                }}
+                                renderInput={(startProps, endProps) => (
+                                    <>
+                                        <Box sx={{ mx: 2 }}> Dari </Box>
+                                        <InputBase className={classes.inputBase} {...startProps} />
+                                        <Box sx={{ mx: 2 }}> Sampai </Box>
+                                        <InputBase className={classes.inputBase} {...endProps} />
+                                    </>
+                                )}
+                            />
+                        </LocalizationProvider>
+                    </div>
+                    {orders && orders.length !== 0 ? orders.map(order =>
+                        <HistoryCard key={order.id} order={order} handleUpdate={handleUpdate} />
+                    )
+                        :
+                        <h4 style={{ marginTop: 10 }}>Belum ada riwayat pesanan</h4>
+                    }
+                </Content>
+                <Stack style={{ float: "right", marginRight: 30, paddingTop: 10, paddingBottom: 10 }}>
+                    <Pagination count={10} variant="outlined" shape="rounded" />
+                </Stack>
+            </Root>
+        </div>
     );
 }
 

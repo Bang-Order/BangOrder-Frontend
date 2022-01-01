@@ -12,38 +12,31 @@ import {
     IconButton,
     InputAdornment,
     TextField,
-    Container,
     Divider,
+    Paper,
+    Button,
+    Grid
 } from '@mui/material';
 import { isLogin, login } from "../utils/Auth";
 import { Link, useHistory } from "react-router-dom";
 import axios from 'axios';
 import PrimaryButton from '../components/button/PrimaryButton';
+import SecondaryButton from '../components/button/SecondaryButton';
+import { Box } from '@mui/system';
 
 const useStyle = makeStyles({
-    root: {
-        position: 'absolute',
-        // backgroundColor: 'black',
-        top: 50,
-        left: '50%',
-        width: '80%',
-        minWidth: 300,
-        maxWidth: 500,
-        display: 'flex',
-        alignContent: 'center',
-        transform: 'translate(-50%)'
-    },
-    image: {
-        width: '70%',
+    paperStyle: {
+        padding: 20,
         height: 'auto',
-        padding: "2em"
+        width: '80%',
+        margin: 'auto',
     }
 })
 
 const StyledLink = styled(Link)({
     textDecoration: 'none',
     color: '#989999',
-    fontWeight: 'bold',
+    fontWeight: 'bold'
 })
 
 const Login = () => {
@@ -114,62 +107,77 @@ const Login = () => {
     }
 
     return (
-        <div className={classes.root}>
-            <Container fixed >
-                <img className={classes.image} src="/logo-horizontal.png" alt="" />
-                <h4>Contactless Food Ordering with QR Code</h4>
-                {error && <Alert sx={{ marginTop: "30px" }} severity="error">Email atau password salah!</Alert>}
-                <TextField
-                    label="Email"
-                    id="outlined-size-small"
-                    margin="normal"
-                    onChange={(e) => setEmail(e.target.value)}
-                    fullWidth
-                    error={isEmailNull ? true : false}
-                    required={isEmailNull ? true : false}
-                />
-                <FormControl
-                    fullWidth
-                    variant="outlined" margin="normal"
-                    error={isPasswordNull ? true : false}
-                    required={isPasswordNull ? true : false}
+        <div>
+            <Grid container spacing={0}
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                sx={{height: "100vh"}}>
+                <Grid item sm={6} component={Box} display={{ xs: "none", xl: "flex" }}>
+                    <img style={{ height: '100vh', width: 'auto', padding: 0 }} src='/tabletent1.png' alt='' />
+                    <div style={{ position: "absolute", marginLeft: 10, bottom: 10 }}>
+                        <a href='https://play.google.com/store/apps/details?id=com.bangorder.mobile' rel="noreferrer" target='_blank'>
+                            <img style={{ height: '8vh', width: 'auto' }} src='/playstore.png' alt='' />
+                        </a>
+                    </div>
+                </Grid>
+                <Grid item xl={6} xs={12}>
+                    <Paper elevation={3} className={classes.paperStyle}>
+                        <h2 style={{ float: 'left' }}>Masuk</h2>
+                        {error && <Alert sx={{ marginTop: "30px" }} severity="error">Email atau password salah!</Alert>}
+                        <TextField
+                            label="Email"
+                            id="outlined-size-small"
+                            margin="normal"
+                            onChange={(e) => setEmail(e.target.value)}
+                            fullWidth
+                            error={isEmailNull ? true : false}
+                            required={isEmailNull ? true : false}
+                        />
+                        <FormControl
+                            fullWidth
+                            variant="outlined" margin="normal"
+                            error={isPasswordNull ? true : false}
+                            required={isPasswordNull ? true : false}
 
-                >
-                    <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-                    <OutlinedInput
-                        id="outlined-password-input"
-                        label="Password"
-                        type={!showPassword ? "password" : "text"}
-                        onChange={(e) => setPassword(e.target.value)}
-                        autoComplete="off"
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    edge="end"
-                                >
-                                    {!showPassword ? <FaEyeSlash /> : <FaEye />}
-                                </IconButton>
-                            </InputAdornment>
-                        }
-                    />
-                </FormControl>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <FormControlLabel onClick={() => handleRemember(!remember)} control={<Checkbox checked={remember} />} label="Ingat Saya" />
-                    <p><StyledLink to="/lupa-password" >Lupa password?</StyledLink></p>
-                </div>
-                <div>
-                    <PrimaryButton onClick={_onSubmit} loading={loadingButton1} width='100%'>Masuk</PrimaryButton>
-                    <Divider sx={{ marginY: "10px" }}>Atau</Divider>
-                    <PrimaryButton onClick={onDemoLogin} loading={loadingButton2} width='100%'>Masuk dengan akun demo</PrimaryButton>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                    <p >Belum punya akun?</p>
-                    <p><StyledLink to="/register" >Daftar</StyledLink></p>
-                </div>
-            </Container>
-        </div>
+                        >
+                            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                            <OutlinedInput
+                                id="outlined-password-input"
+                                label="Password"
+                                type={!showPassword ? "password" : "text"}
+                                onChange={(e) => setPassword(e.target.value)}
+                                autoComplete="off"
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            edge="end"
+                                        >
+                                            {!showPassword ? <FaEyeSlash /> : <FaEye />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                            />
+                        </FormControl>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <FormControlLabel onClick={() => handleRemember(!remember)} control={<Checkbox checked={remember} />} label="Ingat saya" />
+                            <p><StyledLink to="/lupa-password" >Lupa password?</StyledLink></p>
+                        </div>
+                        <div>
+                            <PrimaryButton onClick={_onSubmit} loading={loadingButton1} width='100%'>Masuk</PrimaryButton>
+                            <Divider sx={{ marginY: "10px" }}>Atau</Divider>
+                            <SecondaryButton onClick={onDemoLogin} loading={loadingButton2} width='100%'>Masuk dengan akun demo</SecondaryButton>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                            <p >Belum punya akun? &nbsp;</p>
+                            <p><StyledLink to="/register" >Daftar</StyledLink></p>
+                        </div>
+                    </Paper>
+                </Grid>
+            </Grid>
+        </div >
     );
 }
 
