@@ -12,7 +12,9 @@ import {
     FormControl,
     Alert,
     Paper,
-    Button
+    Button,
+    Grid,
+    Box
 } from '@mui/material';
 import { Link, useHistory } from "react-router-dom";
 import PrimaryButton from '../components/button/PrimaryButton'
@@ -22,22 +24,8 @@ const useStyle = makeStyles({
     paperStyle: {
         padding: 20,
         height: 'auto',
-        width: '90%',
+        width: '80%',
         margin: 'auto',
-    },
-    leftItem: {
-        display: 'flex',
-        flexDirection: 'row',
-        height: '100vh',
-        width: 'auto',
-        justifyContent: 'space-between',
-        float: 'left'
-    },
-    rightItem: {
-        display: 'flex',
-        width: '30%',
-        height: '100vh',
-        margin: 'auto'
     }
 })
 const StyledLink = styled(Link)({
@@ -92,91 +80,94 @@ const Register = () => {
 
     return (
         <div>
-            <div className={classes.leftItem}>
-                <img style={{ height: '100vh', width: 'auto', padding: 0 }} src="/tabletent1.png" alt="" />
-                <div style={{ position: "absolute", marginLeft: 10, bottom: 10 }}>
-                    <a href='https://play.google.com/store/apps/details?id=com.bangorder.mobile' rel="noreferrer" target='_blank'>
-                        <img style={{ height: '8vh', width: 'auto' }} src='/playstore.png' alt='' />
-                    </a>
-                </div>
-            </div>
-            <div className={classes.rightItem}>
-                <Paper elevation={3} className={classes.paperStyle}>
-                    <h2 style={{ float: 'left' }}>Daftar</h2>
-                    {error && <Alert sx={{ marginTop: "30px" }} severity="error">{error.errors.email || error.errors.password || error.errors.confirm_password}</Alert>}
-                    <TextField
-                        label="Email"
-                        id="outlined-size-small"
-                        margin="normal"
-                        onChange={(e) => setEmail(e.target.value)}
-                        fullWidth
-                        error={isEmailNull ? true : false}
-                        required={isEmailNull ? true : false}
-                    />
-
-                    <FormControl
-                        fullWidth
-                        variant="outlined" margin="normal"
-                        error={isPasswordNull ? true : false}
-                        required={isPasswordNull ? true : false}
-
-                    >
-                        <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-                        <OutlinedInput
-                            id="outlined-password-input"
-                            label="Password"
-                            type={!showPassword ? "password" : "text"}
-                            onChange={(e) => setPassword(e.target.value)}
-                            autoComplete="off"
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        aria-label="toggle password visibility"
-                                        onClick={handleClickShowPassword}
-                                        edge="end"
-                                    >
-                                        {!showPassword ? <FaEyeSlash /> : <FaEye />}
-                                    </IconButton>
-                                </InputAdornment>
-                            }
-                        />
-                    </FormControl>
-                    <FormControl
-                        fullWidth
-                        variant="outlined" margin="normal"
-                        error={isConfirmPasswordNull ? true : false}
-                        required={isConfirmPasswordNull ? true : false}
-
-                    >
-                        <InputLabel htmlFor="outlined-adornment-password">Konfirmasi Password</InputLabel>
-                        <OutlinedInput
-                            id="outlined-password-input"
-                            label="Konfirmasi Password"
-                            type={!showPassword ? "password" : "text"}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            autoComplete="off"
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        aria-label="toggle password visibility"
-                                        onClick={handleClickShowPassword}
-                                        edge="end"
-                                    >
-                                        {!showPassword ? <FaEyeSlash /> : <FaEye />}
-                                    </IconButton>
-                                </InputAdornment>
-                            }
-                        />
-                    </FormControl>
-                    <div>
-                        <PrimaryButton onClick={_onSubmit} width="100%" style={{ marginTop: 20 }}>Daftar</PrimaryButton>
+            <Grid container spacing={0}
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                sx={{ height: "100vh" }}>
+                <Grid item sm={6} component={Box} display={{ xs: "none", xl: "flex" }}>
+                    <img style={{ height: '100vh', width: 'auto', padding: 0 }} src="/tabletent1.png" alt="" />
+                    <div style={{ position: "absolute", marginLeft: 10, bottom: 10 }}>
+                        <a href='https://play.google.com/store/apps/details?id=com.bangorder.mobile' rel="noreferrer" target='_blank'>
+                            <img style={{ height: '8vh', width: 'auto' }} src='/playstore.png' alt='' />
+                        </a>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'center' }}>
-                        <p >Sudah punya akun? &nbsp;</p>
-                        <p><StyledLink to="/login" >Masuk</StyledLink></p>
-                    </div>
-                </Paper>
-            </div>
+                </Grid>
+                <Grid item xl={6} xs={12}>
+                    <Paper elevation={3} className={classes.paperStyle}>
+                        <h2 style={{ float: 'left' }}>Daftar</h2>
+                        {error && <Alert sx={{ marginTop: "30px" }} severity="error">{error.errors.email || error.errors.password || error.errors.confirm_password}</Alert>}
+                        <TextField
+                            label="Email"
+                            id="outlined-size-small"
+                            margin="normal"
+                            onChange={(e) => setEmail(e.target.value)}
+                            fullWidth
+                            error={isEmailNull ? true : false}
+                            required={isEmailNull ? true : false}
+                        />
+                        <FormControl
+                            fullWidth
+                            variant="outlined" margin="normal"
+                            error={isPasswordNull ? true : false}
+                            required={isPasswordNull ? true : false}
+                        >
+                            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                            <OutlinedInput
+                                id="outlined-password-input"
+                                label="Password"
+                                type={!showPassword ? "password" : "text"}
+                                onChange={(e) => setPassword(e.target.value)}
+                                autoComplete="off"
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            edge="end"
+                                        >
+                                            {!showPassword ? <FaEyeSlash /> : <FaEye />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                            />
+                        </FormControl>
+                        <FormControl
+                            fullWidth
+                            variant="outlined" margin="normal"
+                            error={isConfirmPasswordNull ? true : false}
+                            required={isConfirmPasswordNull ? true : false}
+                        >
+                            <InputLabel htmlFor="outlined-adornment-password">Konfirmasi Password</InputLabel>
+                            <OutlinedInput
+                                id="outlined-password-input"
+                                label="Konfirmasi Password"
+                                type={!showPassword ? "password" : "text"}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                autoComplete="off"
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            edge="end"
+                                        >
+                                            {!showPassword ? <FaEyeSlash /> : <FaEye />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                            />
+                        </FormControl>
+                        <div>
+                            <PrimaryButton onClick={_onSubmit} width="100%" style={{ marginTop: 20 }}>Daftar</PrimaryButton>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                            <p >Sudah punya akun? &nbsp;</p>
+                            <p><StyledLink to="/login" >Masuk</StyledLink></p>
+                        </div>
+                    </Paper>
+                </Grid>
+            </Grid>
         </div>
     );
 }
