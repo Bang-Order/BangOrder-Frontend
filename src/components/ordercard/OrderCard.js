@@ -129,7 +129,7 @@ const OrderCard = (props) => {
 							<MenuItem value="antri">Antri</MenuItem>
 							<MenuItem value="dimasak">Dimasak</MenuItem>
 						</Select>
-						<PrimaryButton width='150px' value="selesai" onClick={handleStatus, handleClick}>Selesai</PrimaryButton>
+						<PrimaryButton width='150px' value="selesai" onClick={(event) => {handleStatus(event); handleClick()}}>Selesai</PrimaryButton>
 					</div>
 				</CardContent>
 				{orderItem &&
