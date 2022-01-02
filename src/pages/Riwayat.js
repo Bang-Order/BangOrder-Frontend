@@ -43,7 +43,7 @@ const Riwayat = () => {
 	const [orders, setOrders] = useState();
 	const [update, setUpdate] = useState(false);
 	const [date, setDate] = useState(["", ""]);
-	const [page, setPage] = useState(0);
+	const [page, setPage] = useState(1);
 	const rowPerPage = 5;
 	useEffect(() => {
 		api.get(Cookies.get("RestoId") + "/orders/history?start_date=" + date[0] + "&end_date=" + date[1], { headers: { Authorization: 'Bearer ' + Cookies.get("BangOrderToken") } })
