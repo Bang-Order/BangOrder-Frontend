@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@mui/styles';
-import { Button, Card, CardContent, Menu, MenuItem, Select } from '@mui/material';
+import { Card, CardContent, MenuItem, Select } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import './cardlist.css';
 import PrimaryButton from '../button/PrimaryButton';
@@ -87,7 +87,6 @@ const OrderCard = (props) => {
 	const classes = useStyles();
 	const order = props.order;
 	const orderItem = props.order.order_items;
-	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [status, setStatus] = React.useState(order.order_status);
 	const handleUpdate = props.handleUpdate;
 	const handleClick = props.handleClick;

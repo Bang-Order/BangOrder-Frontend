@@ -161,7 +161,7 @@ const Sidebar = (props) => {
                     </IconButton >
                     <h3>{props.name}</h3>
                     <IconButton sx={{ position: "absolute", right: '20px', ml: 2 }} onClick={handleClick} size="medium">
-                        <Avatar sx={{ width: 50, height: 50 }} src={!loading && resto && resto.image}></Avatar>
+                        <Avatar sx={{ width: 45, height: 45 }} src={!loading && resto && resto.image}></Avatar>
                     </IconButton>
                     <Menu
                         anchorEl={anchorEl}

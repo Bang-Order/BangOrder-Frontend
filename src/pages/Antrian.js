@@ -7,7 +7,7 @@ import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Cookies from 'js-cookie';
 import firebase from '../utils/firebase';
 import { getDatabase, ref, onValue } from "firebase/database";
-import { Alert, AlertTitle, Snackbar } from '@mui/material';
+import { Alert, Snackbar } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 const Content = styled('div')(({ theme }) => ({

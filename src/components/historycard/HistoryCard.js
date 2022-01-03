@@ -29,11 +29,9 @@ const useStyles = makeStyles(() => ({
   },
   right: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    width: 130, //'40%'
-    // minWidth: 370,
-    // maxWidth: 390,
+    width: 180,
     marginRight: 20,
   },
   content: {
